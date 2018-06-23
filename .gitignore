@@ -1,0 +1,10 @@
+fig/
+*.swp
+*~
+*.png
+*.jpg
+*.svg
+*.gif
+*.ps
+*.eps
+!gif/demo_*.gif
