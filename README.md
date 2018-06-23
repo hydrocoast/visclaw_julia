@@ -34,5 +34,6 @@ BSD 3-Clause
 
 # Author
 Takuya Miyashita   
+miyashita(at)hydrocoast.jp  
 Doctoral student, Kyoto University  
 ([personal web site](http://hydrocoast.jp))  
