@@ -1,8 +1,9 @@
 # VisClaw with Julia
 This repository aims to become one of the Clawpack visualization tools (see http://www.clawpack.org).  
-This allows us to make animations as shown below.   
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/gif/demo_chile2010.gif" width="320">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/gif/demo_ike.gif" width="320">   
+This allows us to make animations with the Julia language as shown below.   
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/gif/demo_chile2010.gif" width="480">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/gif/demo_ike.gif" width="480">   
+(chile2010 and ike, the examples of geoclaw)   
 Please contact the author if you find a bug.  
 
 # Requirements
