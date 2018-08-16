@@ -25,8 +25,8 @@ module AMR
     ###################################
     mutable struct amrdata
         nstep::Int
-        timelap::AbstractArray{Float64,1}
-        amr::AbstractArray{AbstractArray{AMR.patchdata,1},1}
+        timelap::AbstractVector{Float64}
+        amr::AbstractVector{AbstractVector{AMR.patchdata}}
     end
     ###################################
 end

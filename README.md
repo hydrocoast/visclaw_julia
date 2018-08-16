@@ -8,7 +8,7 @@ Please contact the author if you find a bug.
 
 # Requirements
 ## Julia Packages
-- Julia (>=0.6.2)
+- Julia (v1.0.0)
 - Plots
 - GR  
 

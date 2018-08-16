@@ -9,12 +9,13 @@ function LoadFortq(filename::String; ncol=4::Int)
 
     ## count the number of lines and grids
     nlineall = length(txtorg)
-	idx = contains.(txtorg,"grid_number")
+	#idx = contains.(txtorg,"grid_number")
+    idx = occursin.("grid_number",txtorg)
 	ngrid = length(txtorg[idx])
     #ngrid = sum()
 
     ## preallocate
-    amr = Array{AMR.patchdata}(ngrid)
+    amr = Array{AMR.patchdata}(undef,ngrid)
 
     l = 1
 	i = 1
@@ -71,18 +72,18 @@ function  AMRLoad(loaddir::String; col=4::Int)
     ## make a list
     if !isdir(loaddir); error("Directory $loaddir doesn't exist"); end
     flist = readdir(loaddir)
-    idx = contains.(flist,fnamekw)
+    idx = occursin.(fnamekw,flist)
     if sum(idx)==0; error("Not found"); end
     flist = flist[idx]
 
     ## the number of files
     nfile = length(flist)
     ## load all files
-    amr = Array{AbstractArray{AMR.patchdata,1}}(nfile)
+    amr = Vector{AbstractVector{AMR.patchdata}}(undef,nfile)
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
         amr[it] = LoadFortq(joinpath(loaddir,flist[it]), ncol=col)
-        tlap[it] = LoadFortt(replace(joinpath(loaddir,flist[it]), "\.q","\.t"))
+        tlap[it] = LoadFortt(replace(joinpath(loaddir,flist[it]), ".q" => ".t"))
     end
     #tlap=vec(tlap)
 

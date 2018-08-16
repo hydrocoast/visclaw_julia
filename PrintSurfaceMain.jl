@@ -5,9 +5,11 @@
 using Plots
 gr()
 clibrary(:colorcet)
+import Printf
+import Statistics
 
 ## vartype definition
-if !isdefined(:AMR)
+if !isdefined(Main, :AMR)
     include("./AMRStruct.jl")
 end
 ## variable to load (default: η)
@@ -44,8 +46,8 @@ plt = PlotTimeSeries(amrall, cpt, tile=true, ann=false);
 ## Print out
 if !isdir(outdir); mkdir(outdir); end
 for i = 1:length(plt)
-    if isdefined(:xl); plot(plt[i], xlims=xl); end
-    if isdefined(:yl); plot(plt[i], ylims=yl); end
-    if isdefined(:cl); plot(plt[i], clims=cl); end
-    savefig(plt[i], joinpath(outdir, "step"*@sprintf("%03d",i-1)*".svg"))
+    if isdefined(Main, :xl); plot(plt[i], xlims=xl); end
+    if isdefined(Main, :yl); plot(plt[i], ylims=yl); end
+    if isdefined(Main, :cl); plot(plt[i], clims=cl); end
+    savefig(plt[i], joinpath(outdir, "step"*Printf.@sprintf("%03d",i-1)*".svg"))
 end

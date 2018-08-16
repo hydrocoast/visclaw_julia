@@ -1,7 +1,7 @@
 #################################
 ## Function: pseudocolor
 #################################
-function DrawAMR2D!(plt, amr::T, cmap::Symbol; showtile=false::Bool, annots=false::Bool) where T<:Array{AMR.patchdata,1}
+function DrawAMR2D!(plt, amr::T, cmap::Symbol; showtile=false::Bool, annots=false::Bool) where T<:Vector{AMR.patchdata}
 	### using Plots; gr(); clibrary(:colorcet)
 	## the number of tiles
 	ntile = length(amr)
@@ -45,8 +45,8 @@ function DrawAMR2D!(plt, amr::T, cmap::Symbol; showtile=false::Bool, annots=fals
     ## Annotations of the grid number
     if annots
         for j = 1:ntile
-            plt = annotate!([(mean(xp[j,:]), mean(yp[j,:]),
-                             @sprintf("%02d", amr[j].gridnumber))], fontsize=10)
+            plt = annotate!([(Statistics.mean(xp[j,:]), Statistics.mean(yp[j,:]),
+                             Printf.@sprintf("%02d", amr[j].gridnumber))], fontsize=10)
         end
     end
     ## Appearances
@@ -64,10 +64,10 @@ end
 ###########################################
 function  PlotTimeSeries(amrdata::AMR.amrdata, cmap::Symbol; tile=false::Bool, ann=false::Bool)
     ## plot time-series
-    plt = Array{Plots.Plot}(amrdata.nstep)
+    plt = Array{Plots.Plot}(undef,amrdata.nstep)
     for i = 1:amrdata.nstep
         #for i = 1:1
-        plt[i] = plot(title=@sprintf("%8.1f",amrdata.timelap[i])*" s", layout=(1,1))
+        plt[i] = plot(title=Printf.@sprintf("%8.1f",amrdata.timelap[i])*" s", layout=(1,1))
         plt[i] = DrawAMR2D!(plt[i],amrdata.amr[i], cmap, showtile=tile, annots=ann)
     end
 
