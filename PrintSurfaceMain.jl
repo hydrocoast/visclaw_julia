@@ -21,12 +21,14 @@ end
 ## input
 ## output (default: "./fig")
 ## chile2010
+#=
 fdir = "../chile2010/_output"
 outdir = "./fig/chile2010"
 xl=(-120.0,-60.0)
 yl=(-60.0, 0.0)
 cl=(-0.5, 0.5)
 cpt=:coolwarm
+=#
 #=
 ## ike
 fdir = "../ike/_output"
@@ -39,7 +41,7 @@ cpt=:coolwarm
 
 ## tmp
 fdir = "../miyaclaw/ex_ss/_output"
-outdir = "./fig/chile2010"
+outdir = "./fig/ex"
 cpt=:coolwarm
 
 ## Read output of the simulation
