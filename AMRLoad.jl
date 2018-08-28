@@ -49,6 +49,8 @@ function LoadFortq(filename::String; ncol=4::Int)
     return amr
 end
 #################################
+
+#################################
 ## Function: load time
 #################################
 function LoadFortt(filename::String)
@@ -61,6 +63,45 @@ function LoadFortt(filename::String)
 	## return
 	return timelaps
 end
+#################################
+
+#################################
+## Function: load topography
+#################################
+function LoadTopo(filename::String)
+    if !isfile(filename); error("file $filename is not found."); end;
+    ## separator in regular expression
+    regfmt = r"\s+"
+    ## open topofile
+    f = open(filename,"r")
+        ## read header
+        ncols = parse(Int64, split(readline(f), regfmt)[end])
+        nrows = parse(Int64, split(readline(f), regfmt)[end])
+        xll = parse(Float64, split(readline(f), regfmt)[end])
+        yll = parse(Float64, split(readline(f), regfmt)[end])
+        cellsize = parse(Float64, split(readline(f), regfmt)[end])
+        nodata = split(readline(f), regfmt)[end]
+        ## read topodata
+        dataorg = readlines(f)
+    ## close topofile
+    close(f)
+    ## grid spacing
+    Δx = Δy = convert(Float64, convert(Float32, 1/cellsize))
+    ## str into num
+    topo = zeros(nrows, ncols)
+    for k = 1:nrows
+        line = replace(dataorg[k], r"^\s+" => "")
+        topo[k,:] = parse.(Float64, split(line, regfmt))
+    end
+    topo[topo.==nodata] .= NaN
+    ## flip
+    topo = reverse(topo, dims=1)
+
+    dataorg = nothing
+    return (topo, nrows, ncols, xll, yll)
+end
+#################################
+
 #################################
 ## Function: save figures as svg
 #################################

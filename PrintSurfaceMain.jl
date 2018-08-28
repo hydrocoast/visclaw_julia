@@ -48,6 +48,8 @@ cpt=:coolwarm
 include("./AMRLoad.jl")
 amrall = AMRLoad(fdir);
 
+
+
 ## Plot the time-series of $(col_num)
 include("./AMRPlot.jl")
 plt = PlotTimeSeries(amrall, cpt, tile=false, ann=false);
@@ -60,3 +62,19 @@ for i = 1:length(plt)
     if (@isdefined cl); plot(plt[i], clims=cl); end
     savefig(plt[i], joinpath(outdir, "step"*Printf.@sprintf("%03d",i-1)*".svg"))
 end
+
+#################
+### Main Topo ###
+#################
+fdir = "../miyaclaw/ex_ss/bathy"
+fname = "sampleGEBCO.asc"
+
+topo, nrow, ncol, xll, yll = readtopo(joinpath(fdir,fname))
+
+
+#=
+import Plots
+Plots.gr()
+
+Plots.plot(0:ncols-1, 0:nrows-1, topo, linetype=:contour, fill=true, ratio=:equal, clims=(-6000, 5000), color=:pu_or, levels=11)
+=#
