@@ -1,3 +1,7 @@
+### Functions to read ascii file and assign variables.
+### Now available to read fort.qxxxx, fort.txxxx and fort.axxxx.
+### Dataset is assigned into the type of stcuct.
+
 #################################
 ## Function: fort.qxxxx reader
 #################################
@@ -15,7 +19,7 @@ function LoadFortq(filename::String; ncol=4::Int)
     #ngrid = sum()
 
     ## preallocate
-    amr = Array{AMR.patchdata}(undef,ngrid)
+    amr = Array{AMR.patch}(undef,ngrid)
 
     l = 1
 	i = 1
@@ -36,7 +40,7 @@ function LoadFortq(filename::String; ncol=4::Int)
         vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
 
         ## array
-        amr[i] = AMR.patchdata(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+        amr[i] = AMR.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
 
         ## print
         #@printf("%d, ",gridnumber)
@@ -105,7 +109,7 @@ end
 #################################
 ## Function: save figures as svg
 #################################
-function  AMRLoad(loaddir::String; col=4::Int)
+function Load(loaddir::String; col=4::Int)
 
     ## define the filepath & filename
     fnamekw = "fort.q"
@@ -120,18 +124,18 @@ function  AMRLoad(loaddir::String; col=4::Int)
     ## the number of files
     nfile = length(flist)
     ## load all files
-    amr = Vector{AbstractVector{AMR.patchdata}}(undef,nfile)
+    amr = Vector{AbstractVector{AMR.patch}}(undef,nfile)
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
-        amr[it] = LoadFortq(joinpath(loaddir,flist[it]), ncol=col)
-        tlap[it] = LoadFortt(replace(joinpath(loaddir,flist[it]), ".q" => ".t"))
+        amr[it] = AMR.LoadFortq(joinpath(loaddir,flist[it]), ncol=col)
+        tlap[it] = AMR.LoadFortt(replace(joinpath(loaddir,flist[it]), ".q" => ".t"))
     end
-    #tlap=vec(tlap)
 
+    #return (nfile, tlap, amr)
     ## AMR Array
-    amrall = AMR.amrdata(nfile,tlap,amr)
+    amrqt = AMR.amr(nfile,tlap,amr)
 
     ## return value
-    return amrall
+    return amrqt
 end
 #################################

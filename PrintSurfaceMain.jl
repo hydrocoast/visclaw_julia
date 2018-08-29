@@ -2,18 +2,10 @@
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
 
-### Plots
-using Plots
-gr()
-clibrary(:colorcet)
-
-### Import packages
-import Printf
-
-## vartype definition
 if !(@isdefined AMR)
-    include("./AMRStruct.jl")
+    include("AMR.jl")
 end
+
 ## variable to load (default: η)
 # 1:h, 2:hu, 3:hv, 4:η
 #col_num = 4
@@ -21,14 +13,13 @@ end
 ## input
 ## output (default: "./fig")
 ## chile2010
-#=
-fdir = "../chile2010/_output"
+fdir = "../miyaclaw/chile2010/_output"
 outdir = "./fig/chile2010"
 xl=(-120.0,-60.0)
 yl=(-60.0, 0.0)
 cl=(-0.5, 0.5)
 cpt=:coolwarm
-=#
+
 #=
 ## ike
 fdir = "../ike/_output"
@@ -39,16 +30,14 @@ cl=(0.0, 2.0)
 cpt=:coolwarm
 =#
 
+amrall = AMR.Load(fdir);
+plt = AMR.PlotTimeSeries(amrall, cpt, tile=false, ann=false);
+
+#=
 ## tmp
 fdir = "../miyaclaw/ex_ss/_output"
 outdir = "./fig/ex"
 cpt=:coolwarm
-
-## Read output of the simulation
-include("./AMRLoad.jl")
-amrall = AMRLoad(fdir);
-
-
 
 ## Plot the time-series of $(col_num)
 include("./AMRPlot.jl")
@@ -77,4 +66,5 @@ import Plots
 Plots.gr()
 
 Plots.plot(0:ncols-1, 0:nrows-1, topo, linetype=:contour, fill=true, ratio=:equal, clims=(-6000, 5000), color=:pu_or, levels=11)
+=#
 =#
