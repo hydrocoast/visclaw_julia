@@ -3,7 +3,8 @@
 #################################
 ## Function: pseudocolor
 #################################
-function DrawAMR2D!(plt, amr::T, cmap::Symbol; showtile=false::Bool, annots=false::Bool) where T<:Vector{AMR.patch}
+function DrawAMR2D!(plt, amr::T; showtile=false::Bool, annots=false::Bool,
+                    xlim=(), ylim=(), clim=(), cmap=:blues ) where T<:Vector{AMR.patch}
 	### using Plots; gr(); clibrary(:colorcet)
 	## the number of tiles
 	ntile = length(amr)
@@ -28,8 +29,10 @@ function DrawAMR2D!(plt, amr::T, cmap::Symbol; showtile=false::Bool, annots=fals
 		val[end,:] = val[end-1,:]
 
 		## plot
-	    plt = contour!(plt,xvec,yvec,val, c=(cmap), fill=true,
-   	                   clims=(-0.5,0.5), colorbar=false, tickfont=12)
+	    plt = contour!(plt,xvec,yvec,val, c=(cmap), fill=true, colorbar=false, tickfont=12)
+        if !isempty(xlim); plt = plot!(plt, xlims=xlim); end
+        if !isempty(ylim); plt = plot!(plt, ylims=ylim); end
+        if !isempty(clim); plt = plot!(plt, clims=clim); end
 
 		### colorbar ?????
 	    #if j==ntile; plt=plot!(plt,colorbar=true); end
@@ -63,8 +66,8 @@ end
 ###########################################
 ## Function: plot time-series of AMR data
 ###########################################
-function  PlotTimeSeries(amr::AMR.amr, cmap::Symbol;
-                         displaytime=true::Bool, tile=false::Bool, ann=false::Bool)
+function  PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, ann=false::Bool,
+                         xlim=(), ylim=(), clim=(), cmap=:blues)
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amr.nstep)
     for i = 1:amr.nstep
@@ -72,10 +75,22 @@ function  PlotTimeSeries(amr::AMR.amr, cmap::Symbol;
         if (displaytime)
             plt[i] = plot(title=@sprintf("%8.1f",amr.timelap[i])*" s", layout=(1,1))
         end
-        plt[i] = DrawAMR2D!(plt[i],amr.amr[i], cmap, showtile=tile, annots=ann)
+        plt[i] = DrawAMR2D!(plt[i], amr.amr[i], showtile=tile, annots=ann,
+                            xlim=xlim, ylim=ylim, clim=clim, cmap=cmap);
     end
 
     ## return plots
     return plt
+end
+###########################################
+
+###########################################
+## Function: Print out
+###########################################
+function PrintPlots(plt, outdir::String)
+    if !isdir(outdir); mkdir(outdir); end
+    for i = 1:length(plt)
+        Plots.savefig(plt[i], joinpath(outdir, "step"*Printf.@sprintf("%03d",i-1)*".svg"))
+    end
 end
 ###########################################
