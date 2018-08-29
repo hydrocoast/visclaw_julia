@@ -31,3 +31,19 @@ mutable struct amr
     AMR.amr(nstep, timelap, amr) = new(nstep, timelap, amr)
 end
 ###################################
+
+###################################
+## Struct:
+##  Topography and Bathymetry
+###################################
+mutable struct geometry
+    ncols::Int
+    nrows::Int
+    xll::Float64
+    yll::Float64
+    topo::AbstractArray{Float64,2}
+    # Constructor
+    AMR.geometry(ncols, nrows, xll, yll, topo) =
+    new(ncols, nrows, xll, yll, topo)
+end
+###################################

@@ -66,8 +66,8 @@ end
 ###########################################
 ## Function: plot time-series of AMR data
 ###########################################
-function  PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, ann=false::Bool,
-                         xlim=(), ylim=(), clim=(), cmap=:blues)
+function PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, ann=false::Bool,
+                        xlim=(), ylim=(), clim=(), cmap=:blues)
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amr.nstep)
     for i = 1:amr.nstep
@@ -80,6 +80,16 @@ function  PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool,
     end
 
     ## return plots
+    return plt
+end
+###########################################
+
+
+###########################################
+## Function: topography and bathymetry
+###########################################
+function PrintTopo(geo::AMR.geometry)
+    plt = contour(0:geo.ncols-1, 0:geo.nrows-1, geo.topo, fill=true, ratio=:equal, clims=(-6000, 5000), color=:pu_or, levels=11)
     return plt
 end
 ###########################################
