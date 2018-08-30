@@ -174,9 +174,12 @@ function LoadTopo(filename::String)
         dataorg = readlines(f)
     ## close topofile
     close(f)
-    ## grid spacing
-    Δx = Δy = convert(Float64, convert(Float32, 1/cellsize))
-    ## str into num
+
+    ## meshgrid
+    xiter = collect(Float64, LinRange(xll, xll+(ncols-1)*cellsize+1e-5, ncols))
+    yiter = collect(Float64, LinRange(yll, yll+(nrows-1)*cellsize+1e-5, nrows))
+
+    ## assign topography
     topo = zeros(nrows, ncols)
     for k = 1:nrows
         line = replace(dataorg[k], r"^\s+" => "")
@@ -185,7 +188,7 @@ function LoadTopo(filename::String)
     topo[topo.==nodata] .= NaN
     ## flip
     topo = reverse(topo, dims=1)
-    geo = AMR.geometry(ncols, nrows, xll, yll, topo)
+    geo = AMR.geometry(ncols, nrows, xiter, yiter, topo)
 
     return geo
 end

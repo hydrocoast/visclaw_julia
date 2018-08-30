@@ -62,11 +62,11 @@ end
 mutable struct geometry
     ncols::Int
     nrows::Int
-    xll::Float64
-    yll::Float64
+    xiter
+    yiter
     topo::AbstractArray{Float64,2}
     # Constructor
-    AMR.geometry(ncols, nrows, xll, yll, topo) =
-    new(ncols, nrows, xll, yll, topo)
+    AMR.geometry(ncols, nrows, xiter, yiter, topo) =
+             new(ncols, nrows, xiter, yiter, topo)
 end
 ###################################

@@ -146,10 +146,21 @@ end
 ## Function: topography and bathymetry
 ###########################################
 function PlotTopo(geo::AMR.geometry)
-    plt = contour(0:geo.ncols-1, 0:geo.nrows-1, geo.topo, fill=true, ratio=:equal, clims=(-6000, 5000), color=:pu_or, levels=11)
+    plt = contourf(geo.xiter, geo.yiter, geo.topo, ratio=:equal)
     return plt
 end
 ###########################################
+
+###########################################
+## Function: topography and bathymetry
+###########################################
+function CoastalLines(geo::AMR.geometry)
+    plt = contour(geo.xiter, geo.yiter, geo.topo, ratio=:equal,
+                  levels=1, clims=(-50,-50), seriescolor=:grays, line=(:solid,1))
+    return plt
+end
+###########################################
+
 
 ###########################################
 ## Function: Print out
