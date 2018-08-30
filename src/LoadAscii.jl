@@ -109,16 +109,16 @@ end
 function LoadTopo(filename::String)
     if !isfile(filename); error("file $filename is not found."); end;
     ## separator in regular expression
-    regfmt = r"\s+"
+    regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
     ## open topofile
     f = open(filename,"r")
         ## read header
-        ncols = parse(Int64, split(readline(f), regfmt)[end])
-        nrows = parse(Int64, split(readline(f), regfmt)[end])
-        xll = parse(Float64, split(readline(f), regfmt)[end])
-        yll = parse(Float64, split(readline(f), regfmt)[end])
-        cellsize = parse(Float64, split(readline(f), regfmt)[end])
-        nodata = split(readline(f), regfmt)[end]
+        ncols = parse(Int64, match(regex, readline(f)).captures[1])
+        nrows = parse(Int64, match(regex, readline(f)).captures[1])
+        xll = parse(Float64, match(regex, readline(f)).captures[1])
+        yll = parse(Float64, match(regex, readline(f)).captures[1])
+        cellsize = parse(Float64, match(regex, readline(f)).captures[1])
+        nodata = match(regex, readline(f)).captures[1]
         ## read topodata
         dataorg = readlines(f)
     ## close topofile
@@ -129,7 +129,7 @@ function LoadTopo(filename::String)
     topo = zeros(nrows, ncols)
     for k = 1:nrows
         line = replace(dataorg[k], r"^\s+" => "")
-        topo[k,:] = parse.(Float64, split(line, regfmt))
+        topo[k,:] = parse.(Float64, split(line, r"\s+"))
     end
     topo[topo.==nodata] .= NaN
     ## flip
