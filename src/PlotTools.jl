@@ -3,8 +3,8 @@
 #################################
 ## Function: pseudocolor
 #################################
-function DrawAMR2D!(plt, amr::T; showtile=false::Bool, annots=false::Bool,
-                    xlim=(), ylim=(), clim=(), cmap=:blues ) where T<:Vector{AMR.patch}
+function DrawAMR2D!(plt, amr::T; tilenum=false::Bool, annots=false::Bool,
+                    clim=(), cmap=:auto ) where T<:Vector{AMR.patch}
 	### using Plots; gr(); clibrary(:colorcet)
 	## the number of tiles
 	ntile = length(amr)
@@ -30,16 +30,20 @@ function DrawAMR2D!(plt, amr::T; showtile=false::Bool, annots=false::Bool,
 
 		## plot
 	    plt = contour!(plt,xvec,yvec,val, c=(cmap), fill=true, colorbar=false, tickfont=12)
-        if !isempty(xlim); plt = plot!(plt, xlims=xlim); end
-        if !isempty(ylim); plt = plot!(plt, ylims=ylim); end
-        if !isempty(clim); plt = plot!(plt, clims=clim); end
 
 		### colorbar ?????
 	    #if j==ntile; plt=plot!(plt,colorbar=true); end
     end
 
+    ## xlims, ylims
+    xlim, ylim = AMR.Range(amr)
+    plt = plot!(plt, xlims=xlim, ylims=ylim)
+
+    ## color range
+    if !isempty(clim); plt = plot!(plt, clims=clim); end
+
         ## Boundaries
-        if showtile
+        if tilenum
             for j = 1:ntile
 			plt = plot!([xp[j,1],xp[j,1],xp[j,2],xp[j,2],xp[j,1]],
 			            [yp[j,1],yp[j,2],yp[j,2],yp[j,1],yp[j,1]],
@@ -66,8 +70,62 @@ end
 ###########################################
 ## Function: plot time-series of AMR data
 ###########################################
+function PlotStorm!(plt, storm::T; dc=1, P=true) where T<:Vector{AMR.stormgrid}
+    ## the number of tiles
+	ntile = length(storm)
+    ## preallocate
+	xp = zeros(ntile,2);
+	yp = zeros(ntile,2);
+	## display each tile
+    for j = 1:ntile
+		## set the boundary
+		xp[j,:] = [storm[j].xlow, storm[j].xlow+storm[j].dx*storm[j].mx]
+		yp[j,:] = [storm[j].ylow, storm[j].ylow+storm[j].dy*storm[j].my]
+
+		## grid info
+		xvec = collect(Float64, xp[j,1]-0.5storm[j].dx:storm[j].dx:xp[j,2]+0.5storm[j].dx+1e-4);
+		yvec = collect(Float64, yp[j,1]-0.5storm[j].dy:storm[j].dy:yp[j,2]+0.5storm[j].dy+1e-4);
+		## adjust data
+        val = zeros(storm[j].my+2, storm[j].mx+2)
+		val[2:end-1,2:end-1] = storm[j].slp
+		val[2:end-1,1] = val[2:end-1,2]
+		val[2:end-1,end] = val[2:end-1,end-1]
+		val[1,:] = val[2,:]
+		val[end,:] = val[end-1,:]
+
+		## plot
+        plt = contour!(plt, xvec, yvec, val, fill=true, c=:amp_r, clims=(960., 1010.), levels=20)
+        ## wind field with quiver
+        xq = collect(xp[j,1]:storm[j].dx:xp[j,2])
+        yq = collect(yp[j,1]:storm[j].dy:yp[j,2])
+        plt = quiver!(plt,
+                      repeat(xq[1:dc:end], outer=(length(yq[1:dc:end]), 1)),
+                      repeat(yq[1:dc:end], inner=(length(xq[1:dc:end]), 1)),
+                      quiver=(vec(storm[j].u[1:dc:end,1:dc:end]),
+                              vec(storm[j].v[1:dc:end,1:dc:end])),
+                      arrow=(:closed, :head, 0.01, 0.01),
+                      color=:black,
+                      )
+    end
+
+    ## get range
+    xlim, ylim = AMR.Range(storm)
+    plt = plot!(plt, xlims=xlim, ylims=ylim)
+
+    ## Appearances
+    plt = plot!(plt, axis_ratio=:equal, xlabel="Longitude", ylabel="Latitude",
+                guidefont=font("sans-serif",10), titlefont=font("sans-serif",10))
+
+    # return value(s)
+    return plt
+end
+###########################################
+
+###########################################
+## Function: plot time-series of AMR data
+###########################################
 function PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, ann=false::Bool,
-                        xlim=(), ylim=(), clim=(), cmap=:blues)
+                        clim=(), cmap=:blues)
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amr.nstep)
     for i = 1:amr.nstep
@@ -75,8 +133,8 @@ function PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, 
         if (displaytime)
             plt[i] = plot(title=@sprintf("%8.1f",amr.timelap[i])*" s", layout=(1,1))
         end
-        plt[i] = DrawAMR2D!(plt[i], amr.amr[i], showtile=tile, annots=ann,
-                            xlim=xlim, ylim=ylim, clim=clim, cmap=cmap);
+        plt[i] = DrawAMR2D!(plt[i], amr.amr[i], tilenum=tile, annots=ann,
+                            clim=clim, cmap=cmap);
     end
 
     ## return plots
@@ -84,11 +142,10 @@ function PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, 
 end
 ###########################################
 
-
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
-function PrintTopo(geo::AMR.geometry)
+function PlotTopo(geo::AMR.geometry)
     plt = contour(0:geo.ncols-1, 0:geo.nrows-1, geo.topo, fill=true, ratio=:equal, clims=(-6000, 5000), color=:pu_or, levels=11)
     return plt
 end

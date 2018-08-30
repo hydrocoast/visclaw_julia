@@ -9,3 +9,4 @@ fig/
 *.ps
 *.eps
 !gif/demo_*.gif
+!fig

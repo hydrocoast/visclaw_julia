@@ -18,7 +18,7 @@ fname = "gulf_caribbean.tt3"
 geo = AMR.LoadTopo(joinpath(fdir,fname))
 
 #topo, nrow, ncol, xll, yll = readtopo(joinpath(fdir,fname))
-plt = AMR.PrintTopo(geo)
+plt = AMR.PlotTopo(geo)
 
 #=
 import Plots

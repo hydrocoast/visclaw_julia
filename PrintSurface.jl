@@ -2,9 +2,9 @@
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
 
-if !(@isdefined AMR)
+#if !(@isdefined AMR)
     include("src/AMR.jl")
-end
+#end
 
 ## variable to load (default: η)
 # 1:h, 2:hu, 3:hv, 4:η
@@ -23,14 +23,14 @@ cpt=:coolwarm
 =#
 
 ## ike
-fdir = "../miyaclaw/ike/_output"
+fdir = "../clawpack-5.4.1/geoclaw/examples/storm-surge/ike/_output"
 outdir = "./fig/ike"
-xl=(-99.0,-70.0)
-yl=(8.0, 32.0)
+#xl=(-99.0,-70.0)
+#yl=(8.0, 32.0)
 cl=(0.0, 2.0)
 cpt=:coolwarm
 
 
-amrall = AMR.Load(fdir);
-plt = AMR.PlotTimeSeries(amrall, tile=true, ann=true, xlim=xl, ylim=yl, clim=cl, cmap=cpt);
+amrall = AMR.LoadSurface(fdir);
+plt = AMR.PlotTimeSeries(amrall, tile=true, ann=true, clim=cl, cmap=cpt);
 AMR.PrintPlots(plt, outdir);
