@@ -1,10 +1,9 @@
 ### Plotting Tools
 
-#################################
-## Function: pseudocolor
-#################################
-function DrawAMR2D!(plt, amr::T; tilenum=false::Bool, annots=false::Bool,
-                    clim=(), cmap=:auto ) where T<:Vector{AMR.patch}
+######################################
+## Function: filled contour
+######################################
+function DrawAMR2D!(plt, amr::T; clim=(), cmap=:auto) where T<:Vector{AMR.patch}
 	### using Plots; gr(); clibrary(:colorcet)
 	## the number of tiles
 	ntile = length(amr)
@@ -42,30 +41,53 @@ function DrawAMR2D!(plt, amr::T; tilenum=false::Bool, annots=false::Bool,
     ## color range
     if !isempty(clim); plt = plot!(plt, clims=clim); end
 
-        ## Boundaries
-        if tilenum
-            for j = 1:ntile
-			plt = plot!([xp[j,1],xp[j,1],xp[j,2],xp[j,2],xp[j,1]],
-			            [yp[j,1],yp[j,2],yp[j,2],yp[j,1],yp[j,1]],
-			            c=(:black), linestyle=:solid, label="")
-        end
-    end
-
-    ## Annotations of the grid number
-    if annots
-        for j = 1:ntile
-            plt = annotate!([(mean(xp[j,:]), mean(yp[j,:]), @sprintf("%02d", amr[j].gridnumber))], fontsize=10)
-        end
-    end
     ## Appearances
     plt = plot!(plt, axis_ratio=:equal, xlabel="Longitude", ylabel="Latitude",
     guidefont=font("sans-serif",10), titlefont=font("sans-serif",10))
-    #plt = plot!(plt, xlims=(xp[1,1], xp[1,2]),ylims=(yp[1,1], yp[1,2]))
 
     ## return value
     return plt
 end
-#################################
+######################################
+DrawAMR2D(amr; clim=(), cmap=:auto) = DrawAMR2D!(Plots.plot(), amr, clim=clim, cmap=cmap)
+######################################
+
+#######################################
+## Function: Add the grid numbers
+#######################################
+function GridNumber!(plt, tiles; fs=10, fc=:black)
+    ## the number of tiles
+	ntile = length(tiles)
+    for i = 1:ntile
+        ## set the boundary
+        x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
+        y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
+        ann = @sprintf("%02d", tiles[i].gridnumber)
+        ## annotations
+        plt = plot!(plt,annotations=(mean(x),mean(y),text(ann,fs,fc,:center)))
+    end
+    return plt
+end
+#######################################
+
+#######################################
+## Function: Draw the boundaries
+#######################################
+function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
+    ## the number of tiles
+	ntile = length(tiles)
+    for i = 1:ntile
+        ## set the boundary
+        x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
+        y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
+        plt = plot!(plt,
+                    [x[1], x[1], x[2], x[2], x[1]],
+                    [y[1], y[2], y[2], y[1], y[1]],
+                    c=lc, linestyle=ls, linewidth=lw, label="")
+    end
+    return plt
+end
+#######################################
 
 ###########################################
 ## Function: plot time-series of AMR data
@@ -124,17 +146,25 @@ end
 ###########################################
 ## Function: plot time-series of AMR data
 ###########################################
-function PlotTimeSeries(amr::AMR.amr; displaytime=true::Bool, tile=false::Bool, ann=false::Bool,
-                        clim=(), cmap=:blues)
+function PlotTimeSeries(amr::AMR.amr; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
+                        clim=(), cmap=:auto)
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amr.nstep)
     for i = 1:amr.nstep
-        #for i = 1:1
-        if (displaytime)
-            plt[i] = plot(title=@sprintf("%8.1f",amr.timelap[i])*" s", layout=(1,1))
+        ## pseudocolor
+        plt[i] = AMR.DrawAMR2D(amr.amr[i], clim=clim, cmap=cmap);
+        ## display time in title
+        if showsec
+            plt[i] = plot!(plt[i], title=@sprintf("%8.1f",amr.timelap[i])*" s", layout=(1,1))
         end
-        plt[i] = DrawAMR2D!(plt[i], amr.amr[i], tilenum=tile, annots=ann,
-                            clim=clim, cmap=cmap);
+        ## draw boundaries
+        if bound
+            plt[i] = AMR.DrawBound!(plt[i], amr.amr[i])
+        end
+        ## annotations of grid number
+        if gridnumber
+            plt[i] = AMR.GridNumber!(plt[i], amr.amr[i])
+        end
     end
 
     ## return plots
@@ -161,14 +191,13 @@ function CoastalLines(geo::AMR.geometry)
 end
 ###########################################
 
-
 ###########################################
 ## Function: Print out
 ###########################################
 function PrintPlots(plt, outdir::String)
     if !isdir(outdir); mkdir(outdir); end
     for i = 1:length(plt)
-        Plots.savefig(plt[i], joinpath(outdir, "step"*Printf.@sprintf("%03d",i-1)*".svg"))
+        Plots.savefig(plt[i], joinpath(outdir, "step"*@sprintf("%03d",i-1)*".svg"))
     end
 end
 ###########################################
