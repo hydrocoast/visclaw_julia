@@ -156,7 +156,7 @@ end
 ###########################################
 function CoastalLines(geo::AMR.geometry)
     plt = contour(geo.xiter, geo.yiter, geo.topo, ratio=:equal,
-                  levels=1, clims=(-50,-50), seriescolor=:grays, line=(:solid,1))
+                  levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end
 ###########################################
