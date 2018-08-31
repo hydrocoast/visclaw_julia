@@ -49,7 +49,7 @@ end
 mutable struct amr
     nstep::Int
     timelap::AbstractVector{Float64}
-    amr::AbstractVector{AbstractVector{AMR.patch}}
+    amr
     # Constructor
     AMR.amr(nstep, timelap, amr) = new(nstep, timelap, amr)
 end

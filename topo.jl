@@ -22,11 +22,4 @@ geo = AMR.LoadTopo(joinpath(fdir,fname))
 
 #topo, nrow, ncol, xll, yll = readtopo(joinpath(fdir,fname))
 #plt = AMR.PlotTopo(geo)
-plt = AMR.CoastalLines(geo)
-
-#=
-import Plots
-Plots.gr()
-
-Plots.plot(0:ncols-1, 0:nrows-1, topo, linetype=:contour, fill=true, ratio=:equal, clims=(-6000, 5000), color=:pu_or, levels=11)
-=#
+#plt = AMR.CoastalLines(geo)

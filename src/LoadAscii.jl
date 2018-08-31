@@ -5,7 +5,7 @@
 #################################
 ## Function: fort.qxxxx reader
 #################################
-function LoadFortq(filename::String; ncol=4::Int)
+function LoadFortq(filename::String, ncol::Int; kw="surface"::String)
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -16,8 +16,13 @@ function LoadFortq(filename::String; ncol=4::Int)
     idx = occursin.("grid_number",txtorg)
     ngrid = length(txtorg[idx])
 
-    ## preallocate
-    amr = Array{AMR.patch}(undef,ngrid)
+    if kw=="surface"
+        amr = Array{AMR.patch}(undef,ngrid) ## preallocate
+    elseif kw=="storm"
+        amr = Array{AMR.stormgrid}(undef,ngrid)
+    else
+        error("kwarg kw is invalid")
+    end
 
     l = 1
     i = 1
@@ -35,10 +40,24 @@ function LoadFortq(filename::String; ncol=4::Int)
         dy = parse(Float64, header[8][1:18])
         ## read variables
         body = txtorg[l+9:l+9+(mx+1)*my-1]
-        vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
 
-        ## array
-        amr[i] = AMR.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+        if kw=="surface"
+            vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
+            bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+            vars[bath.<=0.0] .= NaN
+            ## array
+            amr[i] = AMR.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+        elseif kw=="storm"
+            ucol = ncol
+            vcol = ncol+1
+            pcol = ncol+2
+            u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
+            v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
+            p = [parse(Float64, body[(i-1)*(mx+1)+j][26*(pcol-1)+1:26*pcol]) for i=1:my, j=1:mx]
+            p = p./1e+2
+            ## array
+            amr[i] = AMR.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
+        end
 
         ## print
         #@printf("%d, ",gridnumber)
@@ -51,7 +70,10 @@ function LoadFortq(filename::String; ncol=4::Int)
     return amr
 end
 #################################
+LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, kw="storm")
+#################################
 
+#=
 #################################
 ## Function: fort.axxxx reader
 #################################
@@ -103,19 +125,20 @@ function LoadStorm(filename::String; ncol=5::Int)
     return storm
 end
 #################################
+=#
 
 #################################
 ## Function: load time
 #################################
 function LoadFortt(filename::String)
-	## file open
+    ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
     close(f) #close
     ## parse timelaps from the 1st line
-	timelaps = parse(Float64, txtorg[1][1:18])
-	## return
-	return timelaps
+    timelaps = parse(Float64, txtorg[1][1:18])
+    ## return
+    return timelaps
 end
 #################################
 
@@ -123,35 +146,52 @@ end
 ## Function: LoadFortq and LoadFortt
 ##      time-series of water surface
 #######################################
-function LoadSurface(loaddir::String; col=4::Int)
+function LoadSurface(loaddir::String; kw="surface"::String)
 
     ## define the filepath & filename
-    fnamekw = "fort.q"
+    if kw=="surface"
+        fnamekw = "fort.q0"
+        col=4
+    elseif kw=="storm"
+        fnamekw = "fort.a0"
+        col=5
+    end
 
     ## make a list
     if !isdir(loaddir); error("Directory $loaddir doesn't exist"); end
     flist = readdir(loaddir)
     idx = occursin.(fnamekw,flist)
-    if sum(idx)==0; error("Not found"); end
+    if sum(idx)==0; error("File named $fnamekw was not found"); end
     flist = flist[idx]
 
     ## the number of files
     nfile = length(flist)
+    ## preallocate
+    if kw=="surface"
+        amr = Vector{AbstractVector{AMR.patch}}(undef,nfile)
+    elseif kw=="storm"
+        amr = Vector{AbstractVector{AMR.stormgrid}}(undef,nfile)
+    end
     ## load all files
-    amr = Vector{AbstractVector{AMR.patch}}(undef,nfile)
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
-        amr[it] = AMR.LoadFortq(joinpath(loaddir,flist[it]), ncol=col)
-        tlap[it] = AMR.LoadFortt(replace(joinpath(loaddir,flist[it]), ".q" => ".t"))
+        if kw=="surface"
+            amr[it] = AMR.LoadFortq(joinpath(loaddir,flist[it]), col)
+        elseif kw=="storm"
+            amr[it] = AMR.LoadForta(joinpath(loaddir,flist[it]), col)
+        end
+        tlap[it] = AMR.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
     end
 
     #return (nfile, tlap, amr)
     ## AMR Array
-    amrqt = AMR.amr(nfile,tlap,amr)
+    amrs = AMR.amr(nfile,tlap,amr)
 
     ## return value
-    return amrqt
+    return amrs
 end
+#######################################
+LoadStorm(loaddir::String) = LoadSurface(loaddir,kw="storm")
 #######################################
 
 #################################
