@@ -164,11 +164,15 @@ end
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
-function CoastalLines(geo::AMR.geometry)
-    plt = contour(geo.xiter, geo.yiter, geo.topo, ratio=:equal,
-                  levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
+function CoastalLines!(plt, geo::AMR.geometry)
+    plt = contour!(plt, geo.xiter, geo.yiter, geo.topo, ratio=:equal,
+                   levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end
+###########################################
+CoastalLines(geo::AMR.geometry) = CoastatLines(Plots.plot, geo)
+###########################################
+CoastalLineSeq!(plt,geo::AMR.geometry) = map(x->CoastalLines!(x,geo),plt)
 ###########################################
 
 ###########################################

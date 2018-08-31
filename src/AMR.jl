@@ -12,7 +12,7 @@ include("Range.jl")
 include("LoadAscii.jl")
 
 using Plots
-gr()
+Plots.gr()
 include("PlotTools.jl")
 
 end
