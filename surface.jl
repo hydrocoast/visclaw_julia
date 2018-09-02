@@ -11,6 +11,8 @@ end
 #col_num = 4
 
 using Plots
+Plots.gr()
+
 
 ## input
 ## output (default: "./fig")
