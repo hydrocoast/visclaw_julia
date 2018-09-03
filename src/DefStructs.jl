@@ -4,7 +4,7 @@
 ## Struct:
 ##  storm data
 ###################################
-mutable struct stormgrid
+struct stormgrid
     gridnumber::Int
     AMRlevel::Int
     mx::Int
@@ -26,7 +26,7 @@ end
 ## Struct:
 ##  data container of single patch
 ###################################
-mutable struct patch
+struct patch
     gridnumber::Int
     AMRlevel::Int
     mx::Int
@@ -40,16 +40,17 @@ mutable struct patch
     AMR.patch(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
 end
+###################################
 
 
 ###################################
 ## Struct:
 ##  time-seies of AMR data
 ###################################
-mutable struct amr
+struct amr
     nstep::Int
     timelap::AbstractVector{Float64}
-    amr
+    amr :: AbstractVector{Vector{Union{AMR.patch, AMR.stormgrid}}}
     # Constructor
     AMR.amr(nstep, timelap, amr) = new(nstep, timelap, amr)
 end
@@ -59,7 +60,7 @@ end
 ## Struct:
 ##  Topography and Bathymetry
 ###################################
-mutable struct geometry
+struct geometry
     ncols::Int
     nrows::Int
     xiter

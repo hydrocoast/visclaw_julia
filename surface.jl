@@ -2,9 +2,9 @@
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
 
-if !(@isdefined AMR)
+#if !(@isdefined AMR)
     include("src/AMR.jl")
-end
+#end
 
 ## variable to load (default: η)
 # 1:h, 2:hu, 3:hv, 4:η

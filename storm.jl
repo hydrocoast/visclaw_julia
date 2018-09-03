@@ -2,9 +2,9 @@
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
 
-if !(@isdefined AMR)
+#if !(@isdefined AMR)
     include("src/AMR.jl")
-end
+#end
 ## ike
 fdir = "../clawpack-5.4.1/geoclaw/examples/storm-surge/ike/_output"
 outdir = "./fig/ike"

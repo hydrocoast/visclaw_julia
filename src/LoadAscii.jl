@@ -73,60 +73,6 @@ end
 LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, kw="storm")
 #################################
 
-#=
-#################################
-## Function: fort.axxxx reader
-#################################
-function LoadStorm(filename::String; ncol=5::Int)
-    ## file open
-    f = open(filename,"r")
-    txtorg = readlines(f)
-    close(f) #close
-
-    ## count the number of lines and grids
-    nlineall = length(txtorg)
-    idx = occursin.("grid_number",txtorg)
-    ngrid = length(txtorg[idx])
-
-    ## preallocate
-    storm = Array{AMR.stormgrid}(undef,ngrid)
-
-    l = 1
-    i = 1
-    while l < nlineall
-        ## read header
-        header = txtorg[l:l+7]
-        gridnumber = parse(Int64, header[1][1:6])
-        AMRlevel = parse(Int64, header[2][1:6])
-        mx = parse(Int64, header[3][1:6])
-        my = parse(Int64, header[4][1:6])
-        xlow = parse(Float64, header[5][1:18])
-        ylow = parse(Float64, header[6][1:18])
-        dx = parse(Float64, header[7][1:18])
-        dy = parse(Float64, header[8][1:18])
-        ## read variables
-        body = txtorg[l+9:l+9+(mx+1)*my-1]
-        ucol = ncol
-        vcol = ncol+1
-        pcol = ncol+2
-        u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
-        v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
-        p = [parse(Float64, body[(i-1)*(mx+1)+j][26*(pcol-1)+1:26*pcol]) for i=1:my, j=1:mx]
-        p = p./1e+2
-
-        ## array
-        storm[i] = AMR.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
-
-        ## counter; go to the next grid
-	i += 1
-        l = l+9+(mx+1)*my
-    end
-    ## return
-    return storm
-end
-#################################
-=#
-
 #################################
 ## Function: load time
 #################################
