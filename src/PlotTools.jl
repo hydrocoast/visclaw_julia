@@ -1,4 +1,7 @@
 ### Plotting Tools
+slp_default=(960,1015)
+arrowhead_default=(0.3,0.3)
+arrowlen_default=0.1
 
 ######################################
 ## Function: filled contour
@@ -28,7 +31,7 @@ function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=:auto::Symbol)
 		val[end,:] = val[end-1,:]
 
 		## plot
-	    plt = contour!(plt,xvec,yvec,val, c=(cmap), fill=true, colorbar=false, tickfont=12)
+	    plt = contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false, tickfont=10)
 
 		### colorbar ?????
 	    #if j==ntile; plt=plot!(plt,colorbar=true); end
@@ -42,8 +45,8 @@ function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=:auto::Symbol)
     if !isempty(clim); plt = plot!(plt, clims=clim); end
 
     ## Appearances
-    plt = plot!(plt, axis_ratio=:equal, xlabel="Longitude", ylabel="Latitude",
-    guidefont=font("sans-serif",10), titlefont=font("sans-serif",10))
+    plt = plot!(plt, axis_ratio=:equal, grid=false, xlabel="Longitude", ylabel="Latitude",
+    guidefont=font("sans-serif",10), titlefont=font("sans-serif",10), bginside=Plots.RGB(.7,.7,.7))
 
     ## return value
     return plt
@@ -52,10 +55,10 @@ end
 DrawAMR2D(tiles; var=:eta, clim=(), cmap=:auto::Symbol) =
 DrawAMR2D!(Plots.plot(), tiles, var=var, clim=clim, cmap=cmap)
 ######################################
-DrawSLP!(plt, tiles; clim=(960,1010), cmap=:viridis_r::Symbol) =
+DrawSLP!(plt, tiles; clim=slp_default, cmap=:viridis_r::Symbol) =
 DrawAMR2D!(plt, tiles, var=:slp, clim=clim, cmap=cmap)
 ######################################
-DrawSLP(tiles; clim=(960,1010), cmap=:viridis_r::Symbol) =
+DrawSLP(tiles; clim=slp_default, cmap=:viridis_r::Symbol) =
 DrawSLP!(Plots.plot(), tiles, clim=clim, cmap=cmap)
 ######################################
 
@@ -96,21 +99,52 @@ function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
 end
 #######################################
 
-#=
-		## plot
-        plt = contour!(plt, xvec, yvec, val, fill=true, c=:amp_r, clims=(960., 1010.), levels=20)
-        ## wind field with quiver
-        xq = collect(xp[j,1]:storm[j].dx:xp[j,2])
-        yq = collect(yp[j,1]:storm[j].dy:yp[j,2])
+###########################################
+## Function: Draw wind field with arrows
+###########################################
+function WindQuiver!(plt,tiles, dc=1::Int;
+                     len=arrowlen_default, head=arrowhead_default)
+    ## the number of tiles
+	ntile = length(tiles)
+
+	## display each tile
+    for i = 1:ntile
+        ## set the boundary
+        x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
+        y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
+        ##
+        xq = collect(x[1]:tiles[i].dx:x[2])
+        yq = collect(y[1]:tiles[i].dy:y[2])
+
         plt = quiver!(plt,
-                      repeat(xq[1:dc:end], outer=(length(yq[1:dc:end]), 1)),
-                      repeat(yq[1:dc:end], inner=(length(xq[1:dc:end]), 1)),
-                      quiver=(vec(storm[j].u[1:dc:end,1:dc:end]),
-                              vec(storm[j].v[1:dc:end,1:dc:end])),
-                      arrow=(:closed, :head, 0.01, 0.01),
-                      color=:black,
+                      repeat(xq[1:dc:end], inner=(length(yq[1:dc:end]), 1)),
+                      repeat(yq[1:dc:end], outer=(length(xq[1:dc:end]), 1)),
+                      quiver=(len*vec(tiles[i].u[1:dc:end,1:dc:end]),
+                              len*vec(tiles[i].v[1:dc:end,1:dc:end])),
+                      arrow=arrow(:closed, :head, head[1], head[2]), color=:black,
                       )
-=#
+    end
+
+    ## return
+    return plt
+end
+###########################################
+WindQuiver(tiles, dc=1::Int; len=arrowlen_default, head=arrowhead_default) =
+WindQuiver!(Plots.plot(), tiles, dc, len=len, head=head)
+###########################################
+
+###########################################
+## Function: plot time-series of wind field
+###########################################
+function PlotWindField!(plt, amrs::AMR.amr, dc=1::Int; len=arrowlen_default, head=arrowhead_default)
+    for i = 1:amrs.nstep
+        plt[i] = AMR.WindQuiver!(plt[i], amrs.amr[i], dc, len=len, head=head)
+    end
+    ## return plots
+    return plt
+end
+###########################################
+
 ###########################################
 ## Function: plot time-series of AMR data
 ###########################################
@@ -155,8 +189,9 @@ end
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
-function PlotTopo(geo::AMR.geometry)
-    plt = contourf(geo.xiter, geo.yiter, geo.topo, ratio=:equal)
+function PlotTopo(geo::AMR.geometry; clim=(), cmap=:delta::Symbol)
+    plt = contourf(geo.xiter, geo.yiter, geo.topo, ratio=:equal, c=cmap, clims=clim)
+    #!isempty(clim) && (plt = plot!(plt,clims=clim))
     return plt
 end
 ###########################################
@@ -165,14 +200,17 @@ end
 ## Function: topography and bathymetry
 ###########################################
 function CoastalLines!(plt, geo::AMR.geometry)
+#function CoastalLines!(plt, geo)
     plt = contour!(plt, geo.xiter, geo.yiter, geo.topo, ratio=:equal,
                    levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end
 ###########################################
-CoastalLines(geo::AMR.geometry) = CoastatLines(Plots.plot, geo)
+CoastalLines(geo::AMR.geometry) = CoastalLines!(Plots.plot(), geo)
+#CoastalLines(geo) = CoastatLines(Plots.plot(), geo)
 ###########################################
 CoastalLineSeq!(plt,geo::AMR.geometry) = map(x->CoastalLines!(x,geo),plt)
+#CoastalLineSeq!(plt,geo) = map(x->CoastalLines!(x,geo),plt)
 ###########################################
 
 ###########################################

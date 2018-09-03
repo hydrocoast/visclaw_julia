@@ -12,6 +12,7 @@ include("Range.jl")
 include("LoadAscii.jl")
 
 using Plots
+pyplot()
 include("PlotTools.jl")
 
 end

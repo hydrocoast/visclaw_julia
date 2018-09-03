@@ -9,10 +9,12 @@
 #################
 ### Main Topo ###
 #################
-fdir = "../clawpack-5.4.1/geoclaw/scratch";
-fname = "etopo10min120W60W60S0S.asc"
+topodir = "../clawpack-5.4.1/geoclaw/scratch";
+toponame = "etopo10min120W60W60S0S.asc"
+geo = AMR.LoadTopo(joinpath(topodir,toponame));
 
-geo = AMR.LoadTopo(joinpath(fdir,fname))
-
-plt = AMR.PlotTopo(geo)
+# coastal lines
 #plt = AMR.CoastalLines(geo)
+# topography
+Plots.clibrary(:cmocean)
+plt = AMR.PlotTopo(geo, clim=(-6000,6000))

@@ -29,7 +29,7 @@ cd ${dirname}
 convert ${prefix}*.svg  ${prefix}%03d.png
 
 ## the number of files
-nf=$(ls -1 step*.png| wc -l )
+nf=$(ls -1 ${prefix}*.png| wc -l )
 
 ## make an animation
 ffmpeg -i ${prefix}%03d.png -vf palettegen palette.png
