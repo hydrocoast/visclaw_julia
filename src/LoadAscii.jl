@@ -5,7 +5,7 @@
 #################################
 ## Function: fort.qxxxx reader
 #################################
-function LoadFortq(filename::String, ncol::Int; kw="surface"::String)
+function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::Float64)
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -45,6 +45,7 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String)
             vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
             bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
             vars[bath.<=0.0] .= NaN
+            vars = vars.-eta0
             ## array
             amr[i] = AMR.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
         elseif kw=="storm"
@@ -95,7 +96,7 @@ end
 ## Function: LoadFortq and LoadFortt
 ##      time-series of water surface
 #######################################
-function LoadSurface(loaddir::String; kw="surface"::String)
+function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
 
     ## define the filepath & filename
     if kw=="surface"
@@ -125,7 +126,7 @@ function LoadSurface(loaddir::String; kw="surface"::String)
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
         if kw=="surface"
-            amr[it] = AMR.LoadFortq(joinpath(loaddir,flist[it]), col)
+            amr[it] = AMR.LoadFortq(joinpath(loaddir,flist[it]), col, eta0=eta0)
         elseif kw=="storm"
             amr[it] = AMR.LoadForta(joinpath(loaddir,flist[it]), col)
         end

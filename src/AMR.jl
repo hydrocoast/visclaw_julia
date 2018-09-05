@@ -8,6 +8,7 @@ using Statistics: mean
 using Printf
 
 include("DefStructs.jl")
+include("Data.jl")
 include("Range.jl")
 include("LoadAscii.jl")
 

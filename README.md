@@ -8,9 +8,10 @@ Please contact the author if you find a bug.
 
 # Requirements
 ## Julia Packages
-- Julia (v1.0.0)
+- Julia v1.0.0
 - Plots
-- GR  
+- PyPlot  
+PyPlot is recommended for the backend of Plots. GR is also available.  
 
 ## Others  
 In order to make animations, the following softwares are necessary.  

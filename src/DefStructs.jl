@@ -26,7 +26,7 @@ end
 ## Struct:
 ##  data container of single patch
 ###################################
-struct patch
+mutable struct patch
     gridnumber::Int
     AMRlevel::Int
     mx::Int
@@ -71,3 +71,19 @@ struct geometry
              new(ncols, nrows, xiter, yiter, topo)
 end
 ###################################
+
+########################################
+## Struct: parameters in geoclaw.data
+########################################
+struct param
+    cs :: Int # coordinate system
+    p0::Float64 # ambient pressure
+    R :: Float64 # earth radious
+    eta0 :: Float64 # sea level
+    n ::Float64 # manning coafficient
+    dmin :: Float64 # dry tolerance
+    # Constructor
+    AMR.param(cs,p0,R,eta0,n,dmin) =
+          new(cs,p0,R,eta0,n,dmin)
+end
+########################################
