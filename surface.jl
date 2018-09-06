@@ -18,11 +18,11 @@ Plots.pyplot()
 ## output (default: "./fig")
 ## chile2010
 
-fdir = "../clawpack-5.4.1/geoclaw/examples/tsunami/chile2010/_output"
+fdir = "../clawpack/geoclaw/examples/tsunami/chile2010/_output"
 outdir = "./fig/chile2010"
 cl=(-0.5, 0.5)
 cpt=:coolwarm
-topodir = "../clawpack-5.4.1/geoclaw/scratch";
+topodir = "../clawpack/geoclaw/scratch";
 toponame = "etopo10min120W60W60S0S.asc"
 
 ## Free water surface
@@ -34,7 +34,7 @@ AMR.PrintPlots(plt, outdir);
 
 #=
 ## ike
-fdir = "../clawpack-5.4.1/geoclaw/examples/storm-surge/ike/_output"
+fdir = "../clawpack/geoclaw/examples/storm-surge/ike/_output"
 outdir = "./fig/ike"
 cl=(0.0, 2.0)
 Plots.clibrary(:colorcet)

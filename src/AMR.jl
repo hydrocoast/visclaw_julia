@@ -13,6 +13,7 @@ include("Data.jl")
 include("Range.jl")
 include("LoadTopo.jl")
 include("LoadFort.jl")
+include("LoadGauge.jl")
 
 using Plots
 pyplot()

@@ -26,7 +26,7 @@ end
 ## Struct:
 ##  data container of single patch
 ###################################
-mutable struct patch
+struct patch
     gridnumber::Int
     AMRlevel::Int
     mx::Int
@@ -85,5 +85,22 @@ struct param
     # Constructor
     AMR.param(cs,p0,R,eta0,n,dmin) =
           new(cs,p0,R,eta0,n,dmin)
+end
+########################################
+
+########################################
+## Struct: gauge
+########################################
+struct gauge
+    id :: Int64 # gauge id
+    nt :: Int64 # number of time step
+    loc :: AbstractVector{Float64} # gauge location
+    AMRlevel :: AbstractVector{Int64}
+    time :: AbstractVector{Float64} # time
+    eta :: AbstractVector{Float64} # surface
+    aux # auxiliary
+    # Constructor
+    AMR.gauge(id,nt,loc,AMRlevel,time,eta)= new(id,nt,loc,AMRlevel,time,eta,nothing)
+    AMR.gauge(id,nt,loc,AMRlevel,time,eta,aux)= new(id,nt,loc,AMRlevel,time,eta,aux)
 end
 ########################################
