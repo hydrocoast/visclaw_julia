@@ -10,7 +10,7 @@ function LoadGauge(dirname::String; eta0=0.0::Float64)
     nf = length(files)
 
     # preallocate
-    gauges = Vector{AMR.gauge}(undef,nf)
+    gauges = Vector{Claw.gauge}(undef,nf)
     for k = 1:nf
         filename=joinpath(dirname,files[k])
 
@@ -30,7 +30,7 @@ function LoadGauge(dirname::String; eta0=0.0::Float64)
         eta = eta.-eta0
 
         # instance
-        gauges[k] = AMR.gauge(id,nt,loc,AMRlevel,time,eta)
+        gauges[k] = Claw.gauge(id,nt,loc,AMRlevel,time,eta)
     end
 
     return gauges

@@ -2,7 +2,7 @@
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
 
-module AMR
+module Claw
 
 using Statistics: mean
 using DelimitedFiles: readdlm

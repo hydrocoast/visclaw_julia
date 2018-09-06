@@ -20,7 +20,7 @@ function GeoData(dirname::String)
     n = parse(Float64,split(txt[occursin.("manning_coefficient",txt)][1],r"\s+")[1])
     dmin = parse(Float64,split(txt[occursin.("dry_tolerance",txt)][1],r"\s+")[1])
     # instance
-    params = AMR.param(cs,p0,R,eta0,n,dmin)
+    params = Claw.param(cs,p0,R,eta0,n,dmin)
     # return values
     return params
 end

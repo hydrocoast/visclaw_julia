@@ -17,7 +17,7 @@ struct stormgrid
     v :: AbstractArray{Float64,2}
     slp :: AbstractArray{Float64,2}
     # Constructor
-    AMR.stormgrid(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
+    Claw.stormgrid(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp)
 end
 ###################################
@@ -37,7 +37,7 @@ struct patch
     dy::Float64
     eta::AbstractArray{Float64,2}
     # Constructor
-    AMR.patch(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
+    Claw.patch(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
 end
 ###################################
@@ -50,9 +50,9 @@ end
 struct amr
     nstep::Int
     timelap::AbstractVector{Float64}
-    amr :: AbstractVector{Vector{Union{AMR.patch, AMR.stormgrid}}}
+    amr :: AbstractVector{Vector{Union{Claw.patch, Claw.stormgrid}}}
     # Constructor
-    AMR.amr(nstep, timelap, amr) = new(nstep, timelap, amr)
+    Claw.amr(nstep, timelap, amr) = new(nstep, timelap, amr)
 end
 ###################################
 
@@ -67,7 +67,7 @@ struct geometry
     yiter
     topo::AbstractArray{Float64,2}
     # Constructor
-    AMR.geometry(ncols, nrows, xiter, yiter, topo) =
+    Claw.geometry(ncols, nrows, xiter, yiter, topo) =
              new(ncols, nrows, xiter, yiter, topo)
 end
 ###################################
@@ -83,7 +83,7 @@ struct param
     n ::Float64 # manning coafficient
     dmin :: Float64 # dry tolerance
     # Constructor
-    AMR.param(cs,p0,R,eta0,n,dmin) =
+    Claw.param(cs,p0,R,eta0,n,dmin) =
           new(cs,p0,R,eta0,n,dmin)
 end
 ########################################
@@ -100,7 +100,7 @@ struct gauge
     eta :: AbstractVector{Float64} # surface
     aux # auxiliary
     # Constructor
-    AMR.gauge(id,nt,loc,AMRlevel,time,eta)= new(id,nt,loc,AMRlevel,time,eta,nothing)
-    AMR.gauge(id,nt,loc,AMRlevel,time,eta,aux)= new(id,nt,loc,AMRlevel,time,eta,aux)
+    Claw.gauge(id,nt,loc,AMRlevel,time,eta)= new(id,nt,loc,AMRlevel,time,eta,nothing)
+    Claw.gauge(id,nt,loc,AMRlevel,time,eta,aux)= new(id,nt,loc,AMRlevel,time,eta,aux)
 end
 ########################################

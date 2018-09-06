@@ -2,8 +2,8 @@
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
 
-#if !(@isdefined AMR)
-    include("src/AMR.jl")
+#if !(@isdefined Claw)
+    include("src/Claw.jl")
 #end
 
 ## variable to load (default: η)
@@ -26,11 +26,11 @@ topodir = "../clawpack/geoclaw/scratch";
 toponame = "etopo10min120W60W60S0S.asc"
 
 ## Free water surface
-amrall = AMR.LoadSurface(fdir);
-plt = AMR.PlotTimeSeries(amrall, clim=cl, cmap=cpt);
+amrall = Claw.LoadSurface(fdir);
+plt = Claw.PlotTimeSeries(amrall, clim=cl, cmap=cpt);
 
 ## save figrues
-AMR.PrintPlots(plt, outdir);
+Claw.PrintPlots(plt, outdir);
 
 #=
 ## ike
@@ -41,9 +41,9 @@ Plots.clibrary(:colorcet)
 cpt=:rainbow
 
 ## Free water surface
-amrall = AMR.LoadSurface(fdir);
-plt = AMR.PlotTimeSeries(amrall, bound=true, gridnumber=true, clim=cl, cmap=cpt);
+amrall = Claw.LoadSurface(fdir);
+plt = Claw.PlotTimeSeries(amrall, bound=true, gridnumber=true, clim=cl, cmap=cpt);
 
 ## save figrues
-AMR.PrintPlots(plt, outdir);
+Claw.PrintPlots(plt, outdir);
 =#

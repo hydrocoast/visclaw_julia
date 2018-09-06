@@ -48,7 +48,7 @@ function LoadTopo(filename::String; topotype=3::Int)
     end
     topo[topo.==nodata] .= NaN ## replace nodate to NaN
     topo = reverse(topo, dims=1) ## flip
-    geo = AMR.geometry(ncols, nrows, xiter, yiter, topo)
+    geo = Claw.geometry(ncols, nrows, xiter, yiter, topo)
 
     return geo
 end

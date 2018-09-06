@@ -38,7 +38,7 @@ function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=:auto::Symbol)
     end
 
     ## xlims, ylims
-    xlim, ylim = AMR.Range(tiles)
+    xlim, ylim = Claw.Range(tiles)
     plt = plot!(plt, xlims=xlim, ylims=ylim)
 
     ## color range
@@ -136,9 +136,9 @@ WindQuiver!(Plots.plot(), tiles, dc, len=len, head=head)
 ###########################################
 ## Function: plot time-series of wind field
 ###########################################
-function PlotWindField!(plt, amrs::AMR.amr, dc=1::Int; len=arrowlen_default, head=arrowhead_default)
+function PlotWindField!(plt, amrs::Claw.amr, dc=1::Int; len=arrowlen_default, head=arrowhead_default)
     for i = 1:amrs.nstep
-        plt[i] = AMR.WindQuiver!(plt[i], amrs.amr[i], dc, len=len, head=head)
+        plt[i] = Claw.WindQuiver!(plt[i], amrs.amr[i], dc, len=len, head=head)
     end
     ## return plots
     return plt
@@ -148,7 +148,7 @@ end
 ###########################################
 ## Function: plot time-series of AMR data
 ###########################################
-function PlotTimeSeries(amrs::AMR.amr; var=:eta::Symbol,
+function PlotTimeSeries(amrs::Claw.amr; var=:eta::Symbol,
                         showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
                         clim=(), cmap=:auto)
     ## check argument
@@ -160,9 +160,9 @@ function PlotTimeSeries(amrs::AMR.amr; var=:eta::Symbol,
     for i = 1:amrs.nstep
         ## pseudocolor
         if (var==:eta)
-            plt[i] = AMR.DrawAMR2D(amrs.amr[i], clim=clim, cmap=cmap);
+            plt[i] = Claw.DrawAMR2D(amrs.amr[i], clim=clim, cmap=cmap);
         elseif (var==:slp)
-            plt[i] = AMR.DrawSLP(amrs.amr[i], clim=clim, cmap=cmap);
+            plt[i] = Claw.DrawSLP(amrs.amr[i], clim=clim, cmap=cmap);
         end
         ## display time in title
         if showsec
@@ -170,11 +170,11 @@ function PlotTimeSeries(amrs::AMR.amr; var=:eta::Symbol,
         end
         ## draw boundaries
         if bound
-            plt[i] = AMR.DrawBound!(plt[i], amrs.amr[i])
+            plt[i] = Claw.DrawBound!(plt[i], amrs.amr[i])
         end
         ## annotations of grid number
         if gridnumber
-            plt[i] = AMR.GridNumber!(plt[i], amrs.amr[i])
+            plt[i] = Claw.GridNumber!(plt[i], amrs.amr[i])
         end
     end
 
@@ -189,7 +189,7 @@ end
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
-function PlotTopo(geo::AMR.geometry; clim=(), cmap=:delta::Symbol)
+function PlotTopo(geo::Claw.geometry; clim=(), cmap=:delta::Symbol)
     plt = contourf(geo.xiter, geo.yiter, geo.topo, ratio=:equal, c=cmap, clims=clim)
     #!isempty(clim) && (plt = plot!(plt,clims=clim))
     return plt
@@ -199,17 +199,17 @@ end
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
-function CoastalLines!(plt, geo::AMR.geometry)
+function CoastalLines!(plt, geo::Claw.geometry)
 #function CoastalLines!(plt, geo)
     plt = contour!(plt, geo.xiter, geo.yiter, geo.topo, ratio=:equal,
                    levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end
 ###########################################
-CoastalLines(geo::AMR.geometry) = CoastalLines!(Plots.plot(), geo)
+CoastalLines(geo::Claw.geometry) = CoastalLines!(Plots.plot(), geo)
 #CoastalLines(geo) = CoastatLines(Plots.plot(), geo)
 ###########################################
-CoastalLineSeq!(plt,geo::AMR.geometry) = map(x->CoastalLines!(x,geo),plt)
+CoastalLineSeq!(plt,geo::Claw.geometry) = map(x->CoastalLines!(x,geo),plt)
 #CoastalLineSeq!(plt,geo) = map(x->CoastalLines!(x,geo),plt)
 ###########################################
 

@@ -17,9 +17,9 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::
     ngrid = length(txtorg[idx])
 
     if kw=="surface"
-        amr = Array{AMR.patch}(undef,ngrid) ## preallocate
+        amr = Array{Claw.patch}(undef,ngrid) ## preallocate
     elseif kw=="storm"
-        amr = Array{AMR.stormgrid}(undef,ngrid)
+        amr = Array{Claw.stormgrid}(undef,ngrid)
     else
         error("kwarg kw is invalid")
     end
@@ -47,7 +47,7 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::
             vars[bath.<=0.0] .= NaN
             vars = vars.-eta0
             ## array
-            amr[i] = AMR.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+            amr[i] = Claw.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
         elseif kw=="storm"
             ucol = ncol
             vcol = ncol+1
@@ -60,7 +60,7 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::
             u[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
             v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
             ## array
-            amr[i] = AMR.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
+            amr[i] = Claw.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
         end
 
         ## print
@@ -118,24 +118,24 @@ function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
     nfile = length(flist)
     ## preallocate
     if kw=="surface"
-        amr = Vector{AbstractVector{AMR.patch}}(undef,nfile)
+        amr = Vector{AbstractVector{Claw.patch}}(undef,nfile)
     elseif kw=="storm"
-        amr = Vector{AbstractVector{AMR.stormgrid}}(undef,nfile)
+        amr = Vector{AbstractVector{Claw.stormgrid}}(undef,nfile)
     end
     ## load all files
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
         if kw=="surface"
-            amr[it] = AMR.LoadFortq(joinpath(loaddir,flist[it]), col, eta0=eta0)
+            amr[it] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, eta0=eta0)
         elseif kw=="storm"
-            amr[it] = AMR.LoadForta(joinpath(loaddir,flist[it]), col)
+            amr[it] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
         end
-        tlap[it] = AMR.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
+        tlap[it] = Claw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
     end
 
     #return (nfile, tlap, amr)
     ## AMR Array
-    amrs = AMR.amr(nfile,tlap,amr)
+    amrs = Claw.amr(nfile,tlap,amr)
 
     ## return value
     return amrs

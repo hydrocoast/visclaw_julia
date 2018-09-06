@@ -1,9 +1,9 @@
-#if !(@isdefined AMR)
-    include("src/AMR.jl")
+#if !(@isdefined Claw)
+    include("src/Claw.jl")
 #end
 
 fdir = "../clawpack/geoclaw/examples/storm-surge/ike/_output"
 outdir = "./fig/ike"
 
-params = AMR.GeoData(fdir)
-gauges = AMR.LoadGauge(fdir, eta0=params.eta0)
+params = Claw.GeoData(fdir)
+gauges = Claw.LoadGauge(fdir, eta0=params.eta0)

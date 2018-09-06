@@ -11,7 +11,7 @@ Please contact the author if you find a bug.
 - Julia v1.0.0
 - Plots
 - PyPlot  
-PyPlot is recommended for the backend of Plots. GR is also available.  
+PyPlot is recommended to use the backend of Plots. GR is also available.  
 
 ## Others  
 In order to make animations, the following softwares are necessary.  
