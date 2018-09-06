@@ -5,12 +5,14 @@
 module AMR
 
 using Statistics: mean
+using DelimitedFiles: readdlm
 using Printf
 
 include("DefStructs.jl")
 include("Data.jl")
 include("Range.jl")
-include("LoadAscii.jl")
+include("LoadTopo.jl")
+include("LoadFort.jl")
 
 using Plots
 pyplot()
