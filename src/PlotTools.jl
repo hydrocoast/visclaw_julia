@@ -218,3 +218,15 @@ function PrintPlots(plt, outdir::String; prefix="step"::String)
     end
 end
 ###########################################
+
+###########################################
+## Function: plot gauge
+###########################################
+function PlotWaveform!(plt, gauge; lc=:auto, lw=1., ls=:solid)
+    plt = Plots.plot!(plt, gauge.time, gauge.eta, lc=lc, lw=lw, linestyle=ls);
+    return plt
+end
+###########################################
+PlotWaveform(gauge; lc=:auto, lw=1., ls=:solid) =
+PlotWaveform!(Plots.plot(),gauge, lc=lc, lw=lw, ls=ls)
+###########################################

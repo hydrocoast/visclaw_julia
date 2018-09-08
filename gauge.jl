@@ -7,3 +7,4 @@ outdir = "./fig/ike"
 
 params = Claw.GeoData(fdir)
 gauges = Claw.LoadGauge(fdir, eta0=params.eta0)
+plt = Claw.PlotWaveform(gauges[1])
