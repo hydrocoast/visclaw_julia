@@ -185,13 +185,11 @@ end
 
 ###########################################
 
-
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
 function PlotTopo(geo::Claw.geometry; clim=(), cmap=:delta::Symbol)
     plt = contourf(geo.xiter, geo.yiter, geo.topo, ratio=:equal, c=cmap, clims=clim)
-    #!isempty(clim) && (plt = plot!(plt,clims=clim))
     return plt
 end
 ###########################################
@@ -200,17 +198,14 @@ end
 ## Function: topography and bathymetry
 ###########################################
 function CoastalLines!(plt, geo::Claw.geometry)
-#function CoastalLines!(plt, geo)
     plt = contour!(plt, geo.xiter, geo.yiter, geo.topo, ratio=:equal,
                    levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end
 ###########################################
 CoastalLines(geo::Claw.geometry) = CoastalLines!(Plots.plot(), geo)
-#CoastalLines(geo) = CoastatLines(Plots.plot(), geo)
 ###########################################
 CoastalLineSeq!(plt,geo::Claw.geometry) = map(x->CoastalLines!(x,geo),plt)
-#CoastalLineSeq!(plt,geo) = map(x->CoastalLines!(x,geo),plt)
 ###########################################
 
 ###########################################
