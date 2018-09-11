@@ -20,3 +20,19 @@ function Range(tiles)
     return (xrange, yrange)
 end
 ######################################
+
+############################################
+### Function: check arguments and resize ###
+############################################
+function chkarglength!(var, nlen::Int)
+    # Scolor Symbol
+    if isa(var,Symbol); var = ntuple(i -> var, nlen); return var; end
+    if (length(var) != nlen) && (length(var) != 1);
+        error("The length of lc must correspond to that of gauge or 1.");
+    end
+    if length(var) == 1
+        var = var*ones(nlen,1) |> vec
+    end
+    return var
+end
+############################################

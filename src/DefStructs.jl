@@ -92,6 +92,7 @@ end
 ## Struct: gauge
 ########################################
 struct gauge
+    label :: String # Name
     id :: Int64 # gauge id
     nt :: Int64 # number of time step
     loc :: AbstractVector{Float64} # gauge location
@@ -100,7 +101,7 @@ struct gauge
     eta :: AbstractVector{Float64} # surface
     aux # auxiliary
     # Constructor
-    Claw.gauge(id,nt,loc,AMRlevel,time,eta)= new(id,nt,loc,AMRlevel,time,eta,nothing)
-    Claw.gauge(id,nt,loc,AMRlevel,time,eta,aux)= new(id,nt,loc,AMRlevel,time,eta,aux)
+    Claw.gauge(label,id,nt,loc,AMRlevel,time,eta)= new(label,id,nt,loc,AMRlevel,time,eta,nothing)
+    Claw.gauge(label,id,nt,loc,AMRlevel,time,eta,aux)= new(label,id,nt,loc,AMRlevel,time,eta,aux)
 end
 ########################################

@@ -211,22 +211,48 @@ CoastalLineSeq!(plt,geo::Claw.geometry) = map(x->CoastalLines!(x,geo),plt)
 ###########################################
 ## Function: Print out
 ###########################################
-function PrintPlots(plt, outdir::String; prefix="step"::String)
+function PrintPlots(plt, outdir::String; prefix="step"::String, startnumber=0::Int64)
     if !isdir(outdir); mkdir(outdir); end
     for i = 1:length(plt)
-        Plots.savefig(plt[i], joinpath(outdir, prefix*@sprintf("%03d",i-1)*".svg"))
+        Plots.savefig(plt[i], joinpath(outdir, prefix*@sprintf("%03d",startnumber+i-1)*".svg"))
     end
 end
 ###########################################
 
 ###########################################
-## Function: plot gauge
+## Function: plot single gauge
 ###########################################
-function PlotWaveform!(plt, gauge; lc=:auto, lw=1., ls=:solid)
-    plt = Plots.plot!(plt, gauge.time, gauge.eta, lc=lc, lw=lw, linestyle=ls);
+function PlotWaveform!(plt, gauge::Claw.gauge; lc=:auto, lw=1., ls=:solid)
+    plt = Plots.plot!(plt, gauge.time, gauge.eta, lc=lc, lw=lw, linestyle=ls, label=gauge.label);
     return plt
 end
 ###########################################
-PlotWaveform(gauge; lc=:auto, lw=1., ls=:solid) =
+PlotWaveform(gauge::Claw.gauge; lc=:auto, lw=1., ls=:solid) =
 PlotWaveform!(Plots.plot(),gauge, lc=lc, lw=lw, ls=ls)
+###########################################
+
+###########################################
+## Function: plot gauge
+###########################################
+function PlotWaveforms!(plt, gauges::Vector{Claw.gauge}; lc=:auto, lw=1., ls=:solid)
+    # Number of gauges
+    ngauge = length(gauges)
+    # Check the input arguments
+    lc = Claw.chkarglength!(lc,ngauge)
+    lw = Claw.chkarglength!(lw,ngauge)
+    ls = Claw.chkarglength!(ls,ngauge)
+    # plot
+    for i = 1:ngauge
+        plt = Claw.PlotWaveform!(plt, gauges[i], lc=lc[i], lw=lw[i], ls=ls[i])
+    end
+    # return value
+    return plt
+end
+###########################################
+function PlotWaveforms(gauges::Vector{Claw.gauge}; lc=:auto, lw=1., ls=:solid)
+    plt = Plots.plot()
+    plt = Claw.PlotWaveforms!(plt,gauges,lc=lc,lw=lw,ls=ls)
+    # return value
+    return plt
+end
 ###########################################

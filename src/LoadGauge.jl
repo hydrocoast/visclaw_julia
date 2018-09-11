@@ -1,7 +1,7 @@
 #################################
 ## Function: gauge*.txt reader
 #################################
-function LoadGauge(dirname::String; eta0=0.0::Float64)
+function LoadGauge(dirname::String; eta0=0.0::Float64, labelhead="Gauge "::String)
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
     ind = map(x->occursin(r"gauge\d+\.txt",x),files)
@@ -29,8 +29,11 @@ function LoadGauge(dirname::String; eta0=0.0::Float64)
         eta = convert.(Float64,dataorg[:,6])
         eta = eta.-eta0
 
+        # label
+        label = labelhead*@sprintf("%d",id)
+
         # instance
-        gauges[k] = Claw.gauge(id,nt,loc,AMRlevel,time,eta)
+        gauges[k] = Claw.gauge(label,id,nt,loc,AMRlevel,time,eta)
     end
 
     return gauges
