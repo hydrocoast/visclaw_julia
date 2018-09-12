@@ -78,7 +78,7 @@ if booleta[1]
             Claw.PrintPlots(plt, outdir)
         end
     end
-    if booleta[4] && Sys.islinux()
-        run(`./animation.sh  `)
-    end
+end
+if booleta[4] && Sys.islinux()
+    run(`./animation.sh $outdir step eta`)
 end
