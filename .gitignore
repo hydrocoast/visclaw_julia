@@ -1,5 +1,4 @@
 tmp*
-fig/
 *.swp
 *~
 *.png
@@ -9,4 +8,3 @@ fig/
 *.ps
 *.eps
 !gif/demo_*.gif
-!fig

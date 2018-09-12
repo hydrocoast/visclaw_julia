@@ -11,8 +11,8 @@ include("./CLAWPATH.jl")
 [0,0,0] .|> Bool
 #= boolgauge[load,plot,print] =# boolgauge=
 [1,0,0] .|> Bool
-#= booleta[load,plot,print]   =# booleta=
-[1,1,1] .|> Bool
+#= booleta[load,plot,print,animation] =# booleta=
+[1,1,1,1] .|> Bool
 
 ## file paths
 fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
@@ -77,5 +77,8 @@ if booleta[1]
             # save figrue(s)
             Claw.PrintPlots(plt, outdir)
         end
+    end
+    if booleta[4] && Sys.islinux()
+        run(`./animation.sh  `)
     end
 end
