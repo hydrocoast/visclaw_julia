@@ -256,3 +256,43 @@ function PlotWaveforms(gauges::Vector{Claw.gauge}; lc=:auto, lw=1., ls=:solid)
     return plt
 end
 ###########################################
+
+ms_default=8
+an_default = Plots.font(8,:left,:top,0.0,:black)
+###########################################
+## Function: plot gauge location
+###########################################
+function PlotGaugeLoc!(plt, gauge::Claw.gauge; ms=ms_default, mfc=:auto, txtfont=an_default)
+    an=" "*@sprintf("%s",gauge.id)
+    plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]],
+                         ann=(gauge.loc[1],gauge.loc[2],text(an,txtfont)),
+                         ms=ms, color=mfc, label="")
+    return plt
+end
+###########################################
+PlotGaugeLoc(gauge::Claw.gauge; ms=ms_default, mfc=:auto, txtfont=an_default) =
+PlotGaugeLoc!(Plots.plot(), gauge, ms=ms, mfc=mfc, txtfont=txtfont)
+###########################################
+function PlotGaugeLocs!(plt, gauges::Vector{Claw.gauge}; ms=ms_default, mfc=:auto, txtfont=an_default)
+    # Number of gauges
+    ngauge = length(gauges)
+    # Check the input arguments
+    ms = Claw.chkarglength!(ms,ngauge)
+    mfc = Claw.chkarglength!(mfc,ngauge)
+    txtfont = Claw.chkarglength!(txtfont,ngauge)
+    # plot
+    for i = 1:ngauge
+        plt = Claw.PlotGaugeLoc!(plt, gauges[i], ms=ms[i], mfc=mfc[i], txtfont=txtfont[i])
+    end
+    # return value
+    return plt
+end
+###########################################
+function PlotGaugeLocs(gauges::Vector{Claw.gauge}; ms=ms_default, mfc=:auto, txtfont=an_default)
+    plt = Plots.plot()
+    plt = PlotGaugeLocs!(plt, gauges, ms=ms, mfc=mfc, txtfont=txtfont)
+    # return value
+    return plt
+end
+###########################################
+###########################################

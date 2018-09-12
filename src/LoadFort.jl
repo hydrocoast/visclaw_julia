@@ -34,10 +34,10 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::
         AMRlevel = parse(Int64, header[2][1:6])
         mx = parse(Int64, header[3][1:6])
         my = parse(Int64, header[4][1:6])
-        xlow = parse(Float64, header[5][1:18])
-        ylow = parse(Float64, header[6][1:18])
-        dx = parse(Float64, header[7][1:18])
-        dy = parse(Float64, header[8][1:18])
+        xlow = parse(Float64, header[5][1:26])
+        ylow = parse(Float64, header[6][1:26])
+        dx = parse(Float64, header[7][1:26])
+        dy = parse(Float64, header[8][1:26])
         ## read variables
         body = txtorg[l+9:l+9+(mx+1)*my-1]
 
