@@ -45,8 +45,9 @@ function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=:auto::Symbol)
     if !isempty(clim); plt = plot!(plt, clims=clim); end
 
     ## Appearances
-    plt = plot!(plt, axis_ratio=:equal, grid=false, xlabel="Longitude", ylabel="Latitude",
-    guidefont=font("sans-serif",10), titlefont=font("sans-serif",10), bginside=Plots.RGB(.7,.7,.7))
+    plt = plot!(plt, axis_ratio=:equal, grid=false,
+               xlabel="Longitude", ylabel="Latitude", guidefont=font("sans-serif",12),
+               tickfont=font(10), titlefont=font("sans-serif",10), bginside=Plots.RGB(.7,.7,.7))
 
     ## return value
     return plt

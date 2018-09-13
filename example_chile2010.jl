@@ -10,7 +10,7 @@ include("./CLAWPATH.jl")
 #= booltopo[load,plot,print]  =# booltopo=
 [1,1,1] .|> Bool
 #= boolgauge[load,plot,print] =# boolgauge=
-[1,0,0] .|> Bool
+[1,1,1] .|> Bool
 #= booleta[load,plot,print,animation] =# booleta=
 [1,1,1,1] .|> Bool
 
