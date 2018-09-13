@@ -8,3 +8,7 @@ tmp*
 *.ps
 *.eps
 !gif/demo_*.gif
+
+!topo.svg
+!gauge32412.svg
+!allgauges.svg

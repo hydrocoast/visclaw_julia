@@ -101,7 +101,8 @@ struct gauge
     eta :: AbstractVector{Float64} # surface
     aux # auxiliary
     # Constructor
-    Claw.gauge(label,id,nt,loc,AMRlevel,time,eta)= new(label,id,nt,loc,AMRlevel,time,eta,nothing)
+    Claw.gauge(label,id,nt,loc,time,eta) = new(label,id,nt,loc,[],time,eta,nothing)
+    Claw.gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta,nothing)
     Claw.gauge(label,id,nt,loc,AMRlevel,time,eta,aux)= new(label,id,nt,loc,AMRlevel,time,eta,aux)
 end
 ########################################

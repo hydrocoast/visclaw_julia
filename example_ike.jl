@@ -10,7 +10,7 @@ include("./CLAWPATH.jl")
 #= booltopo[load,plot,print]  =# booltopo=
 [0,0,0] .|> Bool
 #= boolgauge[load,plot,print] =# boolgauge=
-[1,0,0] .|> Bool
+[1,1,1] .|> Bool
 #= booleta[load,plot,print]   =# booleta=
 [0,0,0] .|> Bool
 #= boolstorm[load,plot,print] =# boolstorm=
@@ -22,8 +22,8 @@ outdir = "./fig/ike"
 topodir = joinpath(CLAW,"geoclaw/scratch")
 toponame = "gulf_caribbean.tt3"
 
-using Plots
-pyplot()
+using Printf: @printf, @sprintf
+using Plots; pyplot()
 
 # Topography
 if booltopo[1]
@@ -48,8 +48,15 @@ if boolgauge[1]
     params = Claw.GeoData(fdir)
     gauges = Claw.LoadGauge(fdir, eta0=params.eta0)
     if boolgauge[2]
+        tickv=-3*24*3600:12*3600:1*24*3600
+        tickl=[@sprintf("%d",i) for i=-3*24:12:1*24]
+        xl="Hours relative to landfall"
+        yl="Surface (m)"
         # plot
         plt = Claw.PlotWaveforms(gauges)
+        plt = plot!(plt,xlabel=xl, ylabel=yl, guidefont=font(12),
+                    legend=:topleft, legendfont=font(10), grid=true)
+        plt = plot!(tickfont=font(10), xticks=(tickv,tickl))
         Plots.plot!(plt,show=true)
         if boolgauge[3]
             # save figure(s)
