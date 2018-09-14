@@ -1,7 +1,9 @@
 ## Example: Case Hurricane Ike
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
-include("./CLAWPATH.jl")
+if !(@isdefined CLAW)
+    include("./CLAWPATH.jl")
+end
 #if !(@isdefined Claw)
     include("src/Claw.jl")
 #end
@@ -19,8 +21,6 @@ include("./CLAWPATH.jl")
 ## ike
 fdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 outdir = "./fig/ike"
-topodir = joinpath(CLAW,"geoclaw/scratch")
-toponame = "gulf_caribbean.tt3"
 
 using Printf: @printf, @sprintf
 using Plots; pyplot()
@@ -28,7 +28,8 @@ using Plots; pyplot()
 # Topography
 if booltopo[1]
     # load
-    geo = Claw.LoadTopo(joinpath(topodir,toponame));
+    topofile, _ = Claw.topodata(fdir)
+    geo = Claw.LoadTopo(topofile);
     if booltopo[2]
         # conditions
         Plots.clibrary(:cmocean)

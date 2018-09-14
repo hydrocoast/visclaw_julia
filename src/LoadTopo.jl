@@ -1,3 +1,25 @@
+#=
+This module doesn't support topography composed of multiple files.
+=#
+#################################
+## Function: read topo.data
+#################################
+function topodata(dirname::String)
+    ## check args
+    if !isdir(dirname); error("A directory $dirname is not found."); end;
+
+    ## read topodata
+    filename= joinpath(dirname,"topo.data")
+    f = open(filename,"r")
+    topodata = readlines(f)
+    close(f)
+    ntopo = parse(Int64, topodata[8][1:2]) # line 8, =: ntopofiles
+    topofile = replace(topodata[10],r"[\'\s]" => "") # line 10, topofile 1
+
+    return topofile, ntopo
+end
+#################################
+
 #################################
 ## Function: load topography
 #################################
@@ -28,7 +50,10 @@ function LoadTopo(filename::String; topotype=3::Int)
 
     # check topotype
     tmp = replace(dataorg[1], r"^\s+" => "")
-    tmp = parse.(Float64, split(tmp, r"\s+"))
+    tmp = replace(tmp, "," => " ") # for csv data
+    tmp = split(tmp, r"\s+")
+    if isempty(tmp[end]); tmp=tmp[1:end-1]; end
+    tmp = parse.(Float64, tmp)
     if length(tmp) == 1
         println("topotype is assumed as 2.")
         topotype = 2;
@@ -43,7 +68,10 @@ function LoadTopo(filename::String; topotype=3::Int)
         topo = zeros(nrows, ncols)
         for k = 1:nrows
             line = replace(dataorg[k], r"^\s+" => "")
-            topo[k,:] = parse.(Float64, split(line, r"\s+"))
+            line = replace(line, "," => " ") # for csv data
+            line = split(line, r"\s+")
+            if isempty(line[end]); line=line[1:end-1]; end
+            topo[k,:] = parse.(Float64, line)
         end
     end
     topo[topo.==nodata] .= NaN ## replace nodate to NaN

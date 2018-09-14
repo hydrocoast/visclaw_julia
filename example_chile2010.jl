@@ -1,7 +1,9 @@
 ## Example: Case Chile2010 Tsunami
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
-include("./CLAWPATH.jl")
+if !(@isdefined CLAW)
+    include("./CLAWPATH.jl")
+end
 #if !(@isdefined Claw)
     include("src/Claw.jl")
 #end
@@ -17,8 +19,6 @@ include("./CLAWPATH.jl")
 ## file paths
 fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 outdir = "./fig/chile2010"
-topodir = joinpath(CLAW,"geoclaw/scratch")
-toponame = "etopo10min120W60W60S0S.asc"
 
 using DelimitedFiles: readdlm
 using Printf: @printf, @sprintf
@@ -27,7 +27,8 @@ using Plots; pyplot()
 # Topography
 if booltopo[1]
     # load
-    geo = Claw.LoadTopo(joinpath(topodir,toponame));
+    topofile, _ = Claw.topodata(fdir)
+    geo = Claw.LoadTopo(topofile);
     if booltopo[2]
         # conditions
         Plots.clibrary(:cmocean)
