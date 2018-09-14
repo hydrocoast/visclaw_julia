@@ -33,7 +33,7 @@ nf=$(ls -1 ${prefix}*.png| wc -l )
 
 ## make an animation
 ffmpeg -i ${prefix}%03d.png -vf palettegen palette.png
-ffmpeg -r 4 -i ${prefix}%03d.png -i palette.png -filter_complex paletteuse ${gifname}.gif
+ffmpeg -y -r 4 -i ${prefix}%03d.png -i palette.png -filter_complex paletteuse ${gifname}.gif
 
 ## remove temporary files
 rm *.png
