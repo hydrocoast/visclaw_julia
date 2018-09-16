@@ -88,6 +88,26 @@ struct param
 end
 ########################################
 
+##########################################################
+## Struct: seafloor deformation for tsunami computation
+##########################################################
+struct dtopo
+    mx::Int
+    my::Int
+    xlow::Float64
+    ylow::Float64
+    dx::Float64
+    dy::Float64
+    mt::Int
+    t0::Int
+    dt::Float64
+    deform::AbstractArray{Float64,2}
+    # Constructor
+    Claw.dtopo(mx,my,xlow,ylow,dx,dy,mt,t0,dt,deform) =
+    new(mx,my,xlow,ylow,dx,dy,mt,t0,dt,deform)
+end
+##########################################################
+
 ########################################
 ## Struct: gauge
 ########################################

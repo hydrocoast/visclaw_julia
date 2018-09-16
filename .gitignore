@@ -7,8 +7,8 @@ tmp*
 *.gif
 *.ps
 *.eps
+gmt.history
 !gif/demo_*.gif
-
 !topo.svg
 !gauge32412.svg
 !allgauges.svg
