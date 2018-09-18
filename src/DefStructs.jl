@@ -5,10 +5,10 @@
 ##  storm data
 ###################################
 struct stormgrid
-    gridnumber::Int
-    AMRlevel::Int
-    mx::Int
-    my::Int
+    gridnumber::Int64
+    AMRlevel::Int64
+    mx::Int64
+    my::Int64
     xlow::Float64
     ylow::Float64
     dx::Float64
@@ -27,10 +27,10 @@ end
 ##  data container of single patch
 ###################################
 struct patch
-    gridnumber::Int
-    AMRlevel::Int
-    mx::Int
-    my::Int
+    gridnumber::Int64
+    AMRlevel::Int64
+    mx::Int64
+    my::Int64
     xlow::Float64
     ylow::Float64
     dx::Float64
@@ -48,7 +48,7 @@ end
 ##  time-seies of AMR data
 ###################################
 struct amr
-    nstep::Int
+    nstep::Int64
     timelap::AbstractVector{Float64}
     amr :: AbstractVector{Vector{Union{Claw.patch, Claw.stormgrid}}}
     # Constructor
@@ -61,22 +61,39 @@ end
 ##  Topography and Bathymetry
 ###################################
 struct geometry
-    ncols::Int
-    nrows::Int
-    xiter
-    yiter
-    topo::AbstractArray{Float64,2}
+    ncols :: Int64
+    nrows :: Int64
+    x :: Vector{Float64}
+    y :: Vector{Float64}
+    topo :: AbstractArray{Float64,2}
     # Constructor
-    Claw.geometry(ncols, nrows, xiter, yiter, topo) =
-             new(ncols, nrows, xiter, yiter, topo)
+    Claw.geometry(ncols, nrows, x, y, topo) =
+              new(ncols, nrows, x, y, topo)
 end
 ###################################
+
+##########################################################
+## Struct: seafloor deformation for tsunami computation
+##########################################################
+struct dtopo
+    mx :: Int64
+    my :: Int64
+    x :: Vector{Float64}
+    y :: Vector{Float64}
+    mt :: Int64
+    t0 :: Float64
+    dt :: Float64
+    deform :: AbstractArray{Float64,2}
+    # Constructor
+    Claw.dtopo(mx,my,x,y,mt,t0,dt,deform) = new(mx,my,x,y,mt,t0,dt,deform)
+end
+##########################################################
 
 ########################################
 ## Struct: parameters in geoclaw.data
 ########################################
 struct param
-    cs :: Int # coordinate system
+    cs :: Int64 # coordinate system
     p0::Float64 # ambient pressure
     R :: Float64 # earth radious
     eta0 :: Float64 # sea level
@@ -87,26 +104,6 @@ struct param
           new(cs,p0,R,eta0,n,dmin)
 end
 ########################################
-
-##########################################################
-## Struct: seafloor deformation for tsunami computation
-##########################################################
-struct dtopo
-    mx::Int
-    my::Int
-    xlow::Float64
-    ylow::Float64
-    dx::Float64
-    dy::Float64
-    mt::Int
-    t0::Int
-    dt::Float64
-    deform::AbstractArray{Float64,2}
-    # Constructor
-    Claw.dtopo(mx,my,xlow,ylow,dx,dy,mt,t0,dt,deform) =
-    new(mx,my,xlow,ylow,dx,dy,mt,t0,dt,deform)
-end
-##########################################################
 
 ########################################
 ## Struct: gauge

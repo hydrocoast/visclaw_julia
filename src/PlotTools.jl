@@ -190,16 +190,28 @@ end
 ## Function: topography and bathymetry
 ###########################################
 function PlotTopo(geo::Claw.geometry; clim=(), cmap=:delta::Symbol)
-    plt = contourf(geo.xiter, geo.yiter, geo.topo, ratio=:equal, c=cmap, clims=clim)
+    plt = contourf(geo.x, geo.y, geo.topo, ratio=:equal, c=cmap, clims=clim)
     return plt
 end
 ###########################################
 
+###########################################################
+## Function: plot searfloor deformation in 2D, contourf
+###########################################################
+function PlotDeform!(plt,dtopo::Claw.dtopo; clim=(), cmap=:coolwarm::Symbol)
+    plt = contourf!(plt,dtopo.x, dtopo.y, dtopo.deform, ratio=:equal, c=cmap, clims=clim)
+    return plt
+end
+###########################################################
+PlotDeform(dtopo::Claw.dtopo; clim=(), cmap=:coolwarm::Symbol) =
+PlotDeform!(Plots.plot(), dtopo, clim=clim, cmap=cmap)
+###########################################################
+
 ###########################################
-## Function: topography and bathymetry
+## Function: plot coastal lines
 ###########################################
 function CoastalLines!(plt, geo::Claw.geometry)
-    plt = contour!(plt, geo.xiter, geo.yiter, geo.topo, ratio=:equal,
+    plt = contour!(plt, geo.x, geo.y, geo.topo, ratio=:equal,
                    levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end

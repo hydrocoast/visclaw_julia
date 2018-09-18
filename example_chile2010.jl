@@ -10,11 +10,13 @@ end
 
 #= *** load, plot and plot if true **** =#
 #= booltopo[load,plot,print]  =# booltopo=
-[1,1,1] .|> Bool
+[0,0,0] .|> Bool
+#= booltopo[load,plot,print]  =# booldtopo=
+[1,1,0] .|> Bool
 #= boolgauge[load,plot,print] =# boolgauge=
-[1,1,1] .|> Bool
+[0,0,0] .|> Bool
 #= booleta[load,plot,print,animation] =# booleta=
-[1,1,1,1] .|> Bool
+[0,0,0,0] .|> Bool
 
 ## file paths
 fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
@@ -44,6 +46,26 @@ if booltopo[1]
     end
     # coastal lines
     #plt = Claw.CoastalLines(geo)
+end
+
+# Deformation
+if booldtopo[1]
+    # load
+    dtopofile, _ = Claw.dtopodata(fdir)
+    deform = Claw.LoadDeform(dtopofile);
+    if booldtopo[2]
+        # conditions
+        Plots.clibrary(:colorcet)
+        # plot
+        plt = Claw.PlotDeform(deform, clim=(-2.0,2.0))
+        plt = Plots.plot!(plt, xlabel="Longitude", ylabel="Latitude", guidefont=font(12))
+        plt = Plots.plot!(plt, tickfont=font(10))
+        Plots.plot!(plt,show=true)
+        if booldtopo[3]
+            # save figure(s)
+            Plots.savefig(plt, joinpath(outdir,"dtopo.svg"))
+        end
+    end
 end
 
 # Gauge
