@@ -161,6 +161,7 @@ function LoadDeform(filename::String, topotype=3::Int)
         end
     end
     deform = reverse(deform, dims=1) ## flip
+    #deform[abs.(deform).<1e-2] .= NaN
     dtopodata = Claw.dtopo(mx,my,x,y,mt,t0,dt,deform)
 
     return dtopodata
