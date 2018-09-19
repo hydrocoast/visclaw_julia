@@ -72,8 +72,7 @@ function LoadTopo(filename::String; topotype=3::Int)
     # check topotype
     tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "")
     tmp = replace(tmp, "," => " ") # for csv data
-    tmp = split(tmp, r"\s+")
-    #if isempty(tmp[end]); tmp=tmp[1:end-1]; end
+    tmp = split(tmp, r"\s+",keepempty=false)
     tmp = parse.(Float64, tmp)
     if length(tmp) == 1
         println("topotype is assumed as 2.")
@@ -90,8 +89,7 @@ function LoadTopo(filename::String; topotype=3::Int)
         for k = 1:nrows
             line = replace(dataorg[k], r"^\s+|,?\s+$" => "")
             line = replace(line, "," => " ") # for csv data
-            line = split(line, r"\s+")
-            #if isempty(line[end]); line=line[1:end-1]; end
+            line = split(line, r"\s+",keepempty=false)
             topo[k,:] = parse.(Float64, line)
         end
     end
@@ -137,8 +135,7 @@ function LoadDeform(filename::String, topotype=3::Int)
     # check topotype
     tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "")
     tmp = replace(tmp, "," => " ") # for csv data
-    tmp = split(tmp, r"\s+")
-    #if isempty(tmp[end]); tmp=tmp[1:end-1]; end
+    tmp = split(tmp, r"\s+",keepempty=false)
     tmp = parse.(Float64, tmp)
     if length(tmp) == 1
         println("topotype is assumed as 2.")
@@ -155,8 +152,7 @@ function LoadDeform(filename::String, topotype=3::Int)
         for k = 1:my
             line = replace(dataorg[k], r"^\s+|,?\s+$" => "")
             line = replace(line, "," => " ") # for csv data
-            line = split(line, r"\s+")
-            #if isempty(line[end]); line=line[1:end-1]; end
+            line = split(line, r"\s+",keepempty=false)
             deform[k,:] = parse.(Float64, line)
         end
     end
