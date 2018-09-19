@@ -133,7 +133,7 @@ function LoadDeform(filename::String, topotype=3::Int)
     y = collect(Float64, LinRange(ylow, ylow+(my-1)*dy+1e-5, my))
 
     # check topotype
-    tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "")
+    tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "") # equivalent to strip?
     tmp = replace(tmp, "," => " ") # for csv data
     tmp = split(tmp, r"\s+",keepempty=false)
     tmp = parse.(Float64, tmp)

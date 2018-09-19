@@ -30,14 +30,15 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::
         ## read header
         #header = txtorg[1:8]
         header = txtorg[l:l+7]
-        gridnumber = parse(Int64, header[1][1:6])
-        AMRlevel = parse(Int64, header[2][1:6])
-        mx = parse(Int64, header[3][1:6])
-        my = parse(Int64, header[4][1:6])
-        xlow = parse(Float64, header[5][1:26])
-        ylow = parse(Float64, header[6][1:26])
-        dx = parse(Float64, header[7][1:26])
-        dy = parse(Float64, header[8][1:26])
+        header = map(strip,header)
+        gridnumber = parse(Int64, split(header[1],r"\s+")[1])
+        AMRlevel = parse(Int64, split(header[2],r"\s+")[1])
+        mx = parse(Int64, split(header[3],r"\s+")[1])
+        my = parse(Int64, split(header[4],r"\s+")[1])
+        xlow = parse(Float64, split(header[5],r"\s+")[1])
+        ylow = parse(Float64, split(header[6],r"\s+")[1])
+        dx = parse(Float64, split(header[7],r"\s+")[1])
+        dy = parse(Float64, split(header[8],r"\s+")[1])
         ## read variables
         body = txtorg[l+9:l+9+(mx+1)*my-1]
 

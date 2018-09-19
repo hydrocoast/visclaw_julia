@@ -103,7 +103,7 @@ end
 ###########################################
 ## Function: Draw wind field with arrows
 ###########################################
-function WindQuiver!(plt,tiles, dc=1::Int;
+function WindQuiver!(plt,tiles, dc=1::Int64;
                      len=arrowlen_default, head=arrowhead_default)
     ## the number of tiles
 	ntile = length(tiles)
@@ -130,14 +130,14 @@ function WindQuiver!(plt,tiles, dc=1::Int;
     return plt
 end
 ###########################################
-WindQuiver(tiles, dc=1::Int; len=arrowlen_default, head=arrowhead_default) =
+WindQuiver(tiles, dc=1::Int64; len=arrowlen_default, head=arrowhead_default) =
 WindQuiver!(Plots.plot(), tiles, dc, len=len, head=head)
 ###########################################
 
 ###########################################
 ## Function: plot time-series of wind field
 ###########################################
-function PlotWindField!(plt, amrs::Claw.amr, dc=1::Int; len=arrowlen_default, head=arrowhead_default)
+function PlotWindField!(plt, amrs::Claw.amr, dc=1::Int64; len=arrowlen_default, head=arrowhead_default)
     for i = 1:amrs.nstep
         plt[i] = Claw.WindQuiver!(plt[i], amrs.amr[i], dc, len=len, head=head)
     end
