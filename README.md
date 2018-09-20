@@ -60,7 +60,7 @@ include("./example_ike.jl")
 </p>  
 
 ## Easy Check
-`easycheck.jl` enables to scan water surface elevation at certain times quickly.
+`easycheck.jl` enables to scan quickly water surface elevation at certain times.
 ```plain
 julia> include("./easycheck.jl")
 Input anything but integer if you want to exit.
@@ -70,7 +70,7 @@ input the number (1 to 19) =
 
 # Ongoing and Future Work
 Plotting with other packages will be available because `Plots` package has some issues on `colorbar`.  
-This repo is now developed so that figures can be clear and drawn faster using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).  
+This repo is now being developed so that figures can be clear and drawn faster using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).  
 
 # License
 BSD 3-Clause  
