@@ -68,6 +68,10 @@ The final step: 19
 input the number (1 to 19) =
 ```
 
+# Ongoing and Future Work
+Plotting with other packages will be available because `Plots` package has some issues on `colorbar`.  
+This repo is now developed so that figures can be clear and drawn faster using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).  
+
 # License
 BSD 3-Clause  
 
