@@ -76,7 +76,6 @@ if booleta[1]
     if booleta[2]
         # conditions
         cl=(0.0, 2.0)
-        Plots.clibrary(:colorcet)
         cpt=:rainbow
         # plot
         plt = Claw.PlotTimeSeries(amrall, bound=true, gridnumber=true, clim=cl, cmap=cpt)

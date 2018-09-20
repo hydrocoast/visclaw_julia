@@ -2,14 +2,18 @@
 slp_default=(960,1015)
 arrowhead_default=(0.3,0.3)
 arrowlen_default=0.1
+slpcmap_default = :viridis_r
+etacmap_default = :coolwarm
 
 ######################################
 ## Function: filled contour
 ######################################
-function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=:auto::Symbol)
-    if (var!=:eta) & (var!=:slp)
+function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=etacmap_default::Symbol)
+    if (var!=:eta) && (var!=:slp)
         error("kwargs var is invalid")
     end
+    if cmap==:rainbow; Plots.clibrary(:colorcet); end
+
 	## the number of tiles
 	ntile = length(tiles)
 
@@ -53,13 +57,13 @@ function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=:auto::Symbol)
     return plt
 end
 ######################################
-DrawAMR2D(tiles; var=:eta, clim=(), cmap=:auto::Symbol) =
+DrawAMR2D(tiles; var=:eta, clim=(), cmap=etacmap_default::Symbol) =
 DrawAMR2D!(Plots.plot(), tiles, var=var, clim=clim, cmap=cmap)
 ######################################
-DrawSLP!(plt, tiles; clim=slp_default, cmap=:viridis_r::Symbol) =
+DrawSLP!(plt, tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
 DrawAMR2D!(plt, tiles, var=:slp, clim=clim, cmap=cmap)
 ######################################
-DrawSLP(tiles; clim=slp_default, cmap=:viridis_r::Symbol) =
+DrawSLP(tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
 DrawSLP!(Plots.plot(), tiles, clim=clim, cmap=cmap)
 ######################################
 
@@ -146,14 +150,14 @@ function PlotWindField!(plt, amrs::Claw.amr, dc=1::Int64; len=arrowlen_default, 
 end
 ###########################################
 
-###########################################
+#############################################
 ## Function: plot time-series of AMR data
-###########################################
+#############################################
 function PlotTimeSeries(amrs::Claw.amr; var=:eta::Symbol,
                         showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
-                        clim=(), cmap=:auto)
+                        clim=(), cmap=etacmap_default)
     ## check argument
-    if (var!=:eta) & (var!=:slp)
+    if (var!=:eta) && (var!=:slp)
         error("kwargs var is invalid")
     end
     ## plot time-series
@@ -182,14 +186,68 @@ function PlotTimeSeries(amrs::Claw.amr; var=:eta::Symbol,
     ## return plots
     return plt
 end
-###########################################
+#############################################
 
-###########################################
+##############################################################################
+# Function: draw two-dimensional distribution at a certain step repeatedly
+##############################################################################
+function SurfacebyStep(amrs::Claw.amr; var::Symbol=:eta, clim=(), cmap::Symbol=etacmap_default)
+    ## check argument
+    if (var!=:eta) && (var!=:slp)
+        error("kwargs var is invalid")
+    end
+
+    ### display the number of final step
+    println("Input anything but integer if you want to exit.")
+    @printf("The final step: %d\n",amrs.nstep)
+
+    ### draw figures until nothing or invalid number is input
+    ex=0 # initial value
+    cnt=0
+    while ex==0
+        # accept input the step number of interest
+        @printf("input the number = ")
+        i = readline(stdin)
+        # check whether the input is integer
+        if isempty(i); ex=1; continue; end;
+        i=try
+             parse(Int64,i)
+          catch
+             "Couldn't parse the input to integer"
+          end
+        if isa(i,String); ex=1; println(i); continue; end;
+        # check whether the input is valid number
+        if (i>amrs.nstep) || (i<1)
+            println("Invalid number")
+            ex=1
+            continue
+        end
+        # draw figure
+        if (var==:eta)
+            plt = Claw.DrawAMR2D(amrs.amr[i], clim=clim, cmap=cmap)
+        elseif (var=:slp)
+            plt = Claw.DrawSLP(amrs.amr[i], clim=clim, cmap=cmap)
+        end
+        plt = plot!(plt, title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
+        plt = Plots.plot!(plt,clim=clim, cb=:best, show=true)
+        cnt += 1
+    end
+
+    # if no plotting is done
+    if cnt==0
+        plt = nothing
+    end
+    # return value
+    return plt
+end
+##############################################################################
+SLPbyStep(amrs::Claw.amr; clim=slp_default, cmap::Symbol=slpcmap_default) =
+SurfacebyStep(amrs,var=:slp,clim=clim,cmap=cmap)
 
 ###########################################
 ## Function: topography and bathymetry
 ###########################################
-function PlotTopo(geo::Claw.geometry; clim=(), cmap=:delta::Symbol)
+function PlotTopo(geo::Claw.geometry; clim=(), cmap::Symbol=:delta)
     plt = contourf(geo.x, geo.y, geo.topo, ratio=:equal, c=cmap, clims=clim)
     return plt
 end
@@ -198,7 +256,7 @@ end
 ###########################################################
 ## Function: plot searfloor deformation in 2D, contourf
 ###########################################################
-function PlotDeform!(plt,dtopo::Claw.dtopo; clim=(), cmap=:coolwarm::Symbol)
+function PlotDeform!(plt,dtopo::Claw.dtopo; clim=(), cmap::Symbol=:coolwarm)
     plt = contourf!(plt,dtopo.x, dtopo.y, dtopo.deform, ratio=:equal, c=cmap, clims=clim)
     return plt
 end

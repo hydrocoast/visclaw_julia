@@ -1,5 +1,5 @@
-### Define my own clawpack path ###
-if Sys.islinux()
+### Define your own clawpack path ###
+if Sys.islinux() || Sys.isunix()
     CLAW=ENV["CLAW"]
 else
     ## CLAW="/path/to/top/level/clawpack"

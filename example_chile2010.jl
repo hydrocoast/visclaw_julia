@@ -10,13 +10,15 @@ end
 
 #= *** load, plot and plot if true **** =#
 #= booltopo[load,plot,print]  =# booltopo=
-[1,0,0] .|> Bool
+[1,1,0] .|> Bool
 #= booldtopo[load,plot,print]  =# booldtopo=
 [0,0,0] .|> Bool
 #= boolgauge[load,plot,print] =# boolgauge=
 [0,0,0] .|> Bool
-#= booleta[load,plot,print,animation] =# booleta=
-[0,0,0,0] .|> Bool
+#= booleta[load,plot,print] =# booleta=
+[0,0,0] .|> Bool
+# animation
+anim = 1 |> Bool
 
 ## file paths
 fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
@@ -109,9 +111,8 @@ if booleta[1]
         # conditions
         cl=(-0.5, 0.5)
         Plots.clibrary(:colorcet)
-        cpt=:coolwarm
         # plot
-        plt = Claw.PlotTimeSeries(amrall, clim=cl, cmap=cpt)
+        plt = Claw.PlotTimeSeries(amrall, clim=cl)
         # show gauge locations if any
         if boolgauge[1] && !isempty(gauges)
             plt = map(i->Claw.PlotGaugeLocs!(i,gauges,ms=4,mfc=:black),plt)
@@ -122,11 +123,11 @@ if booleta[1]
         end
     end
 end
-if booleta[4] && Sys.islinux()
+if anim && Sys.islinux()
     run(`./animation.sh $outdir step eta`)
 end
 
-
+#=
 gmttopo = 0
 if gmttopo == 1
     import GMT
@@ -163,3 +164,4 @@ if gmttopo == 1
     cbafg="-Ba1000f500"
     run(`gmt psscale -Ctmp.cpt -Ba1000f500 -D$cbxy -P -V -O >> $outps`)
 end
+=#
