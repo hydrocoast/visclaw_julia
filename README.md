@@ -59,6 +59,15 @@ include("./example_ike.jl")
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/fig/ike/allgauges.svg" width="480">
 </p>  
 
+## Easy Check
+`easycheck.jl` enables to scan water surface elevation at certain times quickly.
+```plain
+julia> include("./easycheck.jl")
+Input anything but integer if you want to exit.
+The final step: 19
+input the number (1 to 19) =
+```
+
 # License
 BSD 3-Clause  
 

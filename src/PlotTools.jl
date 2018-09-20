@@ -206,7 +206,7 @@ function SurfacebyStep(amrs::Claw.amr; var::Symbol=:eta, clim=(), cmap::Symbol=e
     cnt=0
     while ex==0
         # accept input the step number of interest
-        @printf("input the number = ")
+        @printf("input the number (1 to %d) = ",amrs.nstep)
         i = readline(stdin)
         # check whether the input is integer
         if isempty(i); ex=1; continue; end;
