@@ -69,8 +69,9 @@ input the number (1 to 19) =
 ```
 
 # Ongoing and Future Work
-Plotting with other packages will be available because `Plots` package has some issues on `colorbar`.  
-This repo is now being developed so that figures can be clear and drawn faster using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).  
+`Plots` package has some [issues](https://github.com/JuliaPlots/Plots.jl/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20colorbar) on colorbar.  
+Further application and less dependence on the Plots can be expected by plotting with other packages.  
+This repo is now being developed so that figures can be pretty and drawn faster using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).  
 
 # License
 BSD 3-Clause  
