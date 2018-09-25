@@ -8,10 +8,17 @@ etacmap_default = :coolwarm
 ######################################
 ## Function: filled contour
 ######################################
-function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=etacmap_default::Symbol)
-    if (var!=:eta) && (var!=:slp)
-        error("kwargs var is invalid")
+function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
+	# check arg
+    if  isdefined(tiles[1], :eta)
+		var = :eta
+	elseif isdefined(tiles[1], :slp)
+		var = :slp
+	else
+	    error("Invalid argument")
     end
+
+    # colormap
     if cmap==:rainbow; Plots.clibrary(:colorcet); end
 
 	## the number of tiles
@@ -57,11 +64,11 @@ function DrawAMR2D!(plt, tiles; var=:eta::Symbol, clim=(), cmap=etacmap_default:
     return plt
 end
 ######################################
-DrawAMR2D(tiles; var=:eta, clim=(), cmap=etacmap_default::Symbol) =
-DrawAMR2D!(Plots.plot(), tiles, var=var, clim=clim, cmap=cmap)
+DrawAMR2D(tiles; clim=(), cmap=etacmap_default::Symbol) =
+DrawAMR2D!(Plots.plot(), tiles, clim=clim, cmap=cmap)
 ######################################
 DrawSLP!(plt, tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
-DrawAMR2D!(plt, tiles, var=:slp, clim=clim, cmap=cmap)
+DrawAMR2D!(plt, tiles, clim=clim, cmap=cmap)
 ######################################
 DrawSLP(tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
 DrawSLP!(Plots.plot(), tiles, clim=clim, cmap=cmap)
@@ -153,22 +160,19 @@ end
 #############################################
 ## Function: plot time-series of AMR data
 #############################################
-function PlotTimeSeries(amrs::Claw.amr; var=:eta::Symbol,
-                        showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
+function PlotTimeSeries(amrs::Claw.amr; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
                         clim=(), cmap=etacmap_default)
-    ## check argument
-    if (var!=:eta) && (var!=:slp)
-        error("kwargs var is invalid")
-    end
+    ## check arg
+	if isdefined(amrs.amr[1][1], :eta)
+		DrawFunc=Claw.DrawAMR2D
+	elseif isdefined(amrs.amr[1][1], :slp)
+		DrawFunc=Claw.DrawSLP
+	end
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amrs.nstep)
     for i = 1:amrs.nstep
         ## pseudocolor
-        if (var==:eta)
-            plt[i] = Claw.DrawAMR2D(amrs.amr[i], clim=clim, cmap=cmap);
-        elseif (var==:slp)
-            plt[i] = Claw.DrawSLP(amrs.amr[i], clim=clim, cmap=cmap);
-        end
+        plt[i] = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap);
         ## display time in title
         if showsec
             plt[i] = plot!(plt[i], title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
@@ -191,11 +195,13 @@ end
 ##############################################################################
 # Function: draw two-dimensional distribution at a certain step repeatedly
 ##############################################################################
-function SurfacebyStep(amrs::Claw.amr; var::Symbol=:eta, clim=(), cmap::Symbol=etacmap_default)
-    ## check argument
-    if (var!=:eta) && (var!=:slp)
-        error("kwargs var is invalid")
-    end
+function SurfacebyStep(amrs::Claw.amr; clim=(), cmap::Symbol=etacmap_default)
+    ## check arg
+	 if isdefined(amrs.amr[1][1], :eta)
+		 DrawFunc=Claw.DrawAMR2D
+	 elseif isdefined(amrs.amr[1][1], :slp)
+		 DrawFunc=Claw.DrawSLP
+	 end
 
     ### display the number of final step
     println("Input anything but integer if you want to exit.")
@@ -223,11 +229,7 @@ function SurfacebyStep(amrs::Claw.amr; var::Symbol=:eta, clim=(), cmap::Symbol=e
             continue
         end
         # draw figure
-        if (var==:eta)
-            plt = Claw.DrawAMR2D(amrs.amr[i], clim=clim, cmap=cmap)
-        elseif (var=:slp)
-            plt = Claw.DrawSLP(amrs.amr[i], clim=clim, cmap=cmap)
-        end
+        plt = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap)
         plt = plot!(plt, title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
         plt = Plots.plot!(plt,clim=clim, cb=:best, show=true)
         cnt += 1
@@ -242,7 +244,7 @@ function SurfacebyStep(amrs::Claw.amr; var::Symbol=:eta, clim=(), cmap::Symbol=e
 end
 ##############################################################################
 SLPbyStep(amrs::Claw.amr; clim=slp_default, cmap::Symbol=slpcmap_default) =
-SurfacebyStep(amrs,var=:slp,clim=clim,cmap=cmap)
+SurfacebyStep(amrs,clim=clim,cmap=cmap)
 
 ###########################################
 ## Function: topography and bathymetry

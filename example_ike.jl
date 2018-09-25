@@ -98,7 +98,7 @@ if boolstorm[1]
         # conditions
         Plots.clibrary(:misc)
         # plot
-        plt = Claw.PlotTimeSeries(storm, var=:slp, cmap=:heat_r)
+        plt = Claw.PlotTimeSeries(storm, cmap=:heat_r)
         plt = Claw.PlotWindField!(plt, storm, 5, len=0.05)
         if boolstorm[3]
             # save figure(s)
