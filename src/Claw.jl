@@ -20,4 +20,7 @@ using Plots
 pyplot()
 include("PlotTools.jl")
 
+import GMT
+include("GMTTools.jl")
+
 end
