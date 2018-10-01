@@ -66,8 +66,8 @@ function LoadTopo(filename::String; topotype=3::Int)
     close(f)
 
     ## meshgrid
-    x = collect(Float64, LinRange(xll, xll+(ncols-1)*cellsize+1e-5, ncols))
-    y = collect(Float64, LinRange(yll, yll+(nrows-1)*cellsize+1e-5, nrows))
+    x = collect(Float64, LinRange(xll, round(1e3(xll+(ncols-1)*cellsize+1e-4))/1e3, ncols))
+    y = collect(Float64, LinRange(yll, round(1e3(yll+(nrows-1)*cellsize+1e-4))/1e3, nrows))
 
     # check topotype
     tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "")
