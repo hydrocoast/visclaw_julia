@@ -10,7 +10,7 @@ etacmap_default = :coolwarm
 ######################################
 function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
 	# check arg
-    if  isdefined(tiles[1], :eta)
+    if isdefined(tiles[1], :eta)
 		var = :eta
 	elseif isdefined(tiles[1], :slp)
 		var = :slp
@@ -31,8 +31,8 @@ function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
 
 		## grid info
-		xvec = collect(Float64, x[1]-0.5tiles[i].dx:tiles[i].dx:round(x[2]+0.5tiles[i].dx, sigdigits=4));
-		yvec = collect(Float64, y[1]-0.5tiles[i].dy:tiles[i].dy:round(y[2]+0.5tiles[i].dy, sigdigits=4));
+		xvec = collect(Float64, x[1]-0.5tiles[i].dx:tiles[i].dx:x[2]+0.5tiles[i].dx+1e-4);
+		yvec = collect(Float64, y[1]-0.5tiles[i].dy:tiles[i].dy:y[2]+0.5tiles[i].dy+1e-4);
 		## adjust data
         val = zeros(tiles[i].my+2,tiles[i].mx+2)
         val[2:end-1,2:end-1] = getfield(tiles[i], var)
@@ -42,23 +42,23 @@ function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
 		val[end,:] = val[end-1,:]
 
 		## plot
-	    plt = contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false, tickfont=10)
+	    plt = Plots.contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false, tickfont=10)
 
 		### colorbar ?????
-	    #if j==ntile; plt=plot!(plt,colorbar=true); end
+	    #if j==ntile; plt=Plots.plot!(plt,colorbar=true); end
     end
 
     ## xlims, ylims
     xlim, ylim = Claw.Range(tiles)
-    plt = plot!(plt, xlims=xlim, ylims=ylim)
+    plt = Plots.plot!(plt, xlims=xlim, ylims=ylim)
 
     ## color range
-    if !isempty(clim); plt = plot!(plt, clims=clim); end
+    if !isempty(clim); plt = Plots.plot!(plt, clims=clim); end
 
     ## Appearances
-    plt = plot!(plt, axis_ratio=:equal, grid=false,
-               xlabel="Longitude", ylabel="Latitude", guidefont=font("sans-serif",12),
-               tickfont=font(10), titlefont=font("sans-serif",10), bginside=Plots.RGB(.7,.7,.7))
+    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false,
+          xlabel="Longitude", ylabel="Latitude", guidefont=Plots.font("sans-serif",12),
+          tickfont=Plots.font(10), titlefont=Plots.font("sans-serif",10), bginside=Plots.RGB(.7,.7,.7))
 
     ## return value
     return plt
@@ -86,7 +86,7 @@ function GridNumber!(plt, tiles; fs=10, fc=:black)
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
         ann = @sprintf("%02d", tiles[i].gridnumber)
         ## annotations
-        plt = plot!(plt,annotations=(mean(x),mean(y),text(ann,fs,fc,:center)))
+        plt = Plots.plot!(plt,annotations=(mean(x),mean(y),Plots.text(ann,fs,fc,:center)))
     end
     return plt
 end
@@ -102,10 +102,10 @@ function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
         ## set the boundary
         x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
-        plt = plot!(plt,
-                    [x[1], x[1], x[2], x[2], x[1]],
-                    [y[1], y[2], y[2], y[1], y[1]],
-                    c=lc, linestyle=ls, linewidth=lw, label="")
+        plt = Plots.plot!(plt,
+              [x[1], x[1], x[2], x[2], x[1]],
+              [y[1], y[2], y[2], y[1], y[1]],
+              c=lc, linestyle=ls, linewidth=lw, label="")
     end
     return plt
 end
@@ -175,7 +175,7 @@ function PlotTimeSeries(amrs::Claw.amr; showsec=true::Bool, bound=false::Bool, g
         plt[i] = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap);
         ## display time in title
         if showsec
-            plt[i] = plot!(plt[i], title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
+            plt[i] = Plots.plot!(plt[i], title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
         end
         ## draw boundaries
         if bound
@@ -230,7 +230,7 @@ function SurfacebyStep(amrs::Claw.amr; clim=(), cmap::Symbol=etacmap_default)
         end
         # draw figure
         plt = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap)
-        plt = plot!(plt, title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
+        plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
         plt = Plots.plot!(plt,clim=clim, cb=:best, show=true)
         cnt += 1
     end
@@ -250,7 +250,7 @@ SurfacebyStep(amrs,clim=clim,cmap=cmap)
 ## Function: topography and bathymetry
 ###########################################
 function PlotTopo(geo::Claw.geometry; clim=(), cmap::Symbol=:delta)
-    plt = contourf(geo.x, geo.y, geo.topo, ratio=:equal, c=cmap, clims=clim)
+    plt = Plots.contourf(geo.x, geo.y, geo.topo, ratio=:equal, c=cmap, clims=clim)
     return plt
 end
 ###########################################
@@ -259,7 +259,7 @@ end
 ## Function: plot searfloor deformation in 2D, contourf
 ###########################################################
 function PlotDeform!(plt,dtopo::Claw.dtopo; clim=(), cmap::Symbol=:coolwarm)
-    plt = contourf!(plt,dtopo.x, dtopo.y, dtopo.deform, ratio=:equal, c=cmap, clims=clim)
+    plt = Plots.contourf!(plt,dtopo.x, dtopo.y, dtopo.deform, ratio=:equal, c=cmap, clims=clim)
     return plt
 end
 ###########################################################
@@ -271,7 +271,7 @@ PlotDeform!(Plots.plot(), dtopo, clim=clim, cmap=cmap)
 ## Function: plot coastal lines
 ###########################################
 function CoastalLines!(plt, geo::Claw.geometry)
-    plt = contour!(plt, geo.x, geo.y, geo.topo, ratio=:equal,
+    plt = Plots.contour!(plt, geo.x, geo.y, geo.topo, ratio=:equal,
                    levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
     return plt
 end
@@ -338,7 +338,7 @@ an_default = Plots.font(8,:left,:top,0.0,:black)
 function PlotGaugeLoc!(plt, gauge::Claw.gauge; ms=ms_default, mfc=:auto, txtfont=an_default)
     an=" "*@sprintf("%s",gauge.id)
     plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]],
-                         ann=(gauge.loc[1],gauge.loc[2],text(an,txtfont)),
+                         ann=(gauge.loc[1],gauge.loc[2],Plots.text(an,txtfont)),
                          ms=ms, color=mfc, label="")
     return plt
 end

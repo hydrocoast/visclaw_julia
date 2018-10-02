@@ -16,7 +16,7 @@ include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
 
-using Plots
+using Plots:Plots
 Plots.pyplot()
 include("PlotTools.jl")
 
