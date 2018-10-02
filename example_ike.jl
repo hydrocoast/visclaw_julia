@@ -1,17 +1,16 @@
 ## Example: Case Hurricane Ike
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
-if !(@isdefined CLAW)
-    include("./CLAWPATH.jl")
-end
-include("./src/Claw.jl")
+if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
+if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
+using Claw
 
 ## ike
 fdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 outdir = "./fig/ike"
 
 using Printf: @printf, @sprintf
-using Plots; pyplot()
+using Plots; Plots.pyplot()
 
 
 # Topography

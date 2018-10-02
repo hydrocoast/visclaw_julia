@@ -1,10 +1,7 @@
 # topography image with GMT
-if !(@isdefined CLAW)
-    include("./CLAWPATH.jl")
-end
-#if !(@isdefined Claw)
-    include("src/Claw.jl")
-#end
+if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
+if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
+using Claw
 
 
 using GMT:GMT
@@ -30,7 +27,8 @@ cpt = GMT.gmt("makecpt -Cearth -T$crange -D -V")
 xyrange=Claw.geoxyrange(geo)
 G = Claw.geogrd(geo)
 
-proj="M$figw"
+proj="X$figw"
+xyrange="d"*xyrange
 #frame="a15f15 neSW"
 pen="0.05"
 GMT.grdimage(G, J=proj, R=xyrange, C=cpt,V=true)
