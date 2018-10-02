@@ -1,5 +1,8 @@
 # Plotting with GMT
 
+###################################################
+## Function: convert /tmp/GMTtmp.ps to png file
+###################################################
 function saveaspng(outpng::String; dpi=300::Int64)
     if !occursin("/",outpng)
         outpng="./"*outpng
@@ -11,7 +14,11 @@ function saveaspng(outpng::String; dpi=300::Int64)
 
     return nothing
 end
+###################################################
 
+###################################################
+## Function: for -R option
+###################################################
 function geoxyrange(geo::Claw.geometry)
     xs=geo.x[1]
     xe=geo.x[end]
@@ -20,7 +27,11 @@ function geoxyrange(geo::Claw.geometry)
     xyrange="$xs/$xe/$ys/$ye"
     return xyrange
 end
+###################################################
 
+###################################################
+## Function: height/width ratio
+###################################################
 function axratio(geo::Claw.geometry,figw)
     xs=geo.x[1]
     xe=geo.x[end]
@@ -31,7 +42,11 @@ function axratio(geo::Claw.geometry,figw)
 
     return figh, figh2
 end
+###################################################
 
+###################################################
+## Function: generate grd data with type of Claw.geometry
+###################################################
 function geogrd(geo::Claw.geometry)
 
     Δ=(geo.x[end]-geo.x[1])/(geo.ncols-1)
@@ -44,3 +59,4 @@ function geogrd(geo::Claw.geometry)
 
     return G
 end
+###################################################

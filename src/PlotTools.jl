@@ -31,8 +31,8 @@ function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
 
 		## grid info
-		xvec = collect(Float64, x[1]-0.5tiles[i].dx:tiles[i].dx:x[2]+0.5tiles[i].dx+1e-4);
-		yvec = collect(Float64, y[1]-0.5tiles[i].dy:tiles[i].dy:y[2]+0.5tiles[i].dy+1e-4);
+		xvec = collect(Float64, x[1]-0.5tiles[i].dx:tiles[i].dx:round(x[2]+0.5tiles[i].dx, sigdigits=4));
+		yvec = collect(Float64, y[1]-0.5tiles[i].dy:tiles[i].dy:round(y[2]+0.5tiles[i].dy, sigdigits=4));
 		## adjust data
         val = zeros(tiles[i].my+2,tiles[i].mx+2)
         val[2:end-1,2:end-1] = getfield(tiles[i], var)

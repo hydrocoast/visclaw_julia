@@ -7,7 +7,7 @@ end
 #end
 
 
-import GMT
+using GMT:GMT
 ## file paths
 fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 frame="a15f15 neSW"
