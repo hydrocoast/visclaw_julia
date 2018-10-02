@@ -128,12 +128,12 @@ function WindQuiver!(plt,tiles, dc=1::Int64;
         xq = collect(x[1]:tiles[i].dx:x[2])
         yq = collect(y[1]:tiles[i].dy:y[2])
 
-        plt = quiver!(plt,
+        plt = Plots.quiver!(plt,
                       repeat(xq[1:dc:end], inner=(length(yq[1:dc:end]), 1)),
                       repeat(yq[1:dc:end], outer=(length(xq[1:dc:end]), 1)),
                       quiver=(len*vec(tiles[i].u[1:dc:end,1:dc:end]),
                               len*vec(tiles[i].v[1:dc:end,1:dc:end])),
-                      arrow=arrow(:closed, :head, head[1], head[2]), color=:black,
+                      arrow=Plots.arrow(:closed, :head, head[1], head[2]), color=:black,
                       )
     end
 
