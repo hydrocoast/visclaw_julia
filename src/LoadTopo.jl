@@ -66,8 +66,8 @@ function LoadTopo(filename::String; topotype=3::Int)
     close(f)
 
     ## meshgrid
-    x = collect(Float64, LinRange(xll, round(xll+(ncols-1)*cellsize, sigdigits=5), ncols))
-    y = collect(Float64, LinRange(yll, round(yll+(nrows-1)*cellsize, sigdigits=5), nrows))
+    x = collect(Float64, LinRange(xll, round(xll+(ncols-1)*cellsize, digits=3), ncols))
+    y = collect(Float64, LinRange(yll, round(yll+(nrows-1)*cellsize, digits=3), nrows))
 
     # check topotype
     tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "")
@@ -129,8 +129,8 @@ function LoadDeform(filename::String, topotype=3::Int)
     close(f)
 
     ## meshgrid
-    x = collect(Float64, LinRange(xlow, round(xlow+(mx-1)*dx, sigdigits=5), mx))
-    y = collect(Float64, LinRange(ylow, round(ylow+(my-1)*dy, sigdigits=5), my))
+    x = collect(Float64, LinRange(xlow, round(xlow+(mx-1)*dx, digits=3), mx))
+    y = collect(Float64, LinRange(ylow, round(ylow+(my-1)*dy, digits=3), my))
 
     # check topotype
     tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "") # equivalent to strip?

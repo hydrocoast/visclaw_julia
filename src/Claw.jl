@@ -17,10 +17,10 @@ include("LoadFort.jl")
 include("LoadGauge.jl")
 
 using Plots
-pyplot()
+Plots.pyplot()
 include("PlotTools.jl")
 
-import GMT
+using GMT:GMT
 include("GMTTools.jl")
 
 end
