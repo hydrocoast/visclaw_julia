@@ -1,12 +1,9 @@
 # easy checker
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
-if !(@isdefined CLAW)
-    include("./CLAWPATH.jl")
-end
-#if !(@isdefined Claw)
-    include("src/Claw.jl")
-#end
+if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
+if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
+using Claw
 
 ## target directory
 #fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output"); clim=(-0.5,0.5); cmap=:coolwarm
