@@ -25,17 +25,14 @@ fi
 homedir=`pwd`
 cd ${dirname}
 
-## convert svg to png
-convert ${prefix}*.svg  ${prefix}%03d.png
-
 ## the number of files
-nf=$(ls -1 ${prefix}*.png| wc -l )
+nf=$(ls -1 ${prefix}*.svg| wc -l )
 
 ## make an animation
-ffmpeg -i ${prefix}%03d.png -vf palettegen palette.png
-ffmpeg -y -r 4 -i ${prefix}%03d.png -i palette.png -filter_complex paletteuse ${gifname}.gif
+ffmpeg -i ${prefix}%03d.svg -vf palettegen palette.png
+ffmpeg -y -r 4 -i ${prefix}%03d.svg -i palette.png -filter_complex paletteuse ${gifname}.gif
 
 ## remove temporary files
-rm *.png
+rm palette.png
 
 cd ${homedir}
