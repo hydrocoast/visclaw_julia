@@ -37,7 +37,7 @@ function axratio(geo::Claw.geometry,figw)
     xe=geo.x[end]
     ys=geo.y[1]
     ye=geo.y[end]
-    figh = round(10((ye-ys)/(xe-xs)))/10*figw
+    figh = round((ye-ys)/(xe-xs),digits=2)*figw
     figh2=figh/2.
 
     return figh, figh2

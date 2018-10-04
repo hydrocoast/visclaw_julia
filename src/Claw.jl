@@ -23,5 +23,7 @@ include("PlotTools.jl")
 
 using GMT:GMT
 include("GMTTools.jl")
+include("GMTDraw.jl")
+
 
 end

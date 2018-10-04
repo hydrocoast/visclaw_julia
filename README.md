@@ -12,7 +12,6 @@ Please contact the author if you find a bug.
 ## Others  
 In order to make animations, the following softwares are necessary.  
 - bash
-- convert (ImageMagick)
 - ffmpeg
 
 # Usage Examples
