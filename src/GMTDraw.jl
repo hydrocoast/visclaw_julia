@@ -18,7 +18,7 @@ end
 """
 Draw coastalline
 """
-function GMTCoastLine!(; J=""::String, R=""::String, B=""::String, W="0.05"::String, V=true::Bool)
+function GMTCoastLine!(; J=""::String, R=""::String, B=""::String, W="0.03"::String, V=true::Bool)
     GMT.coast!(J=J, R=R, B=B, W=W, V=V)
     return nothing
 end

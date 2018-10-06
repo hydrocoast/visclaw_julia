@@ -1,19 +1,33 @@
 # Plotting with GMT
+
+"""
+Convert /tmp/GMTtmp.ps to eps file
+"""
+function saveaseps(outeps::String)
+    if !occursin("/",outeps)
+        outeps="./"*outeps
+    end
+    tmpps = GMT.fname_out(Dict())[1]
+    run(`ps2eps -f -q $tmpps`)
+    tmpeps= replace(tmpps, r"\.ps$" => ".eps")
+    run(`mv $tmpeps $outeps`)
+    return nothing
+end
+###################################################
+
 """
 Convert /tmp/GMTtmp.ps to png file
 """
 function saveaspng(outpng::String; dpi=300::Int64)
-    if !occursin("/",outpng)
-        outpng="./"*outpng
-    end
     tmpps = GMT.fname_out(Dict())[1]
-    tmpeps= replace(tmpps, r"\.ps$" => ".eps")
     run(`ps2eps -f -q $tmpps`)
+    tmpeps= replace(tmpps, r"\.ps$" => ".eps")
     run(`convert -density $dpi $tmpeps $outpng`)
-
     return nothing
 end
 ###################################################
+
+
 
 """
 Get the edge of region
@@ -96,9 +110,8 @@ end
 """
 Determine colorbar options (vertical alignment)
 """
-function cboptD(cbx::Real, cblen::Real)
-    cby=cblen/2
-    cwid=max(round(0.04*cblen, sigdigits=2),0.25)
+function cboptD(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
+                 cwid=max(round(0.04*cblen, sigdigits=2),0.25))
     Dcb="$cbx/$cby/$cblen/$cwid"
     # return value
     return Dcb
