@@ -41,18 +41,18 @@ struct patch
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
 end
 ###################################
-
+Tiles = Union{Claw.patch, Claw.stormgrid}
 
 ###################################
 ## Struct:
 ##  time-seies of AMR data
 ###################################
-struct amr
+struct AMR
     nstep::Int64
     timelap::AbstractVector{Float64}
-    amr :: AbstractVector{Vector{Union{Claw.patch, Claw.stormgrid}}}
+    amr :: AbstractVector{Vector{Claw.Tiles}}
     # Constructor
-    Claw.amr(nstep, timelap, amr) = new(nstep, timelap, amr)
+    Claw.AMR(nstep, timelap, amr) = new(nstep, timelap, amr)
 end
 ###################################
 

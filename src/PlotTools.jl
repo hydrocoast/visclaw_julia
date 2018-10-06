@@ -148,7 +148,7 @@ WindQuiver!(Plots.plot(), tiles, dc, len=len, head=head)
 ###########################################
 ## Function: plot time-series of wind field
 ###########################################
-function PlotWindField!(plt, amrs::Claw.amr, dc=1::Int64; len=arrowlen_default, head=arrowhead_default)
+function PlotWindField!(plt, amrs::Claw.AMR, dc=1::Int64; len=arrowlen_default, head=arrowhead_default)
     for i = 1:amrs.nstep
         plt[i] = Claw.WindQuiver!(plt[i], amrs.amr[i], dc, len=len, head=head)
     end
@@ -160,7 +160,7 @@ end
 #############################################
 ## Function: plot time-series of AMR data
 #############################################
-function PlotTimeSeries(amrs::Claw.amr; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
+function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
                         clim=(), cmap=etacmap_default)
     ## check arg
 	if isdefined(amrs.amr[1][1], :eta)
@@ -195,7 +195,7 @@ end
 ##############################################################################
 # Function: draw two-dimensional distribution at a certain step repeatedly
 ##############################################################################
-function SurfacebyStep(amrs::Claw.amr; clim=(), cmap::Symbol=etacmap_default)
+function SurfacebyStep(amrs::Claw.AMR; clim=(), cmap::Symbol=etacmap_default)
     ## check arg
 	 if isdefined(amrs.amr[1][1], :eta)
 		 DrawFunc=Claw.DrawAMR2D
@@ -243,7 +243,7 @@ function SurfacebyStep(amrs::Claw.amr; clim=(), cmap::Symbol=etacmap_default)
     return plt
 end
 ##############################################################################
-SLPbyStep(amrs::Claw.amr; clim=slp_default, cmap::Symbol=slpcmap_default) =
+SLPbyStep(amrs::Claw.AMR; clim=slp_default, cmap::Symbol=slpcmap_default) =
 SurfacebyStep(amrs,clim=clim,cmap=cmap)
 
 ###########################################

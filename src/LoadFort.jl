@@ -134,9 +134,8 @@ function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
         tlap[it] = Claw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
     end
 
-    #return (nfile, tlap, amr)
     ## AMR Array
-    amrs = Claw.amr(nfile,tlap,amr)
+    amrs = Claw.AMR(nfile,tlap,amr)
 
     ## return value
     return amrs
