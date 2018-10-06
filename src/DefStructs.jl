@@ -1,10 +1,11 @@
 ### Define Structs
+abstract type Tiles end
 
 ###################################
 ## Struct:
 ##  storm data
 ###################################
-struct stormgrid
+struct stormgrid <: Claw.Tiles
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -26,7 +27,7 @@ end
 ## Struct:
 ##  data container of single patch
 ###################################
-struct patch
+struct patch <: Claw.Tiles
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -41,7 +42,6 @@ struct patch
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
 end
 ###################################
-Tiles = Union{Claw.patch, Claw.stormgrid}
 
 ###################################
 ## Struct:

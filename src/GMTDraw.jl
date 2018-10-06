@@ -1,38 +1,43 @@
-function GMTTopo(geo::Claw.geometry, figname="./topogmt.png"::String;
-                 fwidth=10::Int64, R=""::String, B="a15f15 neSW"::String,
-                 palette="earth"::String, crange="-7000/4500"::String,
-                 Bcb="a1000f500/:\"(m)\":"::String, coast=false::Bool)
+# Functions ti draw figures with GMT package
 
-    # projection and width
-    fheight,fheight2 = Claw.axratio(geo, fwidth)
-    proj="X$fwidth"*"/$fheight"
-
-    # range
-    if isempty(R)
-        R=Claw.geoxyrange(geo)
-        R="d"*R
-    end
-    # makecpt
-    cpt = GMT.gmt("makecpt -C$palette -T$crange -D -V")
+######################################################################
+"""
+GMTTopo: Topography & bathymetry
+"""
+function GMTTopo(geo::Claw.geometry, cpt::GMT.GMTcpt; J=""::String, R=""::String,
+                 B=""::String, V=true::Bool)
     # makegrd
     G = Claw.geogrd(geo)
-
     # Topography with grdimage
-    GMT.grdimage(G, J=proj, R=R, C=cpt, V=true)
-    # draw coastalline if true
-    if coast
-        pen="0.05"
-        GMT.coast!(J=proj, R=R, B=B, W=pen, V=true)
-    end
-
-    # colorbar
-    cbx=fwidth+1
-    cwid=max(round(0.04*fheight, sigdigits=2),0.30)
-    Dcb="$cbx/$fheight2/$fheight/$cwid"
-    GMT.colorbar!(B=Bcb, C=cpt, D=Dcb, V=true)
-
-    # output
-    Claw.saveaspng(figname)
+    GMT.grdimage(G, J=J, R=R, B=B, C=cpt, V=V)
 
     return nothing
 end
+######################################################################
+
+"""
+Draw coastalline
+"""
+function GMTCoastLine!(; J=""::String, R=""::String, B=""::String, W="0.05"::String, V=true::Bool)
+    GMT.coast!(J=J, R=R, B=B, W=W, V=V)
+    return nothing
+end
+######################################################################
+
+"""
+Set Colorbar
+"""
+function GMTColorbar!(cpt::GMT.GMTcpt; B=""::String, D=""::String, V=true::Bool)
+    GMT.colorbar!(B=B, C=cpt, D=D, V=V)
+end
+######################################################################
+
+
+#=
+"""
+Draw the spatial distribution of sea surface elevation in a snapshot
+"""
+function GMTSurface(amr::Claw.Tiles; palette="polar"::String, crange="-1.0/1.0"::String)
+end
+######################################################################
+=#
