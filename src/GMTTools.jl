@@ -1,4 +1,17 @@
 # Plotting with GMT
+"""
+Rename /tmp/GMTtmp.ps to another name
+"""
+function moveps(outps::String)
+    if !occursin("/",outps)
+        outeps="./"*outps
+    end
+    tmpps = GMT.fname_out(Dict())[1]
+    run(`mv $tmpps $outps`)
+    return nothing
+end
+###################################################
+
 
 """
 Convert /tmp/GMTtmp.ps to eps file
@@ -117,3 +130,44 @@ function cboptD(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
     return Dcb
 end
 ###################################################
+
+"""
+Get coverage of tiles
+"""
+function tileR(tile::Claw.Tiles)
+    xs = tile.xlow
+    ys = tile.ylow
+    xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
+    ye = round(tile.ylow + tile.my*tile.dy, digits=4)
+    xyrange="$xs/$xe/$ys/$ye"
+    # return value
+    return xyrange
+end
+###################################################
+
+"""
+make a grid file of Claw.Tiles for GMT
+"""
+function tilegrd(tile::Claw.Tiles; V=true)
+    # var
+    var = Claw.varnameintile(tile)
+    # prameters & options
+    R = Claw.tileR(tile)
+    Δ = tile.dx
+    #xvec, yvec, zdata = Claw.tilezcenter(tile, var)
+    xvec, yvec, zdata = Claw.tilez(tile, var)
+    xmat = repeat(xvec, inner=(length(yvec),1))
+    ymat = repeat(yvec, outer=(length(xvec),1))
+    # makegrd
+    #if !any(.!isnan.(zdata)); return G=nothing; end;
+    G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, V=V)
+    # return value (GMT.GMTgrid)
+    return G
+end
+###################################################
+
+"""
+
+"""
+tilecpt(palette="polar"::String; crange="-1.0/1.0"::String, D=true, I=false, V=true, Z=false) =
+Claw.geocpt(palette,crange=crange, D=D,I=I,V=V,Z=Z)

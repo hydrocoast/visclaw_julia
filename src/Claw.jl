@@ -9,6 +9,7 @@ using Statistics: mean
 using DelimitedFiles: readdlm
 using Printf
 using Dates
+using Interpolations
 
 include("DefStructs.jl")
 include("Data.jl")
@@ -17,9 +18,9 @@ include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
 
-using Plots:Plots
-Plots.pyplot()
-include("PlotTools.jl")
+#using Plots:Plots
+#Plots.pyplot()
+#include("PlotTools.jl")
 
 using GMT:GMT
 include("GMTTools.jl")
