@@ -18,9 +18,9 @@ include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
 
-#using Plots:Plots
-#Plots.pyplot()
-#include("PlotTools.jl")
+using Plots:Plots
+Plots.pyplot()
+include("PlotTools.jl")
 
 using GMT:GMT
 include("GMTTools.jl")

@@ -3,7 +3,7 @@ pen_default="0.02"
 
 ######################################################################
 """
-GMTTopo: Topography & bathymetry
+Fill colors to topography and bathymetry surface
 """
 function GMTTopo(geo::Claw.geometry, cpt::GMT.GMTcpt; J=""::String, R=""::String,
                  B=""::String, Q=true, V=true::Bool)
@@ -46,7 +46,6 @@ end
 ######################################################################
 
 
-
 """
 Draw the spatial distribution of sea surface elevation in a snapshot
 """
@@ -69,12 +68,14 @@ function GMTAMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; savedir="."::String, savena
                     J=""::String, R=""::String, B=""::String, Q=true, V=true::Bool)
     for i = 1:amrs.nstep
         # basemap
-        GMT.basemap(J=J, R=R, B=B, V=V)
+        GMT.basemap(J=J, R=R, B="af nesw", V=V)
         # makegrd
         tiles = amrs.amr[i]
         G = Claw.tilegrd.(tiles, V=V);
         # surface
         Claw.GMTSurfTiles!(G,cpt,R=R,V=V)
+        # add frame if exists
+        if !isempty(B); GMT.basemap!(J="", R="", B=B, V=V); end;
         # filename
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
         # move ps tile

@@ -105,7 +105,7 @@ end
 ###################################################
 
 """
-Generate cpt
+Generate cpt for Claw.geometry
 """
 function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=false, V=true, Z=false)
 
@@ -167,7 +167,8 @@ end
 ###################################################
 
 """
-
+Generate cpt for Claw.Tiles
 """
 tilecpt(palette="polar"::String; crange="-1.0/1.0"::String, D=true, I=false, V=true, Z=false) =
 Claw.geocpt(palette,crange=crange, D=D,I=I,V=V,Z=Z)
+###################################################
