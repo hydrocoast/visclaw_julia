@@ -25,4 +25,4 @@ outdir = "./fig/chile2010"
     frame="a15f15 neSW"
     # timeseries
     Claw.AMRSurf(amrall, cpt, J=proj, R=region, B=frame, V=false);
-    Claw.AMRCoast!(amrall, R=region, V=false);
+    Claw.AMRCoast!(amrall, R=region, G="gray80", V=false);

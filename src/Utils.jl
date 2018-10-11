@@ -120,5 +120,6 @@ function tilezcenter(tile::Claw.Tiles, var::Symbol; digits=4)
     val = getfield(tile, var)
 
     # return val
-    return xvec, yvec, val    
+    return xvec, yvec, val
 end
+############################################################

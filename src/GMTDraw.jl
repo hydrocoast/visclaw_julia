@@ -19,18 +19,20 @@ end
 """
 Draw coastalline
 """
-function Coast!(; J=""::String, R=""::String, W=pen_default::String, V=true::Bool)
-    GMT.coast!(J=J, R=R, W=W, V=V)
+function Coast!(; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
+                W=pen_default::String, V=true::Bool)
+    GMT.coast!(J=J,R=R,D=D,G=G,S=S,W=W,V=V)
     return nothing
 end
 ######################################################################
 """
 Draw coastalline to ps file
 """
-function CoastPS!(filename; J=""::String, R=""::String, W=pen_default::String, V=true::Bool)
+function CoastPS!(filename; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
+                  W=pen_default::String, V=true::Bool)
     opt=""
     if V; opt = opt*" -V"; end
-    GMT.gmt("pscoast -J$J -R$R -W$W $opt -K -O >> $filename")
+    GMT.gmt("pscoast -J$J -R$R -D$D -G$G -S$S -W$W  $opt -K -O >> $filename")
     return nothing
 end
 ######################################################################
@@ -85,12 +87,16 @@ function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; savedir="."::String, savename=
 end
 ######################################################################
 function AMRCoast!(amrs::Claw.AMR; savedir="."::String, savename="eta"::String,
-                      J=""::String, R=""::String, W=pen_default::String, V=true::Bool)
+                   J=""::String, R=""::String, D="i", G=""::String, S=""::String,
+                   W=pen_default::String, V=true::Bool)
+    # each
     for i = 1:amrs.nstep
         # filename
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
-        Claw.CoastPS!(filename, J=J,R=R,W=W,V=V)
+        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        Claw.CoastPS!(filename,J=J,R=R,D=D,G=G,S=S,W=W,V=V)
     end
+    # end (return nothing)
     return nothing
 end
 ######################################################################
