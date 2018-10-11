@@ -43,7 +43,10 @@ end
 ###################################################
 
 ###################################################
-function ps2eps_series(nstep::Int64; savedir="."::String, savename="eta"::String,)
+"""
+Convert ps files to eps files
+"""
+function ps2eps_series(nstep::Int64; savedir="."::String, savename="eta"::String)
     for i = 1:nstep
         # filename
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
@@ -54,3 +57,22 @@ function ps2eps_series(nstep::Int64; savedir="."::String, savename="eta"::String
     return nothing
 end
 ###################################################
+
+###################################################
+"""
+Convert eps files to ong file
+"""
+function eps2png_series(nstep::Int64; reserve=true::Bool,
+                 savedir="."::String, savename="eta"::String, dpi=300::Int64)
+    for i = 1:nstep
+        # filename
+        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".eps"
+        pngname = replace(filename, r"\.eps" => ".png")
+        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        run(`convert -density $dpi $filename $pngname`)
+        if !reserve;
+            run(`rm $filename`)
+        end
+    end
+    return nothing
+end

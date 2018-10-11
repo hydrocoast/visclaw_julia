@@ -28,4 +28,5 @@ outdir = "./fig/chile2010"
     Claw.AMRCoast!(amrall, R=region, G="gray80", V=false);
     Claw.AMRColorbar!(amrall, cpt, B="xa0.2f0.1 y+l(m)", D=Claw.cboptDj(), V=false)
     Claw.ps2eps_series(amrall.nstep)
+    Claw.eps2png_series(amrall.nstep, reserve=false)
     # colorbar option

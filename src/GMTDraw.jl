@@ -93,10 +93,10 @@ function SurfTiles!(Gall::Vector{GMT.GMTgrid}, cpt::GMT.GMTcpt; J=""::String, R=
 end
 ######################################################################
 function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; savedir="."::String, savename="eta"::String,
-                    J=""::String, R=""::String, B=""::String, Q=true, V=true::Bool)
+                    J=""::String, R=""::String, B=""::String, Q=true, V=true::Bool, bgc="white"::String)
     for i = 1:amrs.nstep
         # basemap
-        GMT.basemap(J=J, R=R, B="af nesw", V=V)
+        GMT.basemap(J=J, R=R, B="af nesw+g$bgc", V=V)
         # makegrd
         tiles = amrs.amr[i]
         G = Claw.tilegrd.(tiles, V=V);

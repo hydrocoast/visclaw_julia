@@ -67,7 +67,7 @@ Generate cpt for Claw.geometry
 function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=false, V=true, Z=false)
     # building options
     opt=""
-    if D; opt = opt*" -D"; end
+    if D; opt = opt*" -Di"; end
     if I; opt = opt*" -I"; end
     if V; opt = opt*" -V"; end
     if Z; opt = opt*" -Z"; end
