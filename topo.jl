@@ -25,9 +25,9 @@ Claw.TopoMap(geo, cpt, J=J, R=R, B=B)
 Claw.Coast!()
 
 # colorbar option
-Dcb = Claw.cboptD(cbx=11, cblen=10)
+Dj= Claw.cboptDj()
 # set colorbar
-Claw.Colorbar!(cpt, B=Bcb, D=Dcb)
+Claw.Colorbar!(cpt, B=Bcb, D=Dj)
 
 # output
 Claw.saveaseps("tmp_topochile.eps")

@@ -17,7 +17,7 @@ end
 ######################################################################
 
 """
-Draw coastalline
+Draw coastalline to default ps file
 """
 function Coast!(; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
                 W=pen_default::String, V=true::Bool)
@@ -26,23 +26,49 @@ function Coast!(; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
 end
 ######################################################################
 """
-Draw coastalline to ps file
+Draw coastalline to specified ps file
 """
 function CoastPS!(filename; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
                   W=pen_default::String, V=true::Bool)
     opt=""
     if V; opt = opt*" -V"; end
-    GMT.gmt("pscoast -J$J -R$R -D$D -G$G -S$S -W$W  $opt -K -O >> $filename")
+    GMT.gmt("pscoast -J$J -R$R -D$D -G$G -S$S -W$W  $opt -K -P -O >> $filename")
     return nothing
 end
 ######################################################################
 
 
 """
-Set Colorbar
+Set colorbar to default ps file
 """
 function Colorbar!(cpt::GMT.GMTcpt; B=""::String, D=""::String, V=true::Bool)
-    GMT.colorbar!(B=B, C=cpt, D=D, V=V)
+    if !occursin(r"x",D)
+        GMT.colorbar!(J="",R="", B=B, C=cpt, D=D, V=V)
+    else
+        GMT.colorbar!(B=B, C=cpt, D=D, V=V)
+    end
+    return nothing
+end
+######################################################################
+"""
+Set colorbar to specified ps file
+"""
+function ColorbarPS!(filename::String, cpt::GMT.GMTcpt; B=""::String, D=""::String, V=true::Bool)
+    # building options
+    opt=""
+    if V; opt = opt*" -V"; end
+    # make B option
+    Bopt = Claw.setBscript(B)
+    # palette output
+    cptfile = "tmp.cpt";
+    GMT.gmt("write $cptfile",cpt);
+    # GMT script
+    if !occursin(r"x",D)
+        GMT.gmt("psscale -J -R $Bopt -C$cptfile -D$D $opt -K -P -O >> $filename")
+    else
+        GMT.gmt("psscale $Bopt -C$cptfile -D$D $opt -K -P -O >> $filename")
+    end
+    #run(`rm $cptfile`)
     return nothing
 end
 ######################################################################
@@ -89,7 +115,7 @@ end
 function AMRCoast!(amrs::Claw.AMR; savedir="."::String, savename="eta"::String,
                    J=""::String, R=""::String, D="i", G=""::String, S=""::String,
                    W=pen_default::String, V=true::Bool)
-    # each
+    # each figure
     for i = 1:amrs.nstep
         # filename
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
@@ -98,5 +124,20 @@ function AMRCoast!(amrs::Claw.AMR; savedir="."::String, savename="eta"::String,
     end
     # end (return nothing)
     return nothing
+end
+######################################################################
+function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt;
+                      savedir="."::String, savename="eta"::String,
+                      B=""::String, D=""::String, V=true::Bool)
+    # each figure
+    for i = 1:amrs.nstep
+        # filename
+        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
+        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        Claw.ColorbarPS!(filename, cpt, B=B,D=D,V=V)
+    end
+    # end (return nothing)
+    return nothing
+
 end
 ######################################################################

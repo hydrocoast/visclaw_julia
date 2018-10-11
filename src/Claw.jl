@@ -23,6 +23,7 @@ Plots.pyplot()
 include("PlotTools.jl")
 
 using GMT:GMT
+include("PScmd.jl")
 include("GMTTools.jl")
 include("GMTDraw.jl")
 

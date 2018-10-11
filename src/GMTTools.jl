@@ -1,48 +1,5 @@
 # Plotting with GMT
 """
-Rename /tmp/GMTtmp.ps to another name
-"""
-function moveps(outps::String)
-    if !occursin("/",outps)
-        outeps="./"*outps
-    end
-    tmpps = GMT.fname_out(Dict())[1]
-    run(`mv $tmpps $outps`)
-    return nothing
-end
-###################################################
-
-
-"""
-Convert /tmp/GMTtmp.ps to eps file
-"""
-function saveaseps(outeps::String)
-    if !occursin("/",outeps)
-        outeps="./"*outeps
-    end
-    tmpps = GMT.fname_out(Dict())[1]
-    run(`ps2eps -f -q $tmpps`)
-    tmpeps= replace(tmpps, r"\.ps$" => ".eps")
-    run(`mv $tmpeps $outeps`)
-    return nothing
-end
-###################################################
-
-"""
-Convert /tmp/GMTtmp.ps to png file
-"""
-function saveaspng(outpng::String; dpi=300::Int64)
-    tmpps = GMT.fname_out(Dict())[1]
-    run(`ps2eps -f -q $tmpps`)
-    tmpeps= replace(tmpps, r"\.ps$" => ".eps")
-    run(`convert -density $dpi $tmpeps $outpng`)
-    return nothing
-end
-###################################################
-
-
-
-"""
 Get the edge of region
 """
 function geoR(geo::Claw.geometry)
@@ -108,7 +65,7 @@ end
 Generate cpt for Claw.geometry
 """
 function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=false, V=true, Z=false)
-    # buildong options
+    # building options
     opt=""
     if D; opt = opt*" -D"; end
     if I; opt = opt*" -I"; end
@@ -122,16 +79,24 @@ end
 ###################################################
 
 """
-Determine colorbar options (vertical alignment)
+Determine -Dx option in colorbar(psscale), vertical alignment
 """
-function cboptD(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
-                 cwid=max(round(0.04*cblen, sigdigits=2),0.25))
-    Dcb="$cbx/$cby/$cblen/$cwid"
+function cboptDx(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
+                 cbwid=max(round(0.04*cblen, sigdigits=2),0.25))
+    Dcb="x$cbx/$cby/$cblen/$cbwid"
     # return value
     return Dcb
 end
 ###################################################
 
+"""
+
+"""
+function cboptDj(;loc="BR",cbwid=0.3, cblen=10.0, xoff=-1.5, yoff=0.0)
+    Dcb = "j$loc+w$cblen/$cbwid+o$xoff/$yoff"
+    return Dcb
+end
+###################################################
 """
 Get coverage of tiles
 """
@@ -172,4 +137,16 @@ Generate cpt for Claw.Tiles
 """
 tilecpt(palette="polar"::String; crange="-1.0/1.0"::String, D=true, I=false, V=true, Z=false) =
 Claw.geocpt(palette,crange=crange, D=D,I=I,V=V,Z=Z)
+###################################################
+
+"""
+convert -B option
+"""
+function setBscript(B::String)
+    if occursin("-B",B); return B; end
+    Bopt = replace(B, r"^\s+|\s+$" => "")
+    Bopt = replace(Bopt, r"\s+" => " -B")
+    Bopt = replace(Bopt, r"^" => "-B")
+    return Bopt
+end
 ###################################################

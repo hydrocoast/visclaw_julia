@@ -18,7 +18,7 @@ outdir = "./fig/chile2010"
     # load
     amrall = Claw.LoadSurface(fdir)
     # GMT make cpt
-    cpt = Claw.tilecpt()
+    cpt = Claw.tilecpt(V=false)
     # basic options
     proj="X10/10"
     region="d-120/-60/-60/0"
@@ -26,3 +26,6 @@ outdir = "./fig/chile2010"
     # timeseries
     Claw.AMRSurf(amrall, cpt, J=proj, R=region, B=frame, V=false);
     Claw.AMRCoast!(amrall, R=region, G="gray80", V=false);
+    Claw.AMRColorbar!(amrall, cpt, B="xa0.2f0.1 y+l(m)", D=Claw.cboptDj(), V=false)
+    Claw.ps2eps_series(amrall.nstep)
+    # colorbar option
