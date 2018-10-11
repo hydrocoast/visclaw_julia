@@ -24,5 +24,5 @@ outdir = "./fig/chile2010"
     region="d-120/-60/-60/0"
     frame="a15f15 neSW"
     # timeseries
-    Claw.GMTAMRSurf(amrall, cpt, J=proj, R=region, B=frame, V=false);
-    Claw.GMTAMRCoast!(amrall, R=region, V=false);
+    Claw.AMRSurf(amrall, cpt, J=proj, R=region, B=frame, V=false);
+    Claw.AMRCoast!(amrall, R=region, V=false);

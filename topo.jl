@@ -20,14 +20,14 @@ R=Claw.geoR(geo)
 cpt = Claw.geocpt()
 
 # draw topogpahy with colors
-Claw.GMTTopo(geo, cpt, J=J, R=R, B=B)
+Claw.TopoMap(geo, cpt, J=J, R=R, B=B)
 # draw coastline
-Claw.GMTCoastLine!()
+Claw.Coast!()
 
 # colorbar option
 Dcb = Claw.cboptD(cbx=11, cblen=10)
 # set colorbar
-Claw.GMTColorbar!(cpt, B=Bcb, D=Dcb)
+Claw.Colorbar!(cpt, B=Bcb, D=Dcb)
 
 # output
 Claw.saveaseps("tmp_topochile.eps")
