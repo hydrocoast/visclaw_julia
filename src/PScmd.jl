@@ -33,7 +33,7 @@ end
 """
 Convert /tmp/GMTtmp.ps to png file
 """
-function saveaspng(outpng::String; dpi=300::Int64)
+function saveaspng(outpng::String; dpi=400::Int64)
     tmpps = GMT.fname_out(Dict())[1]
     run(`ps2eps -f -q $tmpps`)
     tmpeps= replace(tmpps, r"\.ps$" => ".eps")
@@ -63,7 +63,7 @@ end
 Convert eps files to ong file
 """
 function eps2png_series(nstep::Int64; reserve=true::Bool,
-                 savedir="."::String, savename="eta"::String, dpi=300::Int64)
+                 savedir="."::String, savename="eta"::String, dpi=400::Int64)
     for i = 1:nstep
         # filename
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".eps"

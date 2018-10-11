@@ -67,12 +67,20 @@ Generate cpt for Claw.geometry
 function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=false, V=true, Z=false)
     # building options
     opt=""
-    if D; opt = opt*" -Di"; end
+    if D; opt = opt*" -D"; end
     if I; opt = opt*" -I"; end
     if V; opt = opt*" -V"; end
     if Z; opt = opt*" -Z"; end
     # makecpt script
-    cpt = GMT.gmt("makecpt -C$palette -T$crange $opt ")
+    tmpcpt = "tmp.cpt"
+    if Z
+        GMT.gmt("makecpt -C$palette $opt > $tmpcpt")
+    else
+        GMT.gmt("makecpt -C$palette -T$crange $opt > $tmpcpt")
+    end
+    cpt = GMT.gmt("read -Tc $tmpcpt")
+    # remove tmp
+    run(`rm -f $tmpcpt`)
     # return cpt
     return cpt
 end

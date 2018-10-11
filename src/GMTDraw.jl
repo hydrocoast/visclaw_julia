@@ -73,6 +73,21 @@ function ColorbarPS!(filename::String, cpt::GMT.GMTcpt; B=""::String, D=""::Stri
 end
 ######################################################################
 
+"""
+place tiltle to specified psfile
+"""
+function TitlePS!(filename::String, titlestr::String; V=true)
+    # building options
+    opt=""
+    if V; opt = opt*" -V"; end
+    # GMT script
+    GMT.gmt("psbasemap -J -R -Ba -Bnesw+t\"$titlestr\" $opt -K -P -O >> $filename")
+    #run(`rm $cptfile`)
+    return nothing
+end
+######################################################################
+
+
 
 """
 Draw the spatial distribution of sea surface elevation in a snapshot
@@ -135,6 +150,25 @@ function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt;
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
         if !isfile(filename); disp("Not found: $filename"); continue; end;
         Claw.ColorbarPS!(filename, cpt, B=B,D=D,V=V)
+    end
+    # end (return nothing)
+    return nothing
+
+end
+######################################################################
+######################################################################
+function AMRTitle!(amrs::Claw.AMR, title::Vector{String};
+                   savedir="."::String, savename="eta"::String, V=true::Bool)
+    if amrs.nstep != length(title)
+        error("Incorrect size")
+        return nothing
+    end
+    # each figure
+    for i = 1:amrs.nstep
+        # filename
+        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
+        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        Claw.TitlePS!(filename, title[i], V=V)
     end
     # end (return nothing)
     return nothing

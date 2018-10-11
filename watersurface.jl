@@ -12,13 +12,14 @@ using GMT:GMT
 ## file paths
 fdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 outdir = "./fig/chile2010"
-
 ### under construction
 # Free water surface
     # load
     amrall = Claw.LoadSurface(fdir)
+    titlestr = map(i->@sprintf("%5.1f h", i), amrall.timelap./3600.);
     # GMT make cpt
-    cpt = Claw.tilecpt(V=false)
+    cpt = Claw.tilecpt(V=true)
+
     # basic options
     proj="X10/10"
     region="d-120/-60/-60/0"
@@ -27,6 +28,7 @@ outdir = "./fig/chile2010"
     Claw.AMRSurf(amrall, cpt, J=proj, R=region, B=frame, V=false);
     Claw.AMRCoast!(amrall, R=region, G="gray80", V=false);
     Claw.AMRColorbar!(amrall, cpt, B="xa0.2f0.1 y+l(m)", D=Claw.cboptDj(), V=false)
+    Claw.AMRTitle!(amrall, titlestr, V=false)
     Claw.ps2eps_series(amrall.nstep)
     Claw.eps2png_series(amrall.nstep, reserve=false)
     # colorbar option
