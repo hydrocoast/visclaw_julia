@@ -1,4 +1,5 @@
 # Plotting with GMT
+###################################################
 """
 Get the edge of region
 """
@@ -12,6 +13,7 @@ function geoR(geo::Claw.geometry)
 end
 ###################################################
 
+###################################################
 """
 Generate grd data with type of Claw.geometry
 """
@@ -29,6 +31,7 @@ function geogrd(geo::Claw.geometry; V=false::Bool)
 end
 ###################################################
 
+###################################################
 """
 Derive height/width ratio
 """
@@ -43,6 +46,7 @@ function axratio(geo::Claw.geometry,fwidth::Real)
 end
 ###################################################
 
+###################################################
 """
 Determine J option
 """
@@ -61,6 +65,7 @@ function geoJ(geo::Claw.geometry; proj_base="Xd"::String, fwidth=10::Real)
 end
 ###################################################
 
+###################################################
 """
 Generate cpt for Claw.geometry
 """
@@ -86,6 +91,7 @@ function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=
 end
 ###################################################
 
+###################################################
 """
 Determine -Dx option in colorbar(psscale), vertical alignment
 """
@@ -97,13 +103,16 @@ function cboptDx(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
 end
 ###################################################
 
+###################################################
 """
-
+Determine -Dj option in colorbar(psscale) with +w{length}/{width} and +o{dx}/{dy}
 """
 function cboptDj(;loc="BR",cbwid=0.3, cblen=10.0, xoff=-1.5, yoff=0.0)
     Dcb = "j$loc+w$cblen/$cbwid+o$xoff/$yoff"
     return Dcb
 end
+###################################################
+
 ###################################################
 """
 Get coverage of tiles
@@ -119,6 +128,7 @@ function tileR(tile::Claw.Tiles)
 end
 ###################################################
 
+###################################################
 """
 make a grid file of Claw.Tiles for GMT
 """
@@ -140,6 +150,7 @@ function tilegrd(tile::Claw.Tiles; V=true)
 end
 ###################################################
 
+###################################################
 """
 Generate cpt for Claw.Tiles
 """
@@ -147,6 +158,7 @@ tilecpt(palette="polar"::String; crange="-1.0/1.0"::String, D=true, I=false, V=t
 Claw.geocpt(palette,crange=crange, D=D,I=I,V=V,Z=Z)
 ###################################################
 
+###################################################
 """
 convert -B option
 """

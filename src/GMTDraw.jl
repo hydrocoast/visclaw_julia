@@ -76,7 +76,7 @@ end
 """
 place tiltle to specified psfile
 """
-function TitlePS!(filename::String, titlestr::String; V=true)
+function TitlePS!(filename::String, titlestr::String; fontsize=empty([],Int64), V=true)
     # building options
     opt=""
     if V; opt = opt*" -V"; end
