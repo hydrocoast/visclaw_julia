@@ -1,5 +1,7 @@
 # Functions ti draw figures with GMT package
 pen_default="0.02"
+titlefont_default=16
+titleoffset_default="2p"
 
 ######################################################################
 """
@@ -76,14 +78,28 @@ end
 """
 place tiltle to specified psfile
 """
-function TitlePS!(filename::String, titlestr::String; fontsize=empty([],Int64), V=true)
+function TitlePS!(filename::String, titlestr::String; font=titlefont_default,
+                  offset=titleoffset_default, V=true::Bool)
     # building options
     opt=""
     if V; opt = opt*" -V"; end
+    fontopt=""
+    if !isempty(font)
+        fontopt="--FONT_TITLE=$font"
+    end
+    offsetopt=""
+    if !isempty(offset)
+        offsetopt="--MAP_TITLE_OFFSET=$offset"
+    end
     # GMT script
-    GMT.gmt("psbasemap -J -R -Ba -Bnesw+t\"$titlestr\" $opt -K -P -O >> $filename")
-    #run(`rm $cptfile`)
+    GMT.gmt("psbasemap -J -R -Ba -Bnesw+t\"$titlestr\" $opt -K -P -O $fontopt $offsetopt >> $filename")
     return nothing
+    #if !isempty(fontsize)
+    #    GMT.gmt("gmtset FONT_TITLE $font")
+    #end
+    #if !isempty(fontsize)
+    #    run(`rm -f gmt.conf`)
+    #end
 end
 ######################################################################
 
@@ -157,8 +173,8 @@ function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt;
 end
 ######################################################################
 ######################################################################
-function AMRTitle!(amrs::Claw.AMR, title::Vector{String};
-                   savedir="."::String, savename="eta"::String, V=true::Bool)
+function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; font=titlefont_default,
+                   offset=titleoffset_default, savedir="."::String, savename="eta"::String, V=true::Bool)
     if amrs.nstep != length(title)
         error("Incorrect size")
         return nothing
@@ -168,7 +184,7 @@ function AMRTitle!(amrs::Claw.AMR, title::Vector{String};
         # filename
         filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
         if !isfile(filename); disp("Not found: $filename"); continue; end;
-        Claw.TitlePS!(filename, title[i], V=V)
+        Claw.TitlePS!(filename, title[i], font=font, V=V)
     end
     # end (return nothing)
     return nothing

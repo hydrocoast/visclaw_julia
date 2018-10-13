@@ -1,6 +1,7 @@
 ######################################
-### Function: range in simulation ####
-######################################
+"""
+Range in simulation
+"""
 function Range(tiles)
     xmin = minimum(getfield.(tiles, :xlow))
     ymin = minimum(getfield.(tiles, :ylow))
@@ -22,8 +23,9 @@ end
 ######################################
 
 ############################################
-### Function: check arguments and resize ###
-############################################
+"""
+Check arguments and resize
+"""
 function chkarglength!(var, nlen::Int)
     # Scolor Symbol
     if isa(var,Symbol) || isa(var,Plots.Font)
@@ -40,6 +42,7 @@ function chkarglength!(var, nlen::Int)
 end
 ############################################
 
+##########################################################
 """
 Get correct property name from the type of Claw.Tiles
 """
@@ -57,6 +60,7 @@ function varnameintile(tile::Claw.Tiles)
 end
 ##########################################################
 
+##########################################################
 """
 Get Z values of cells including their margins
 """
@@ -82,6 +86,8 @@ function tilezmargin(tile::Claw.Tiles, var::Symbol; digits=4)
     return xvec, yvec, val
 end
 ############################################################
+
+##########################################################
 """
 Get Z values of cells at the grid lines
 """
@@ -104,6 +110,8 @@ function tilez(tile::Claw.Tiles, var::Symbol; digits=4)
     return xvec, yvec, val
 end
 ############################################################
+
+##########################################################
 """
 Get Z values of cells at the center
 """
@@ -123,3 +131,36 @@ function tilezcenter(tile::Claw.Tiles, var::Symbol; digits=4)
     return xvec, yvec, val
 end
 ############################################################
+
+###################################################
+"""
+Vector{Float64} in second to Vector{String} (second, hour, day)
+"""
+function sec2str(timelap::Vector{Float64}, unit="hour"::String; fmt="")
+    sprintf(f,x) = @eval @sprintf($f, $x)
+    if unit=="second"
+        if isempty(fmt); fmt="%0.1f"; end;
+        fmtstr=fmt*" s"
+        #strs = map(i-> @eval @sprintf($fmtstr,$i), timelap);
+        strs = map(i-> sprintf(fmtstr,i), timelap);
+    elseif unit=="hour"
+        if isempty(fmt); fmt="%5.2f"; end;
+        fmtstr=fmt*" h"
+        strs = map(i-> sprintf(fmtstr,i), timelap./3600);
+    elseif unit=="day"
+        if isempty(fmt); fmt="%0.2f"; end;
+        fmtstr=fmt*" day"
+        strs = map(i-> sprintf(fmtstr,i), timelap./(24*3600));
+    end
+end
+###################################################
+
+###################################################
+"""
+Vector{Float64} in second to DateTime
+"""
+function sec2str(timelap::Vector{Float64}, timeorigin::Dates.DateTime; fmt="yyyy/mm/dd HH:MM")
+    dtm = timeorigin .+ Dates.Second.(timelap)
+    datstr = Dates.format.(dtm,fmt);
+end
+###################################################

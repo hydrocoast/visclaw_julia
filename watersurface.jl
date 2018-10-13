@@ -16,7 +16,7 @@ outdir = "./fig/chile2010"
 # Free water surface
     # load
     amrall = Claw.LoadSurface(fdir)
-    titlestr = map(i->@sprintf("%5.1f h", i), amrall.timelap./3600.);
+    titlestr = Claw.sec2str(amrall.timelap, "hour", fmt="%5.1f")
     # GMT make cpt
     cpt = Claw.tilecpt(V=true)
 
@@ -24,11 +24,14 @@ outdir = "./fig/chile2010"
     proj="X10/10"
     region="d-120/-60/-60/0"
     frame="a15f15 neSW"
-    # timeseries
+    # water surface elavation
     Claw.AMRSurf(amrall, cpt, J=proj, R=region, B=frame, V=false);
+    # Coastline
     Claw.AMRCoast!(amrall, R=region, G="gray80", V=false);
+    # Colorbar
     Claw.AMRColorbar!(amrall, cpt, B="xa0.2f0.1 y+l(m)", D=Claw.cboptDj(), V=false)
+    # Time
     Claw.AMRTitle!(amrall, titlestr, V=false)
+    # Convert file format
     Claw.ps2eps_series(amrall.nstep)
     Claw.eps2png_series(amrall.nstep, reserve=false)
-    # colorbar option
