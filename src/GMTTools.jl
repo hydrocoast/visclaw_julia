@@ -50,9 +50,11 @@ end
 """
 Determine J option
 """
-function geoJ(geo::Claw.geometry; proj_base="Xd"::String, fwidth=10::Real)
+function geoJ(geo::Claw.geometry; proj_base="Xd"::String, fwidth=10::Real, fheight=empty([],Real)::Real)
     # projection and width
-    fheight = Claw.axratio(geo, fwidth)
+    if isempty(fheight)
+      fheight = Claw.axratio(geo, fwidth)
+    end
     if length(proj_base)==1
         proj=proj_base*"$fwidth"*"/$fheight"
     elseif length(proj_base)==2
@@ -90,6 +92,9 @@ function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=
     return cpt
 end
 ###################################################
+function geocpt(cptinfo::Claw.ColorSpec)
+    Claw.geocpt(cptinfo.cmap,crange=cptinfo.crange,D=cptinfo.D,I=cptinfo.I,V=cptinfo.V,Z=cptinfo.Z)
+end
 
 ###################################################
 """

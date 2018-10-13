@@ -2,9 +2,10 @@
 abstract type Tiles end
 
 ###################################
-## Struct:
-##  storm data
-###################################
+"""
+Struct:
+ storm data
+"""
 struct stormgrid <: Claw.Tiles
     gridnumber::Int64
     AMRlevel::Int64
@@ -24,9 +25,10 @@ end
 ###################################
 
 ###################################
-## Struct:
-##  data container of single patch
-###################################
+"""
+Struct:
+ data container of single patch
+"""
 struct patch <: Claw.Tiles
     gridnumber::Int64
     AMRlevel::Int64
@@ -44,9 +46,10 @@ end
 ###################################
 
 ###################################
-## Struct:
-##  time-seies of AMR data
-###################################
+"""
+Struct:
+ time-seies of AMR data
+"""
 struct AMR
     nstep::Int64
     timelap::AbstractVector{Float64}
@@ -57,9 +60,10 @@ end
 ###################################
 
 ###################################
-## Struct:
-##  Topography and Bathymetry
-###################################
+"""
+Struct:
+ Topography and Bathymetry
+"""
 struct geometry
     ncols :: Int64
     nrows :: Int64
@@ -73,8 +77,10 @@ end
 ###################################
 
 ##########################################################
-## Struct: seafloor deformation for tsunami computation
-##########################################################
+"""
+Struct:
+ seafloor deformation for tsunami computation
+"""
 struct dtopo
     mx :: Int64
     my :: Int64
@@ -90,8 +96,9 @@ end
 ##########################################################
 
 ########################################
-## Struct: parameters in geoclaw.data
-########################################
+"""
+Struct: parameters in geoclaw.data
+"""
 struct param
     cs :: Int64 # coordinate system
     p0::Float64 # ambient pressure
@@ -106,8 +113,9 @@ end
 ########################################
 
 ########################################
-## Struct: gauge
-########################################
+"""
+Struct: gauge data
+"""
 struct gauge
     label :: String # Name
     id :: Int64 # gauge id

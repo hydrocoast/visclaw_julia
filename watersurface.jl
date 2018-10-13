@@ -6,7 +6,6 @@ if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
 using Claw
 
 using Printf: @printf, @sprintf
-#using Plots; Plots.pyplot()
 using GMT:GMT
 
 ## file paths
