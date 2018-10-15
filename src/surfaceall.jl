@@ -1,10 +1,11 @@
 ################################################################################
-function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
+function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
                     coastinfo::Claw.CoastSpec=Claw.CoastSpec(), outinfo::Claw.OutputSpec=Claw.OutputSpec())
     # Free water surface
     # load
     amrall = Claw.LoadSurface(figinfo.dir)
-    titlestr = Claw.sec2str(amrall.timelap, "hour", fmt="%5.1f")
+    titlestr = Claw.sec2str(amrall.timelap, timeinfo.origin, fmt=timeinfo.format)
+
     # GMT make cpt
     cpt = Claw.tilecpt(cptinfo.cmap, crange=cptinfo.crange, D=cptinfo.D, I=cptinfo.I, V=cptinfo.V, Z=cptinfo.Z)
 
@@ -36,7 +37,7 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
         Claw.eps2png_series(amrall.nstep, outinfo=outinfo, reserve=false)
     end
     # return value
-
+    return amrall
 end
 ################################################################################
 function surfaceall(conf::String="./conf_surf.jl")
@@ -45,9 +46,10 @@ function surfaceall(conf::String="./conf_surf.jl")
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
+    timeinfo = Claw.TimeSpec(origin,format)
     # draw
-    Claw.surfaceall(figinfo,cptinfo,coastinfo=coastinfo,outinfo=outinfo)
+    amrall = Claw.surfaceall(figinfo,cptinfo,coastinfo=coastinfo,outinfo=outinfo,timeinfo=timeinfo)
     # return value
-    return figinfo, cptinfo, outinfo, coastinfo
+    return amrall, figinfo, cptinfo, outinfo, coastinfo, timeinfo
 end
 ################################################################################

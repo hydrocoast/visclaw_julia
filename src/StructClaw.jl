@@ -114,6 +114,21 @@ end
 
 ########################################
 """
+Struct: parameters in surge.data
+"""
+struct surge
+    windindex::Int64
+    slpindex::Int64
+    stormtype::Int64
+    landfall::Float64
+    # Constructor
+    Claw.surge() = new(5,7,1,0.0)
+    Claw.surge(windindex,slpindex,stormtype,landfall) = new(windindex,slpindex,stormtype,landfall)
+end
+########################################
+
+########################################
+"""
 Struct: gauge data
 """
 struct gauge
@@ -150,5 +165,19 @@ mutable struct OutputSpec
     Claw.OutputSpec(figdir,prefix,start_number) = new(figdir,prefix,start_number,".eps",400,true)
     Claw.OutputSpec(figdir,prefix,start_number,ext,dpi) = new(figdir,prefix,start_number,ext,400,true)
     Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old) = new(figdir,prefix,start_number,ext,dpi,remove_old)
+end
+#########################################
+
+#########################################
+"""
+Struct: Time in unit or datetime
+"""
+mutable struct TimeSpec
+    origin::Union{Dates.DateTime,String}
+    format::String
+    # Constructor
+    Claw.TimeSpec() = new("hour","%0.1f")
+    Claw.TimeSpec(origin) = isa(origin,Dates.DateTime) ? new(origin,"yyyy/mm/dd HH:MM") : new(origin,"%0.1f")
+    Claw.TimeSpec(origin,format) = new(origin,format)
 end
 #########################################

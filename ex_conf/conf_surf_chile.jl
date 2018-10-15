@@ -31,3 +31,7 @@ start_number=0
 ext=".png"  # .ps, .eps, .png (, .svg, .gif)
 dpi=400 # only .png
 remove_old=true
+
+### Time
+origin = "hour" # time origin or unit in String
+format = "%5.1f" # format

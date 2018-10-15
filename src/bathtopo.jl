@@ -54,7 +54,7 @@ function bathtopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
     println("Successfully saved to $output")
 
     # return value
-    return geo, J, R, cpt
+    return geo, J, R
 end
 ###############################################################################################
 function bathtopo(conf::String="./conf_topo.jl"; fileout::String=output_default)
@@ -65,9 +65,9 @@ function bathtopo(conf::String="./conf_topo.jl"; fileout::String=output_default)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     # Draw
-    _, topoinfo.J, topoinfo.R, _ = Claw.bathtopo(topoinfo, cptinfo, outinfo=outinfo, coastinfo=coastinfo, fileout=fileout)
+    geo, topoinfo.J, topoinfo.R = Claw.bathtopo(topoinfo, cptinfo, outinfo=outinfo, coastinfo=coastinfo, fileout=fileout)
 
     # return value
-    return topoinfo, cptinfo, outinfo, coastinfo
+    return geo, topoinfo, cptinfo, outinfo, coastinfo
 end
 ###############################################################################################

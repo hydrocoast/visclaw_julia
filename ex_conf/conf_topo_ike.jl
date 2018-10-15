@@ -29,6 +29,6 @@ coastV = false
 #### output option
 prefix=""
 start_number=0
-ext=".png"  # .ps, .eps, .png (, .svg, .gif)
+ext=".eps"  # .ps, .eps, .png (, .svg, .gif)
 dpi=400 # only .png
 remove_old=true
