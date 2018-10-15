@@ -9,8 +9,12 @@ function GMTTopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; coastinfo::
     geo = Claw.LoadTopo(topofile);
 
     # options
-    J=Claw.geoJ(geo, proj_base=topoinfo.proj)
-    R=Claw.geoR(geo)
+    J=Claw.geoJ(geo, proj_base=topoinfo.J)
+    if isempty(topoinfo.R)
+        R=Claw.geoR(geo)
+    else
+        R=topoinfo.R
+    end
 
     # makecpt
     cpt = Claw.geocpt(cptinfo)
@@ -37,7 +41,7 @@ end
 function GMTTopo(conf::String="conf_topo.jl"; fileout::String=epsout_default)
     # load configuration - FigureSpec
     include(conf)
-    topoinfo = Claw.FigureSpec(maindir,figdir,proj,B,V)
+    topoinfo = Claw.FigureSpec(maindir,figdir,proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,loc,cbsize,offset,Bcb,Dcb,Icb,Vcb,Zcb)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     # Draw

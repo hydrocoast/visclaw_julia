@@ -11,6 +11,9 @@ using Printf
 using Dates
 using Interpolations
 
+include("./CLAWPATH.jl")
+export CLAW
+
 include("StructClaw.jl")
 include("Data.jl")
 include("Utils.jl")

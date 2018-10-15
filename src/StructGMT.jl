@@ -5,13 +5,18 @@ Struct: Topography output configuration
 mutable struct FigureSpec
     dir::String
     figdir::String
-    proj::String
+    J::String
+    R::String
     B::String
     V::Bool
     # Constructor
     Claw.FigureSpec() = new()
-    Claw.FigureSpec(dir,figdir,proj,B) = new(dir,figdir,proj,B,false)
-    Claw.FigureSpec(dir,figdir,proj,B,V) = new(dir,figdir,proj,B,V)
+    Claw.FigureSpec(dir,figdir,B) = new(dir,figdir,"Xd","",B,false)
+    Claw.FigureSpec(dir,figdir,B,V) = new(dir,figdir,"Xd","",B,V)
+    Claw.FigureSpec(dir,figdir,J,B) = new(dir,figdir,J,"",B,false)
+    Claw.FigureSpec(dir,figdir,J,B,V) = new(dir,figdir,J,"",B,V)
+    Claw.FigureSpec(dir,figdir,J,R,B) = new(dir,figdir,J,R,B,false)
+    Claw.FigureSpec(dir,figdir,J,R,B,V) = new(dir,figdir,J,R,B,V)
 end
 #########################################
 

@@ -1,7 +1,6 @@
 ## Example: Case Hurricane Ike
 # by Takuya Miyashita
 # Doctoral student, Kyoto University, 2018
-if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
 if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
 using Claw
 

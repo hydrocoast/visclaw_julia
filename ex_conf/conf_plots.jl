@@ -1,6 +1,4 @@
 ### Configuration for Plots
-if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
-
 ### chile2010
 dir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output");
 clim = (-0.5,0.5);

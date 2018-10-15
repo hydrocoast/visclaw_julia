@@ -1,11 +1,9 @@
-
-if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
-
-## chie2010
+## ike
 #### topography
 maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 figdir = "./fig/ike"
 proj = "X12d"
+region = ""
 B = "a10f10 neSW"
 V = true
 

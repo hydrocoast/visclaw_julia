@@ -1,11 +1,9 @@
-
-if !(@isdefined CLAW); include("./CLAWPATH.jl"); end
-
 ## chie2010
 #### topography
 maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 figdir = "./fig/chile2010"
 proj = "X10d"
+region = ""
 B = "a15f15 neSW"
 V = true
 
