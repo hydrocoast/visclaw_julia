@@ -39,9 +39,9 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
 
 end
 ################################################################################
-function surfaceall(conf::String="conf_surf.jl")
+function surfaceall(conf::String="./conf_surf.jl")
     include(conf)
-    figinfo = Claw.FigureSpec(maindir,figdir,proj,region,B,V)
+    figinfo = Claw.FigureSpec(maindir,proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)

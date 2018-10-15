@@ -1,11 +1,12 @@
 ## chie2010
+#### Output
+figdir = "./fig/chile2010"
 #### basic setup of figure
 maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-figdir = "./fig/chile2010"
-proj = "X10d"
-region = ""
-B = "a15f15 neSW"
-V = true
+proj = "X10d" # -J option
+region = "" # -R option
+B = "a15f15 neSW" # -B option
+V = true # -V option (verbose)
 
 ### colormap, colorbar
 cmap = :earth
@@ -24,3 +25,10 @@ coastpen = "0.01"
 landfill = ""
 seafill = ""
 coastV = false
+
+#### output option
+prefix=""
+start_number=0
+ext=".png"  # .ps, .eps, .png (, .svg, .gif)
+dpi=400 # only .png
+remove_old=true

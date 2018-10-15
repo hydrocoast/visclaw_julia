@@ -1,7 +1,8 @@
 ## ike
+#### Output
+figdir = "./fig/ike"
 #### basic setup of figure
 maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-figdir = "./fig/ike"
 proj = "X12d"
 region = ""
 B = "a15f15 neSW"
@@ -24,3 +25,10 @@ coastpen = "0.01"
 landfill = ""
 seafill = ""
 coastV = false
+
+#### output option
+prefix=""
+start_number=0
+ext=".png"  # .ps, .eps, .png (, .svg, .gif)
+dpi=400 # only .png
+remove_old=true
