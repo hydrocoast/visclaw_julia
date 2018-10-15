@@ -57,9 +57,13 @@ function ps2eps_series(nstep::Int64; outinfo::Claw.OutputSpec=Claw.OutputSpec())
         if !isfile(filename); println("Not found: $filename"); continue; end;
         # convert
         run(`ps2eps -f -q $filename`)
-        # remove .ps file
-        rm(filename)
     end
+    # remove .ps file
+    figdir=outinfo.figdir
+    prefix=outinfo.prefix
+    flist = joinpath.(figdir,filter(x->occursin(prefix,x), readdir(figdir)))
+    rm.(filter(x->occursin(".ps",x), flist))
+    # return
     return nothing
 end
 ###################################################
@@ -82,9 +86,15 @@ function eps2png_series(nstep::Int64; outinfo::Claw.OutputSpec=Claw.OutputSpec()
         if !isfile(filename); println("Not found: $filename"); continue; end;
         # convert
         run(`convert -density $dpi $filename $pngname`)
-        # remove .eps file if true
-        if !reserve; rm(filename); end
     end
+    # remove .eps file if true
+    if !reserve;
+        figdir=outinfo.figdir
+        prefix=outinfo.prefix
+        flist = joinpath.(figdir,filter(x->occursin(prefix,x), readdir(figdir)))
+        rm.(filter(x->occursin(".eps",x), flist))
+    end
+    # return
     return nothing
 end
 ###################################################

@@ -8,6 +8,16 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
     # GMT make cpt
     cpt = Claw.tilecpt(cptinfo.cmap, crange=cptinfo.crange, D=cptinfo.D, I=cptinfo.I, V=cptinfo.V, Z=cptinfo.Z)
 
+    # remove temporary files
+    if outinfo.remove_old
+        figdir=outinfo.figdir
+        prefix=outinfo.prefix
+        flist = joinpath.(figdir,filter(x->occursin(prefix,x), readdir(figdir)))
+        rm.(filter(x->occursin(".png",x), flist))
+        rm.(filter(x->occursin(".eps",x), flist))
+        rm.(filter(x->occursin(".ps",x), flist))
+    end
+
     # water surface elavation
     Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
     # Colorbar

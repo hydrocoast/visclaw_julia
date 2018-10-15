@@ -140,7 +140,7 @@ mutable struct OutputSpec
     figdir::String # save directory
     prefix::String # prefix for time-series plot
     start_number::Int64 # initial step number for time-series plot
-    ext::String # .ps, .eps, .png (.svg)
+    ext::String # .ps, .eps, .png (.svg, .gif)
     dpi::Int64 # only png case
     remove_old::Bool # remove old files if true
     # Constructor
