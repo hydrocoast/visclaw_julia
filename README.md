@@ -7,19 +7,19 @@ Please contact the author if you find a bug.
 ## Julia Packages
 - Julia v1.0.0
 - Plots
-- PyPlot  (GR is also available)
+- PyPlot
 
 ## Others  
 In order to make animations, the following softwares are necessary.  
-- bash
+- ImageMagick (convert)
 - ffmpeg
 
 # Usage Examples
-In preparation, set a variable `CLAW` in `CLAWPATH.jl`  
+In preparation, set a variable `CLAW` in `src/CLAWPATH.jl`  
 ```julia
 CLAW="../clawpack" # path to your clawpack directory
 ```
-This process can be skipped when OS is Linux.
+This process can be neglected when your OS is Linux.
 
 ## Chile 2010 Tsunami
 - execute the example of `chile2010` in your clawpack
@@ -52,28 +52,6 @@ include("./example_ike.jl")
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/fig/ike/allgauges.svg" width="480">
 </p>  
-
-## Easy Check
-`easycheck.jl` enables to scan quickly water surface elevation at certain times.
-```plain
-julia> include("./easycheck.jl")
-Input anything but integer if you want to exit.
-The final step: 19
-input the number (1 to 19) =
-```
-
-# Ongoing and Future Work
-`Plots` package has some [issues](https://github.com/JuliaPlots/Plots.jl/issues?utf8=%E2%9C%93&q=is%3Aissue%20is%3Aopen%20colorbar) on colorbar.  
-Further application and less dependence on the Plots can be expected by plotting with other packages.  
-This repo is now being developed so that figures can be pretty and drawn faster using [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).  
-
-<p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/fig/chile2010/topogmt.png", width="380">
-</p>  
-<p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/fig/ike/topogmt.png" width="550">
-</p>  
-
 
 # License
 BSD 3-Clause  
