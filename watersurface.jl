@@ -4,6 +4,14 @@
 if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
 using Claw
 
+include("./conf_surface.jl")
+figinfo = Claw.FigureSpec(maindir,figdir,proj,region,B,V)
+cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
+coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
+
+Claw.watersurface()
+
+#=
 using Printf: @printf, @sprintf
 using GMT:GMT
 
@@ -33,3 +41,4 @@ outdir = "./fig/chile2010"
     # Convert file format
     Claw.ps2eps_series(amrall.nstep)
     Claw.eps2png_series(amrall.nstep, reserve=false)
+=#

@@ -1,18 +1,16 @@
 ## ike
-#### topography
+#### basic setup of figure
 maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 figdir = "./fig/ike"
 proj = "X12d"
 region = ""
-B = "a10f10 neSW"
+B = "a15f15 neSW"
 V = true
 
 ### colormap, colorbar
 cmap = :earth
 crange = "-7000/4500"
-loc="BR"
-cbsize=(0.2,5.5) # width, length
-offset=(-1.0,0.0) # dx, dy
+Dscale="jBR+w5.5/0.2+o-1.0/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
 Bcb="a2000f1000/:\"(m)\":" # B option in psscale
 Dcb=true
 Icb=false

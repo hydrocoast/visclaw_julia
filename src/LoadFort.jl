@@ -5,7 +5,7 @@
 #################################
 ## Function: fort.qxxxx reader
 #################################
-function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::Float64)
+function LoadFortq(filename::String, ncol::Int; kw="surface"::String, params::Claw.param=Claw.param())
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -46,7 +46,7 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, eta0=0.0::
             vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
             bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
             vars[bath.<=0.0] .= NaN
-            vars = vars.-eta0
+            vars = vars.-params.eta0
             ## array
             amr[i] = Claw.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
         elseif kw=="storm"
@@ -97,7 +97,7 @@ end
 ## Function: LoadFortq and LoadFortt
 ##      time-series of water surface
 #######################################
-function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
+function LoadSurface(loaddir::String; kw="surface"::String)
 
     ## define the filepath & filename
     if kw=="surface"
@@ -117,6 +117,9 @@ function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
     if sum(idx)==0; error("File named $fnamekw was not found"); end
     flist = flist[idx]
 
+	# load geoclaw.data
+	params = Claw.GeoData(loaddir)
+
     ## the number of files
     nfile = length(flist)
     ## preallocate
@@ -129,7 +132,7 @@ function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
         if kw=="surface"
-            amr[it] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, eta0=eta0)
+            amr[it] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, params=params)
         elseif kw=="storm"
             amr[it] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
         end

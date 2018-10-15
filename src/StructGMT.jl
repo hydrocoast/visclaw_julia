@@ -44,9 +44,7 @@ Struct: Colorbar output configuration
 mutable struct ColorSpec
     cmap::Symbol
     crange::String
-    loc::String
-    cbsize::Tuple{Real,Real}
-    offset::Tuple{Real,Real}
+    Dscale::String
     B::String
     D::Bool
     I::Bool
@@ -54,10 +52,28 @@ mutable struct ColorSpec
     Z::Bool
     # Constructor
     Claw.ColorSpec() = new()
-    Claw.ColorSpec(cmap,crange,loc,cbsize,offset,B) = new(cmap,crange,loc,cbsize,offset,B,true,false,false,false)
-    Claw.ColorSpec(cmap,crange,loc,cbsize,offset,B,D) = new(cmap,crange,loc,cbsize,offset,B,D,false,false,false)
-    Claw.ColorSpec(cmap,crange,loc,cbsize,offset,B,D,I) = new(cmap,crange,loc,cbsize,offset,B,D,I,false,false)
-    Claw.ColorSpec(cmap,crange,loc,cbsize,offset,B,D,I,Z) = new(cmap,crange,loc,cbsize,offset,B,D,I,Z,false)
-    Claw.ColorSpec(cmap,crange,loc,cbsize,offset,B,D,I,Z,V) = new(cmap,crange,loc,cbsize,offset,B,D,I,Z,V)
+    Claw.ColorSpec(cmap,crange,Dscale,B) = new(cmap,crange,Dscale,B,true,false,false,false)
+    Claw.ColorSpec(cmap,crange,Dscale,B,D) = new(cmap,crange,Dscale,B,D,false,false,false)
+    Claw.ColorSpec(cmap,crange,Dscale,B,D,I) = new(cmap,crange,Dscale,B,D,I,false,false)
+    Claw.ColorSpec(cmap,crange,Dscale,B,D,I,Z) = new(cmap,crange,Dscale,B,D,I,Z,false)
+    Claw.ColorSpec(cmap,crange,Dscale,B,D,I,Z,V) = new(cmap,crange,Dscale,B,D,I,Z,V)
+end
+#########################################
+
+#########################################
+"""
+Struct: Output files configuration
+"""
+mutable struct OutputSpec
+    prefix::String
+    start_number::Int64
+    ext::String
+    remove_old::Bool
+    # Constructor
+    Claw.OutputSpec() = new("step",0,".eps",true)
+    Claw.OutputSpec(prefix) = new(prefix,0,".eps",true)
+    Claw.OutputSpec(prefix,start_number) = new(prefix,start_number,".eps",true)
+    Claw.OutputSpec(prefix,start_number,ext) = new(prefix,start_number,ext,true)
+    Claw.OutputSpec(prefix,start_number,ext,remove_old) = new(prefix,start_number,ext,remove_old)
 end
 #########################################

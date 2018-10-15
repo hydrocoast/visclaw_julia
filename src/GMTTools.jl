@@ -185,7 +185,7 @@ end
 """
 Generate cpt for Claw.Tiles
 """
-tilecpt(palette="polar"::String; crange="-1.0/1.0"::String, D=true, I=false, V=true, Z=false) =
+tilecpt(palette="polar"::Union{String,Symbol}; crange="-1.0/1.0"::String, D=true, I=false, V=true, Z=false) =
 Claw.geocpt(palette,crange=crange, D=D,I=I,V=V,Z=Z)
 ###################################################
 

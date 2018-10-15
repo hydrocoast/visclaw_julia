@@ -107,8 +107,8 @@ struct param
     n ::Float64 # manning coafficient
     dmin :: Float64 # dry tolerance
     # Constructor
-    Claw.param(cs,p0,R,eta0,n,dmin) =
-          new(cs,p0,R,eta0,n,dmin)
+    Claw.param() = new(2,101300.0,6367500.0,0.0,0.025,0.001)
+    Claw.param(cs,p0,R,eta0,n,dmin) = new(cs,p0,R,eta0,n,dmin)
 end
 ########################################
 

@@ -3,7 +3,7 @@ epsout_default = "topogmt.eps"
 """
 Draw Topography map in GMT
 """
-function GMTTopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; coastinfo::Claw.CoastSpec=Claw.CoastSpec(), fileout::String=epsout_default)
+function bathtopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; coastinfo::Claw.CoastSpec=Claw.CoastSpec(), fileout::String=epsout_default)
     # load
     topofile, _ = Claw.topodata(topoinfo.dir)
     geo = Claw.LoadTopo(topofile);
@@ -21,11 +21,13 @@ function GMTTopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; coastinfo::
 
     # draw topogpahy with colors
     Claw.TopoMap(geo, cpt, J=J, R=R, B=topoinfo.B, V=topoinfo.V)
+    #=
     # colorbar option
-    Dj= Claw.cboptDj(loc=cptinfo.loc, cbwid=cptinfo.cbsize[1], cblen=cptinfo.cbsize[2],
+    Dscale= Claw.cboptDj(loc=cptinfo.loc, cbwid=cptinfo.cbsize[1], cblen=cptinfo.cbsize[2],
                      xoff=cptinfo.offset[1],yoff=cptinfo.offset[2])
+    =#
     # set colorbar
-    Claw.Colorbar!(cpt, B=cptinfo.B, D=Dj, V=cptinfo.V)
+    Claw.Colorbar!(cpt, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
     # draw coastline if coastinfo.hascoast is true
     Claw.Coast!(coastinfo)
 
@@ -38,16 +40,16 @@ function GMTTopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; coastinfo::
     return geo, J, R, cpt
 end
 ###############################################################################################
-function GMTTopo(conf::String="conf_topo.jl"; fileout::String=epsout_default)
+function bathtopo(conf::String="conf_topo.jl"; fileout::String=epsout_default)
     # load configuration - FigureSpec
     include(conf)
     topoinfo = Claw.FigureSpec(maindir,figdir,proj,region,B,V)
-    cptinfo = Claw.ColorSpec(cmap,crange,loc,cbsize,offset,Bcb,Dcb,Icb,Vcb,Zcb)
+    cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     # Draw
-    geo, J, R, cpt = Claw.GMTTopo(topoinfo, cptinfo, coastinfo=coastinfo, fileout=fileout)
+    geo, J, R, cpt = Claw.bathtopo(topoinfo, cptinfo, coastinfo=coastinfo, fileout=fileout)
 
     # return value
-    return geo, J, R, cpt
+    return topoinfo, cptinfo, coastinfo
 end
 ###############################################################################################

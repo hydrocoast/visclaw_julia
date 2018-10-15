@@ -32,6 +32,7 @@ include("StructGMT.jl")
 include("PScmd.jl")
 include("GMTTools.jl")
 include("GMTDraw.jl")
-include("GMTTopo.jl")
+include("bathtopo.jl")
+#include("surfaceall.jl")
 
 end

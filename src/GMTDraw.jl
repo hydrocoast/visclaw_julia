@@ -48,6 +48,7 @@ end
 ######################################################################
 
 
+######################################################################
 """
 Set colorbar to default ps file
 """
@@ -83,6 +84,7 @@ function ColorbarPS!(filename::String, cpt::GMT.GMTcpt; B=""::String, D=""::Stri
 end
 ######################################################################
 
+######################################################################
 """
 place tiltle to specified psfile
 """
@@ -102,17 +104,10 @@ function TitlePS!(filename::String, titlestr::String; font=titlefont_default,
     # GMT script
     GMT.gmt("psbasemap -J -R -Ba -Bnesw+t\"$titlestr\" $opt -K -P -O $fontopt $offsetopt >> $filename")
     return nothing
-    #if !isempty(fontsize)
-    #    GMT.gmt("gmtset FONT_TITLE $font")
-    #end
-    #if !isempty(fontsize)
-    #    run(`rm -f gmt.conf`)
-    #end
 end
 ######################################################################
 
-
-
+######################################################################
 """
 Draw the spatial distribution of sea surface elevation in a snapshot
 """
@@ -151,6 +146,8 @@ function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; savedir="."::String, savename=
     return nothing
 end
 ######################################################################
+
+######################################################################
 function AMRCoast!(amrs::Claw.AMR; savedir="."::String, savename="eta"::String,
                    J=""::String, R=""::String, D="i", G=""::String, S=""::String,
                    W=pen_default::String, V=true::Bool)
@@ -164,6 +161,8 @@ function AMRCoast!(amrs::Claw.AMR; savedir="."::String, savename="eta"::String,
     # end (return nothing)
     return nothing
 end
+######################################################################
+
 ######################################################################
 function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt;
                       savedir="."::String, savename="eta"::String,
@@ -180,6 +179,7 @@ function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt;
 
 end
 ######################################################################
+
 ######################################################################
 function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; font=titlefont_default,
                    offset=titleoffset_default, savedir="."::String, savename="eta"::String, V=true::Bool)
