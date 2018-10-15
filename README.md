@@ -5,11 +5,13 @@ Please contact the author if you find a bug.
 
 # Requirements
 ## Julia Packages
-- Julia v1.0.0
-- Plots
-- PyPlot
+- [Julia](https://github.com/JuliaLang/julia) v1.0.0
+- [Plots](https://github.com/JuliaPlots/Plots.jl)
+- [PyPlot](https://github.com/JuliaPy/PyPlot.jl)
+- [GMT](https://github.com/GenericMappingTools/GMT.jl)
 
 ## Others  
+- [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)
 In order to make animations, the following softwares are necessary.  
 - ImageMagick (convert)
 - ffmpeg
