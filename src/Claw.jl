@@ -11,7 +11,7 @@ using Printf
 using Dates
 using Interpolations
 
-include("DefStructs.jl")
+include("StructClaw.jl")
 include("Data.jl")
 include("Utils.jl")
 include("LoadTopo.jl")
@@ -20,12 +20,15 @@ include("LoadGauge.jl")
 
 using Plots:Plots
 Plots.pyplot()
+include("StructPlots.jl")
 include("PlotTools.jl")
+include("easycheck.jl")
 
 using GMT:GMT
+include("StructGMT.jl")
 include("PScmd.jl")
 include("GMTTools.jl")
 include("GMTDraw.jl")
-
+include("GMTTopo.jl")
 
 end

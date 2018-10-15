@@ -50,17 +50,43 @@ end
 """
 Determine J option
 """
-function geoJ(geo::Claw.geometry; proj_base="Xd"::String, fwidth=10::Real, fheight=empty([],Real)::Real)
-    # projection and width
-    if isempty(fheight)
-      fheight = Claw.axratio(geo, fwidth)
+#function geoJ(geo::Claw.geometry; proj_base="Xd"::String, fwidth=10::Real, fheight=empty([],Real)::Real)
+function geoJ(geo::Claw.geometry; proj_base="X10d"::String)
+    # find projection specifier
+    J1 = match(r"^([a-zA-Z]+)", proj_base)
+    J2 = match(r"([a-zA-Z]+).+?([a-zA-Z]+)", proj_base)
+    if J1 === nothing
+        error("Invald argument proj_base: $proj_base")
     end
-    if length(proj_base)==1
-        proj=proj_base*"$fwidth"*"/$fheight"
-    elseif length(proj_base)==2
-        proj=proj_base[1]*"$fwidth"*proj_base[2]*"/$fheight"*proj_base[2]
+
+    # assign figure width
+    # check whether variable proj_base contains any number
+    regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
+    chkwidth = match(regex, proj_base)
+    if chkwidth === nothing
+        fwidth=10
     else
-        error("Unknown -J option was specified")
+        fwidth = parse(Float64, chkwidth.captures[1])
+    end
+    # assign figure height
+    # check whether variable proj_base contains the height
+    regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?).+?([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
+    chkheight = match(regex, proj_base)
+    if chkheight === nothing
+        fheight = Claw.axratio(geo, fwidth)
+    else
+        fheight = parse(Float64, chkheight.captures[2])
+    end
+
+    # generation of J option
+    if occursin("/",proj_base) && chkheight !== nothing
+        proj = proj_base
+    else
+        if J2 === nothing
+            proj=J1.captures[1]*"$fwidth"*"/$fheight"
+        else
+            proj=J1.captures[1]*"$fwidth"*J2.captures[2]*"/$fheight"*J2.captures[2]
+        end
     end
     # return value
     return proj

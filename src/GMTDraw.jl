@@ -18,12 +18,20 @@ function TopoMap(geo::Claw.geometry, cpt::GMT.GMTcpt; J=""::String, R=""::String
 end
 ######################################################################
 
+######################################################################
 """
 Draw coastalline to default ps file
 """
 function Coast!(; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
                 W=pen_default::String, V=true::Bool)
     GMT.coast!(J=J,R=R,D=D,G=G,S=S,W=W,V=V)
+    return nothing
+end
+######################################################################
+function Coast!(coastinfo::Claw.CoastSpec)
+    if coastinfo.hascoast
+        Claw.Coast!(D=coastinfo.D,G=coastinfo.G,S=coastinfo.S,W=coastinfo.W,V=coastinfo.V)
+    end
     return nothing
 end
 ######################################################################

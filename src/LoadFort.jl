@@ -106,6 +106,8 @@ function LoadSurface(loaddir::String; kw="surface"::String, eta0=0.0::Float64)
     elseif kw=="storm"
         fnamekw = "fort.a0"
         col=5
+	else
+		error("Invalid input argument kw: $kw")
     end
 
     ## make a list
