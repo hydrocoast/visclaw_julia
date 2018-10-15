@@ -126,8 +126,11 @@ function SurfTiles!(Gall::Vector{GMT.GMTgrid}, cpt::GMT.GMTcpt; J=""::String, R=
     return nothing
 end
 ######################################################################
-function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; savedir="."::String, savename="eta"::String,
-                    J=""::String, R=""::String, B=""::String, Q=true, V=true::Bool, bgc="white"::String)
+function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
+                 J=""::String, R=""::String, B=""::String, Q=true, V=true::Bool, bgc="white"::String)
+    # prefix
+    prefix=joinpath(outinfo.figdir,outinfo.prefix)
+    # plot every step
     for i = 1:amrs.nstep
         # basemap
         GMT.basemap(J=J, R=R, B="af nesw+g$bgc", V=V)
@@ -139,7 +142,7 @@ function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; savedir="."::String, savename=
         # add frame if exists
         if !isempty(B); GMT.basemap!(J="", R="", B=B, V=V); end;
         # filename
-        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
+        filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
         # move ps tile
         Claw.moveps(filename)
     end
@@ -148,14 +151,16 @@ end
 ######################################################################
 
 ######################################################################
-function AMRCoast!(amrs::Claw.AMR; savedir="."::String, savename="eta"::String,
+function AMRCoast!(amrs::Claw.AMR; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
                    J=""::String, R=""::String, D="i", G=""::String, S=""::String,
                    W=pen_default::String, V=true::Bool)
+    # prefix
+    prefix=joinpath(outinfo.figdir,outinfo.prefix)
     # each figure
     for i = 1:amrs.nstep
         # filename
-        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
-        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
+        if !isfile(filename); println("Not found: $filename"); continue; end;
         Claw.CoastPS!(filename,J=J,R=R,D=D,G=G,S=S,W=W,V=V)
     end
     # end (return nothing)
@@ -164,14 +169,15 @@ end
 ######################################################################
 
 ######################################################################
-function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt;
-                      savedir="."::String, savename="eta"::String,
+function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
                       B=""::String, D=""::String, V=true::Bool)
+    # prefix
+    prefix=joinpath(outinfo.figdir,outinfo.prefix)
     # each figure
     for i = 1:amrs.nstep
         # filename
-        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
-        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
+        if !isfile(filename); println("Not found: $filename"); continue; end;
         Claw.ColorbarPS!(filename, cpt, B=B,D=D,V=V)
     end
     # end (return nothing)
@@ -181,8 +187,10 @@ end
 ######################################################################
 
 ######################################################################
-function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; font=titlefont_default,
-                   offset=titleoffset_default, savedir="."::String, savename="eta"::String, V=true::Bool)
+function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
+                   font=titlefont_default, offset=titleoffset_default,  V=true::Bool)
+    # prefix
+    prefix=joinpath(outinfo.figdir,outinfo.prefix)
     if amrs.nstep != length(title)
         error("Incorrect size")
         return nothing
@@ -190,8 +198,8 @@ function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; font=titlefont_default
     # each figure
     for i = 1:amrs.nstep
         # filename
-        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
-        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
+        if !isfile(filename); println("Not found: $filename"); continue; end;
         Claw.TitlePS!(filename, title[i], font=font, V=V)
     end
     # end (return nothing)

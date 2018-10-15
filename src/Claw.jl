@@ -33,6 +33,6 @@ include("PScmd.jl")
 include("GMTTools.jl")
 include("GMTDraw.jl")
 include("bathtopo.jl")
-#include("surfaceall.jl")
+include("surfaceall.jl")
 
 end

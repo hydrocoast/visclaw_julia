@@ -59,21 +59,3 @@ mutable struct ColorSpec
     Claw.ColorSpec(cmap,crange,Dscale,B,D,I,Z,V) = new(cmap,crange,Dscale,B,D,I,Z,V)
 end
 #########################################
-
-#########################################
-"""
-Struct: Output files configuration
-"""
-mutable struct OutputSpec
-    prefix::String
-    start_number::Int64
-    ext::String
-    remove_old::Bool
-    # Constructor
-    Claw.OutputSpec() = new("step",0,".eps",true)
-    Claw.OutputSpec(prefix) = new(prefix,0,".eps",true)
-    Claw.OutputSpec(prefix,start_number) = new(prefix,start_number,".eps",true)
-    Claw.OutputSpec(prefix,start_number,ext) = new(prefix,start_number,ext,true)
-    Claw.OutputSpec(prefix,start_number,ext,remove_old) = new(prefix,start_number,ext,remove_old)
-end
-#########################################

@@ -46,13 +46,19 @@ end
 """
 Convert ps files to eps files
 """
-function ps2eps_series(nstep::Int64; savedir="."::String, savename="eta"::String)
+function ps2eps_series(nstep::Int64; outinfo::Claw.OutputSpec=Claw.OutputSpec())
+    # prefix
+    prefix=joinpath(outinfo.figdir,outinfo.prefix)
+    # each step
     for i = 1:nstep
         # filename
-        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".ps"
-        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
+        # check
+        if !isfile(filename); println("Not found: $filename"); continue; end;
+        # convert
         run(`ps2eps -f -q $filename`)
-        run(`rm $filename`)
+        # remove .ps file
+        rm(filename)
     end
     return nothing
 end
@@ -62,17 +68,23 @@ end
 """
 Convert eps files to ong file
 """
-function eps2png_series(nstep::Int64; reserve=true::Bool,
-                 savedir="."::String, savename="eta"::String, dpi=400::Int64)
+function eps2png_series(nstep::Int64; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
+                        reserve=false::Bool)
+    # prefix
+    prefix=joinpath(outinfo.figdir,outinfo.prefix)
+    dpi = outinfo.dpi
+    # each step
     for i = 1:nstep
         # filename
-        filename = joinpath(savedir,savename)*@sprintf("%03d",i-1)*".eps"
+        filename = prefix*@sprintf("%03d",i-1+outinfo.start_number)*".eps"
         pngname = replace(filename, r"\.eps" => ".png")
-        if !isfile(filename); disp("Not found: $filename"); continue; end;
+        # check
+        if !isfile(filename); println("Not found: $filename"); continue; end;
+        # convert
         run(`convert -density $dpi $filename $pngname`)
-        if !reserve;
-            run(`rm $filename`)
-        end
+        # remove .eps file if true
+        if !reserve; rm(filename); end
     end
     return nothing
 end
+###################################################

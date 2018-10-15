@@ -131,3 +131,23 @@ struct gauge
     Claw.gauge(label,id,nt,loc,AMRlevel,time,eta,aux)= new(label,id,nt,loc,AMRlevel,time,eta,aux)
 end
 ########################################
+
+#########################################
+"""
+Struct: Output files configuration
+"""
+mutable struct OutputSpec
+    figdir::String # save directory
+    prefix::String # prefix for time-series plot
+    start_number::Int64 # initial step number for time-series plot
+    ext::String # .ps, .eps, .png (.svg)
+    dpi::Int64 # only png case
+    remove_old::Bool # remove old files if true
+    # Constructor
+    Claw.OutputSpec() = new(".","step",0,".eps",400,true)
+    Claw.OutputSpec(figdir,prefix) = new(figdir,prefix,0,".eps",400,true)
+    Claw.OutputSpec(figdir,prefix,start_number) = new(figdir,prefix,start_number,".eps",400,true)
+    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi) = new(figdir,prefix,start_number,ext,400,true)
+    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old) = new(figdir,prefix,start_number,ext,dpi,remove_old)
+end
+#########################################

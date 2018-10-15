@@ -2,9 +2,9 @@
 maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 figdir = "./fig/chile2010"
 proj = "X10d"
-region = ""
+region = "-120/-60/-60/0"
 B = "a15f15 neSW"
-V = true
+V = false
 
 ### colormap, colorbar
 cmap = :polar
@@ -25,7 +25,9 @@ seafill = ""
 coastV = false
 
 #### output option
+# figdir = #
 prefix="eta"
-ext=".eps"
 start_number=0
+ext=".png"
+dpi=400
 remove_old=true

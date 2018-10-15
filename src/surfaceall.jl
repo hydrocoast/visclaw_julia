@@ -1,4 +1,5 @@
-function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec ;
+################################################################################
+function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
                     coastinfo::Claw.CoastSpec=Claw.CoastSpec(), outinfo::Claw.OutputSpec=Claw.OutputSpec())
     # Free water surface
     # load
@@ -8,16 +9,35 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec ;
     cpt = Claw.tilecpt(cptinfo.cmap, crange=cptinfo.crange, D=cptinfo.D, I=cptinfo.I, V=cptinfo.V, Z=cptinfo.Z)
 
     # water surface elavation
-    Claw.AMRSurf(amrall, cpt, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
+    Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
     # Colorbar
-    Claw.AMRColorbar!(amrall, cpt, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
+    Claw.AMRColorbar!(amrall, cpt, outinfo=outinfo, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
     # Coastline
     if coastinfo.hascoast
-        Claw.AMRCoast!(amrall, R=figinfo.R, G=coastinfo.G, V=coastinfo.V);
+        Claw.AMRCoast!(amrall, outinfo=outinfo, R=figinfo.R, G=coastinfo.G, V=coastinfo.V);
     end
     # Time
-    Claw.AMRTitle!(amrall, titlestr, V=figinfo.V)
+    Claw.AMRTitle!(amrall, outinfo=outinfo, titlestr, V=figinfo.V)
     # Convert file format
-    Claw.ps2eps_series(amrall.nstep)
-    Claw.eps2png_series(amrall.nstep, reserve=false)
+    if outinfo.ext == ".eps" || outinfo.ext == ".png"
+        Claw.ps2eps_series(amrall.nstep, outinfo=outinfo)
+    end
+    if outinfo.ext == ".png"
+        Claw.eps2png_series(amrall.nstep, outinfo=outinfo, reserve=false)
+    end
+    # return value
+
 end
+################################################################################
+function surfaceall(conf::String="conf_surf.jl")
+    include(conf)
+    figinfo = Claw.FigureSpec(maindir,figdir,proj,region,B,V)
+    cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
+    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
+    coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
+    # draw
+    Claw.surfaceall(figinfo,cptinfo,coastinfo=coastinfo,outinfo=outinfo)
+    # return value
+    return figinfo, cptinfo, outinfo, coastinfo
+end
+################################################################################
