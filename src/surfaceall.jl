@@ -30,11 +30,15 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo:
     # Time
     Claw.AMRTitle!(amrall, outinfo=outinfo, titlestr, V=figinfo.V)
     # Convert file format
-    if outinfo.ext == ".eps" || outinfo.ext == ".png"
+    ### .ps => .eps => .png => .gif
+    if outinfo.ext != ".ps"
         Claw.ps2eps_series(amrall.nstep, outinfo=outinfo)
-    end
-    if outinfo.ext == ".png"
-        Claw.eps2png_series(amrall.nstep, outinfo=outinfo, reserve=false)
+        if outinfo.ext != ".eps"
+            Claw.eps2png_series(amrall.nstep, outinfo=outinfo, reserve=false)
+            if outinfo.ext != ".png"
+                Claw.makegif(outinfo)
+            end
+        end
     end
     # return value
     return amrall
@@ -44,12 +48,20 @@ function surfaceall(conf::String="./conf_surf.jl")
     include(conf)
     figinfo = Claw.FigureSpec(maindir,proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
-    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
+    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     timeinfo = Claw.TimeSpec(origin,format)
     # draw
-    amrall = Claw.surfaceall(figinfo,cptinfo,coastinfo=coastinfo,outinfo=outinfo,timeinfo=timeinfo)
+    amrall = Claw.surfaceall(figinfo,cptinfo,outinfo=outinfo,coastinfo=coastinfo,timeinfo=timeinfo)
     # return value
     return amrall, figinfo, cptinfo, outinfo, coastinfo, timeinfo
 end
 ################################################################################
+function surfacegif(conf::String="./conf_surf.jl")
+    include(conf)
+    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
+    # make animation
+    Claw.makegif(outinfo)
+    # return value
+    return outinfo
+end

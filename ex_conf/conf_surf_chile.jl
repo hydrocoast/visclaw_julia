@@ -28,10 +28,15 @@ coastV = false
 #### output option
 prefix="eta"
 start_number=0
-ext=".png"  # .ps, .eps, .png (, .svg, .gif)
+ext=".gif"  # .ps, .eps, .png (, .svg, .gif)
 dpi=400 # only .png
 remove_old=true
+fps=4 # only gif
 
 ### Time
-origin = "hour" # time origin or unit in String
-format = "%5.1f" # format
+#origin = "minute" # time origin or unit in String
+#format = "%5.0f" # format
+#origin = DateTime("2010-02-27T08:01:23")
+#format = "yyyy/mm/dd HH:MM" # format
+origin = DateTime(2000,1,1)
+format = "HH:MM:SS" # format

@@ -98,3 +98,30 @@ function eps2png_series(nstep::Int64; outinfo::Claw.OutputSpec=Claw.OutputSpec()
     return nothing
 end
 ###################################################
+
+###################################################
+"""
+Make .gif animation from png
+"""
+function makegif(outinfo::Claw.OutputSpec)
+    # prefix
+    prefix = joinpath(outinfo.figdir,outinfo.prefix)
+    fps = outinfo.fps
+    filet0 = prefix*@sprintf("%03d",outinfo.start_number)*".png"
+    # check
+    if !isfile(filet0);
+        println("Initial step $filet0  was not found");
+        return nothing
+    end
+    # remove if old file exists
+    giffile = prefix*".gif"
+    if isfile(giffile); rm(giffile); end
+    ## make an animation
+    run(`ffmpeg -i $prefix%03d.png -vf palettegen palette.png`)
+    run(`ffmpeg -y -r $fps -i $prefix%03d.png -i palette.png -filter_complex paletteuse $giffile`)
+    rm("palette.png")
+
+    # return
+    return nothing
+end
+###################################################

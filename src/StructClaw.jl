@@ -156,15 +156,16 @@ mutable struct OutputSpec
     prefix::String # prefix for time-series plot
     start_number::Int64 # initial step number for time-series plot
     ext::String # .ps, .eps, .png (.svg, .gif)
-    dpi::Int64 # only png case
+    dpi::Int64 # only .png and .gif
+    fps::Int64 # only .gif
     remove_old::Bool # remove old files if true
     # Constructor
-    Claw.OutputSpec() = new(".","step",0,".eps",400,true)
-    Claw.OutputSpec(figdir) = new(figdir,"step",0,".eps",400,true)
-    Claw.OutputSpec(figdir,prefix) = new(figdir,prefix,0,".eps",400,true)
-    Claw.OutputSpec(figdir,prefix,start_number) = new(figdir,prefix,start_number,".eps",400,true)
-    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi) = new(figdir,prefix,start_number,ext,400,true)
-    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old) = new(figdir,prefix,start_number,ext,dpi,remove_old)
+    Claw.OutputSpec() = new(".","step",0,".eps",400,4,true)
+    Claw.OutputSpec(figdir) = new(figdir,"step",0,".eps",400,4,true)
+    Claw.OutputSpec(figdir,prefix) = new(figdir,prefix,0,".eps",400,4,true)
+    Claw.OutputSpec(figdir,prefix,start_number) = new(figdir,prefix,start_number,".eps",400,4,true)
+    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi) = new(figdir,prefix,start_number,ext,dpi,4,true)
+    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old) = new(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 end
 #########################################
 

@@ -139,10 +139,13 @@ Vector{Float64} in second to Vector{String} (second, hour, day)
 function sec2str(timelap::Vector{Float64}, unit="hour"::String; fmt="")
     sprintf(f,x) = @eval @sprintf($f, $x)
     if unit=="second"
-        if isempty(fmt); fmt="%0.1f"; end;
+        if isempty(fmt); fmt="%0.0f"; end;
         fmtstr=fmt*" s"
-        #strs = map(i-> @eval @sprintf($fmtstr,$i), timelap);
         strs = map(i-> sprintf(fmtstr,i), timelap);
+    elseif unit=="minute"
+        if isempty(fmt); fmt="%5.0f"; end;
+        fmtstr=fmt*" min"
+        strs = map(i-> sprintf(fmtstr,i), timelap./60);
     elseif unit=="hour"
         if isempty(fmt); fmt="%5.2f"; end;
         fmtstr=fmt*" h"

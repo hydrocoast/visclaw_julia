@@ -32,6 +32,7 @@ start_number=0
 ext=".png"  # .ps, .eps, .png (, .svg, .gif)
 dpi=400 # only .png
 remove_old=true
+fps=4
 
 ### Time
 origin = Dates.DateTime(2008,1,1) # time origin or unit in String
