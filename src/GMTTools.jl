@@ -113,7 +113,7 @@ function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=
     end
     cpt = GMT.gmt("read -Tc $tmpcpt")
     # remove tmp
-    run(`rm -f $tmpcpt`)
+    rm(tmpcpt)
     # return cpt
     return cpt
 end

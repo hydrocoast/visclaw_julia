@@ -34,6 +34,12 @@ function bathtopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
     # draw coastline if coastinfo.hascoast is true
     Claw.Coast!(coastinfo)
 
+    # remove temporary files
+    if outinfo.remove_old
+        figdir=outinfo.figdir
+        flist = joinpath.(figdir,filter(x->occursin(fileout,x), readdir(figdir)))
+        rm.(flist)
+    end
     # output
     output = joinpath(outinfo.figdir,fileout*outinfo.ext)
     if outinfo.ext == ".ps"
@@ -59,7 +65,7 @@ function bathtopo(conf::String="./conf_topo.jl"; fileout::String=output_default)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     # Draw
-    geo, J, R, cpt = Claw.bathtopo(topoinfo, cptinfo, outinfo=outinfo, coastinfo=coastinfo, fileout=fileout)
+    _, topoinfo.J, topoinfo.R, _ = Claw.bathtopo(topoinfo, cptinfo, outinfo=outinfo, coastinfo=coastinfo, fileout=fileout)
 
     # return value
     return topoinfo, cptinfo, outinfo, coastinfo
