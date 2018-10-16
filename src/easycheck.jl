@@ -7,12 +7,12 @@ function easycheck(pltspec::Claw.PlotsSpec)
     return amrall, plt
 end
 
-function easycheck(specfile::String="conf_plots.jl")
-    if !isfile(specfile);
+function easycheck(conf::String="conf_plots.jl")
+    if !isfile(conf);
         error("File $specfile is not found")
     end
-    include(specfile)
-    pltspec = Claw.PlotsSpec(dir,cmap,clim,varname)
+    include(conf)
+    pltspec = Claw.PlotsSpec(maindir,cmap,clim)
     amrall, plt = Claw.easycheck(pltspec)
     # return value(s)
     return amrall, plt
