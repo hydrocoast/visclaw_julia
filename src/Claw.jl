@@ -26,6 +26,7 @@ Plots.pyplot()
 include("StructPlots.jl")
 include("PlotsTools.jl")
 include("PlotsTopo.jl")
+include("PlotsDeform.jl")
 include("easycheck.jl")
 
 using GMT:GMT

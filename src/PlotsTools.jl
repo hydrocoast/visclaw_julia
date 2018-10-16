@@ -246,19 +246,6 @@ end
 SLPbyStep(amrs::Claw.AMR; clim=slp_default, cmap::Symbol=slpcmap_default) =
 SurfacebyStep(amrs,clim=clim,cmap=cmap)
 
-
-###########################################################
-## Function: plot searfloor deformation in 2D, contourf
-###########################################################
-function PlotDeform!(plt,dtopo::Claw.dtopo; clim=(), cmap::Symbol=:coolwarm)
-    plt = Plots.contourf!(plt,dtopo.x, dtopo.y, dtopo.deform, ratio=:equal, c=cmap, clims=clim)
-    return plt
-end
-###########################################################
-PlotDeform(dtopo::Claw.dtopo; clim=(), cmap=:coolwarm::Symbol) =
-PlotDeform!(Plots.plot(), dtopo, clim=clim, cmap=cmap)
-###########################################################
-
 ###########################################
 ## Function: plot coastal lines
 ###########################################
