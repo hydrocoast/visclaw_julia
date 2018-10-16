@@ -6,21 +6,6 @@ using Claw
 fdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 outdir = "./fig/ike"
 
-using Printf: @printf, @sprintf
-using Plots; Plots.pyplot()
-
-
-# Topography
-    # load
-    topofile, _ = Claw.topodata(fdir)
-    geo = Claw.LoadTopo(topofile);
-    Plots.clibrary(:cmocean)
-    # plot
-    plt = Claw.PlotTopo(geo, clim=(-4000,4000))
-    Plots.plot!(plt,show=true)
-    # save
-    Plots.savefig(plt, joinpath(outdir,"topo.svg"))
-
 # Free water surface
     # load
     amrall = Claw.LoadSurface(fdir)

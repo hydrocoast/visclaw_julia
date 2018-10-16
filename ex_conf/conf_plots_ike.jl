@@ -3,8 +3,8 @@ figdir = "./fig/ike"
 #### basic setup of figure
 maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 # color range and color palette
-cmap_surf=:coolwarm
-clim_surf = (-0.5,0.5);
+cmap_surf=:rainbow
+clim_surf = (0.0,2.0);
 # color range and color palette
 cmap_topo =:delta
 clim_topo = (-6000,6000);

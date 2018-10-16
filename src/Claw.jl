@@ -11,31 +11,39 @@ using Printf
 using Dates
 using Interpolations
 
+# define CLAW path from shell
 include("./CLAWPATH.jl")
 export CLAW
 
+# define structs and basic functions
 include("StructClaw.jl")
 include("Data.jl")
 include("Utils.jl")
+# Load
 include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
+# File convert for output
 include("ConvertFiles.jl")
 
 using Plots:Plots
 Plots.pyplot()
+# Setup
 include("StructPlots.jl")
 include("PlotsTools.jl")
+# Plots
+include("PlotsCheck.jl")
 include("PlotsTopo.jl")
 include("PlotsDeform.jl")
 include("PlotsGauge.jl")
-include("easycheck.jl")
 
 using GMT:GMT
+# Setup
 include("StructGMT.jl")
 include("GMTTools.jl")
 include("GMTDraw.jl")
-include("bathtopo.jl")
-include("surfaceall.jl")
+# make figures with GMT
+include("GMTTopo.jl")
+include("GMTSurfaceAll.jl")
 
 end
