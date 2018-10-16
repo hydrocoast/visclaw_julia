@@ -1,4 +1,3 @@
-## ike
 #### Output
 figdir = "./fig/ike"
 #### basic setup of figure

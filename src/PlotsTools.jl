@@ -352,6 +352,12 @@ end
 Convert svg files to png file
 """
 function savePlots(plt::Plots.Plot, svgfile::String, outinfo::Claw.OutputSpec)
+    # check
+	if !(outinfo.ext == ".svg" || outinfo.ext == ".png")
+		println("The figure was not printed")
+		return nothing
+    end
+
     outpng = replace(svgfile, ".svg" => ".png")
 	# remove old files if exist
 	if outinfo.remove_old

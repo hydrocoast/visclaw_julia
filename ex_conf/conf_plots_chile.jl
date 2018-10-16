@@ -1,7 +1,6 @@
-### Configuration for Plots
-##### output option
+#### Output
 figdir = "./fig/chile2010"
-## chile2010
+#### basic setup of figure
 maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output");
 # color range and color palette
 cmap_surf=:coolwarm
@@ -12,7 +11,6 @@ clim_topo = (-6000,6000);
 # color range and color palette
 cmap_dtopo =:coolwarm
 clim_dtopo = (-3.0,3.0);
-
 
 ### Axes
 xlabel = "Longitude"

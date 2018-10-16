@@ -11,9 +11,7 @@ mutable struct FigureSpec
     # Constructor
     Claw.FigureSpec() = new()
     Claw.FigureSpec(dir,B) = new(dir,"Xd","",B,false)
-    Claw.FigureSpec(dir,B,V) = new(dir,"Xd","",B,V)
     Claw.FigureSpec(dir,J,B) = new(dir,J,"",B,false)
-    Claw.FigureSpec(dir,J,B,V) = new(dir,J,"",B,V)
     Claw.FigureSpec(dir,J,R,B) = new(dir,J,R,B,false)
     Claw.FigureSpec(dir,J,R,B,V) = new(dir,J,R,B,V)
 end

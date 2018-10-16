@@ -26,18 +26,6 @@ lw = 1.0
 lc = :auto
 ls = :solid
 
-#=
-### gauges
-#gaugeobs = []
-nobs = 1 # the number of observation gauge data
-gaugeobs = Vector{Claw.gauge}(undef,nobs)
-# gauge 32412
-obsfile=joinpath(maindir,"../32412_notide.txt")
-obs = readdlm(obsfile)
-# Constructor, gauge(label,id,nt,loc,time,eta)
-gaugeobs[1]=Claw.gauge("Gauge 32412 Obs.",32412,size(obs,1),gauges[1].loc,obs[:,1],obs[:,2])
-=#
-
 #### output option
 prefix="eta"
 start_number=0
