@@ -10,7 +10,7 @@ Please contact the author if you find a bug.
 - [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl)
 - [GMT.jl](https://github.com/GenericMappingTools/GMT.jl)
 
-## Others  
+## Other Softwares  
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
 In order to make animations, the following softwares are necessary.  

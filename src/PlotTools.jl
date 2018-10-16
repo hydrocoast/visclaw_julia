@@ -8,7 +8,7 @@ etacmap_default = :coolwarm
 ######################################
 ## Function: filled contour
 ######################################
-function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
+function PlotsAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
 	# check arg
     if isdefined(tiles[1], :eta)
 		var = :eta
@@ -64,14 +64,14 @@ function DrawAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
     return plt
 end
 ######################################
-DrawAMR2D(tiles; clim=(), cmap=etacmap_default::Symbol) =
-DrawAMR2D!(Plots.plot(), tiles, clim=clim, cmap=cmap)
+PlotsAMR2D(tiles; clim=(), cmap=etacmap_default::Symbol) =
+PlotsAMR2D!(Plots.plot(), tiles, clim=clim, cmap=cmap)
 ######################################
-DrawSLP!(plt, tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
-DrawAMR2D!(plt, tiles, clim=clim, cmap=cmap)
+PlotsSLP!(plt, tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
+PlotsAMR2D!(plt, tiles, clim=clim, cmap=cmap)
 ######################################
-DrawSLP(tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
-DrawSLP!(Plots.plot(), tiles, clim=clim, cmap=cmap)
+PlotsSLP(tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
+PlotsSLP!(Plots.plot(), tiles, clim=clim, cmap=cmap)
 ######################################
 
 #######################################
@@ -164,9 +164,9 @@ function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, g
                         clim=(), cmap=etacmap_default)
     ## check arg
 	if isdefined(amrs.amr[1][1], :eta)
-		DrawFunc=Claw.DrawAMR2D
+		DrawFunc=Claw.PlotsAMR2D
 	elseif isdefined(amrs.amr[1][1], :slp)
-		DrawFunc=Claw.DrawSLP
+		DrawFunc=Claw.PlotsSLP
 	end
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amrs.nstep)
@@ -198,9 +198,9 @@ end
 function SurfacebyStep(amrs::Claw.AMR; clim=(), cmap::Symbol=etacmap_default)
     ## check arg
 	 if isdefined(amrs.amr[1][1], :eta)
-		 DrawFunc=Claw.DrawAMR2D
+		 DrawFunc=Claw.PlotsAMR2D
 	 elseif isdefined(amrs.amr[1][1], :slp)
-		 DrawFunc=Claw.DrawSLP
+		 DrawFunc=Claw.PlotsSLP
 	 end
 
     ### display the number of final step
