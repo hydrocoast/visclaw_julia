@@ -40,7 +40,7 @@ include("watersurface_GMT.jl")
 </p>  
 
 Detailed figure configurations are described in `ex_conf/conf_topo_chile.jl` and `ex_conf/conf_surf_chile.jl`.  
-You can make figures which meet your requirements by editing these `conf_*.jl` files, also in case of other simulations.  
+You can make figures which meet your requirements by editing these `conf_*.jl` files, also in other simulations.  
 
 ## Plots.jl
 Plotting with the Plots.jl is available even in condition that GMT.jl doesn't work.   

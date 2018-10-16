@@ -9,4 +9,4 @@ tmp*
 *.eps
 gmt.history
 gmt.conf
-!figure/sample/*
+!fig/sample/*.*
