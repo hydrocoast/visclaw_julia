@@ -70,7 +70,7 @@ end
 
 ###################################################
 """
-Convert eps files to ong file
+Convert eps files to png file
 """
 function eps2png_series(nstep::Int64; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
                         reserve=false::Bool)

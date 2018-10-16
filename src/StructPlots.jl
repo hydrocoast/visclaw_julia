@@ -6,10 +6,13 @@ mutable struct PlotsSpec
     dir::String
     cmap::Symbol
     clim::Tuple{Real,Real}
+    xlims::Tuple
+    ylims::Tuple
     # Constructor
     Claw.PlotsSpec() = new()
-    Claw.PlotsSpec(dir) = new(dir,:coolwarm,(-1.0,1.0))
-    Claw.PlotsSpec(dir,cmap,clim) = new(dir,cmap,clim)
+    Claw.PlotsSpec(dir) = new(dir,:coolwarm,(-1.0,1.0),(),())
+    Claw.PlotsSpec(dir,arg1,arg2) = isa(arg1,Symbol) ? new(dir,arg1,arg2,(),()) : new(dir,:none,(0.0,0.0),arg1,arg2)
+    Claw.PlotsSpec(dir,cmap,clim,xlims,ylims) = new(dir,cmap,clim,xlims,ylims)
 end
 #########################################
 
@@ -34,8 +37,16 @@ end
 #########################################
 
 #########################################
-#"""
-#Struct:
-#"""
-
+"""
+Struct: Observed data
+"""
+mutable struct PlotsLineSpec
+    width::Float64
+    color::Symbol
+    style::Symbol
+    # Constructor
+    Claw.PlotsLineSpec() = new(1.,:auto,:solid)
+    Claw.PlotsLineSpec(width) = new(width,:auto,:solid)
+    Claw.PlotsLineSpec(width, color, style) = new(width, color, style)
+end
 #########################################

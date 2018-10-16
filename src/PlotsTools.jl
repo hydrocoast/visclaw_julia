@@ -347,4 +347,33 @@ function PlotGaugeLocs(gauges::Vector{Claw.gauge}; ms=ms_default, mfc=:auto, txt
     return plt
 end
 ###########################################
+###################################################
+"""
+Convert svg files to png file
+"""
+function savePlots(plt::Plots.Plot, svgfile::String, outinfo::Claw.OutputSpec)
+    outpng = replace(svgfile, ".svg" => ".png")
+	# remove old files if exist
+	if outinfo.remove_old
+		if isfile(svgfile); rm(svgfile); end
+		if isfile(outpng); rm(outpng); end
+	end
+	# save figure
+    Plots.savefig(plt, svgfile)
+	println("Printed in $svgfile")
+
+	# convert if .png is specified
+	if outinfo.ext == ".png"
+		dpi = outinfo.dpi
+		outpng = replace(svgfile, ".svg" => ".png")
+        #run(`convert -density $dpi $svgfile $outpng`)
+        run(`ffmpeg -y -i $svgfile $outpng`)
+		#rm(svgfile)
+		println("Successfully converted into $outpng")
+	end
+
+	# return
+    return nothing
+end
+###################################################
 ###########################################

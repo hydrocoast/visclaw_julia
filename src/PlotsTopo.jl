@@ -20,24 +20,7 @@ function PlotsTopo(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Cla
 
 	# filename definition
 	output = joinpath(outinfo.figdir,"topoplots.svg")
-	outpng = replace(output, ".svg" => ".png")
-	# remove old files if exist
-	if outinfo.remove_old
-		if isfile(output); rm(output); end
-		if isfile(outpng); rm(outpng); end
-	end
-	# save figure
-    Plots.savefig(plt, output)
-	println("Printed in $output")
-	# convert
-	if outinfo.ext == ".png"
-		dpi = outinfo.dpi
-		outpng = replace(output, ".svg" => ".png")
-        #run(`convert -density $dpi $output $outpng`)
-        run(`ffmpeg -y -i $output $outpng`)
-		#rm(output)
-		println("Successfully converted into $outpng")
-	end
+	Claw.savePlots(plt, output, outinfo)
 
     # return value(s)
     return plt, geo

@@ -10,36 +10,6 @@ using DelimitedFiles: readdlm
 using Printf: @printf, @sprintf
 using Plots; Plots.pyplot()
 
-# Topography
-    # load
-    topofile, _ = Claw.topodata(fdir)
-    geo = Claw.LoadTopo(topofile);
-    # conditions
-    Plots.clibrary(:cmocean)
-    # plot
-    plt = Claw.PlotTopo(geo, clim=(-6000,6000))
-    plt = Plots.plot!(plt, xlabel="Longitude", ylabel="Latitude", guidefont=font(12))
-    plt = Plots.plot!(plt, tickfont=font(10))
-    Plots.plot!(plt,show=true)
-    # save figure(s)
-    Plots.savefig(plt, joinpath(outdir,"topo.svg"))
-    # coastal lines
-    #plt = Claw.CoastalLines(geo)
-
-# Deformation
-    # load
-    dtopofile, _ = Claw.dtopodata(fdir)
-    deform = Claw.LoadDeform(dtopofile);
-    # conditions
-    Plots.clibrary(:colorcet)
-    # plot
-    plt = Claw.PlotDeform(deform, clim=(-2.0,2.0))
-    plt = Plots.plot!(plt, xlabel="Longitude", ylabel="Latitude", guidefont=font(12))
-    plt = Plots.plot!(plt, tickfont=font(10))
-    Plots.plot!(plt,show=true)
-    # save figure(s)
-    Plots.savefig(plt, joinpath(outdir,"dtopo.svg"))
-
 # Gauge
     # load Sim.
     params = Claw.GeoData(fdir)

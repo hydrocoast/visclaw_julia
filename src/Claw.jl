@@ -20,6 +20,7 @@ include("Utils.jl")
 include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
+include("ConvertFiles.jl")
 
 using Plots:Plots
 Plots.pyplot()
@@ -27,11 +28,11 @@ include("StructPlots.jl")
 include("PlotsTools.jl")
 include("PlotsTopo.jl")
 include("PlotsDeform.jl")
+include("PlotsGauge.jl")
 include("easycheck.jl")
 
 using GMT:GMT
 include("StructGMT.jl")
-include("PScmd.jl")
 include("GMTTools.jl")
 include("GMTDraw.jl")
 include("bathtopo.jl")
