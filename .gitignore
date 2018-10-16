@@ -8,8 +8,5 @@ tmp*
 *.ps
 *.eps
 gmt.history
-!gif/demo_*.gif
-!topo.svg
-!gauge32412.svg
-!allgauges.svg
-!topogmt.png
+gmt.conf
+!figure/sample/*

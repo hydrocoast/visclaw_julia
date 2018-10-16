@@ -5,5 +5,5 @@ using Claw
 ### set "./conf_topo.jl"
 #Claw.bathtopo()
 
-#Claw.bathtopo("./ex_conf/conf_topo_chile.jl")
-Claw.bathtopo("./ex_conf/conf_topo_ike.jl")
+Claw.bathtopo("./ex_conf/conf_topo_chile.jl")
+#Claw.bathtopo("./ex_conf/conf_topo_ike.jl")
