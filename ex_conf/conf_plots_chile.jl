@@ -11,6 +11,9 @@ clim_topo = (-6000,6000);
 # color range and color palette
 cmap_dtopo =:coolwarm
 clim_dtopo = (-3.0,3.0);
+# lims
+xlims=()
+ylims=()
 
 ### Axes
 xlabel = "Longitude"
@@ -22,9 +25,14 @@ legfont = Plots.font(10)
 tickfont = Plots.font(10)
 
 #### output option
-prefix="eta"
+prefix="plotseta"
 start_number=0
-ext=".png"  # .svg, .png or .gif in Plots
+ext=".gif"  # .svg, .png or .gif in Plots
 dpi=400 # resolusion dots per inch in case of .png or .gif
 fps=4 # frames per second (only gif)
 remove_old=true # remove old files
+
+### Marker
+msize = 4 # markersilze
+mcolor = :black # marker face color
+mfont = Plots.font(8,:left,:top,0.0,:black) # text font

@@ -1,3 +1,6 @@
+using DelimitedFiles: readdlm
+#### basic setup of figure
+maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output");
 ### gauges
 #gaugeobs = []
 nobs = 1 # the number of observation gauge data

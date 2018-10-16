@@ -1,4 +1,18 @@
 ####################################################
+function PlotsTopoConf(conf::String="./conf_plots.jl")
+	# check
+	if !isfile(conf);
+		error("Not found: $conf")
+    end
+	# include
+	include(conf)
+	pltinfo = Claw.PlotsSpec(maindir,cmap_topo,clim_topo,xlims,ylims);
+	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
+	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
+	# return value
+	return pltinfo, axinfo, outinfo
+end
+####################################################
 ## Function: plot topography and bathymetry in 2D
 ####################################################
 function PlotsTopo(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
@@ -24,19 +38,5 @@ function PlotsTopo(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Cla
 
     # return value(s)
     return plt, geo
-end
-####################################################
-function PlotsTopoConf(conf::String="./conf_plots.jl")
-	# check
-	if !isfile(conf);
-		error("Not found: $conf")
-    end
-	# include
-	include(conf)
-	pltinfo = Claw.PlotsSpec(maindir,cmap_topo,clim_topo);
-	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
-	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
-	# return value
-	return pltinfo, axinfo, outinfo
 end
 ####################################################

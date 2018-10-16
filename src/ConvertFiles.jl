@@ -103,11 +103,11 @@ end
 """
 Make .gif animation from png
 """
-function makegif(outinfo::Claw.OutputSpec)
+function makegif(outinfo::Claw.OutputSpec; orgfmt=".png"::String)
     # prefix
     prefix = joinpath(outinfo.figdir,outinfo.prefix)
     fps = outinfo.fps
-    filet0 = prefix*@sprintf("%03d",outinfo.start_number)*".png"
+    filet0 = prefix*@sprintf("%03d",outinfo.start_number)*orgfmt
     # check
     if !isfile(filet0);
         println("Initial step $filet0  was not found");
@@ -117,8 +117,8 @@ function makegif(outinfo::Claw.OutputSpec)
     giffile = prefix*".gif"
     if isfile(giffile); rm(giffile); end
     ## make an animation
-    run(`ffmpeg -i $prefix%03d.png -vf palettegen palette.png`)
-    run(`ffmpeg -y -r $fps -i $prefix%03d.png -i palette.png -filter_complex paletteuse $giffile`)
+    run(`ffmpeg -i $prefix%03d$orgfmt -vf palettegen palette.png`)
+    run(`ffmpeg -y -r $fps -i $prefix%03d$orgfmt -i palette.png -filter_complex paletteuse $giffile`)
     rm("palette.png")
 
     # return

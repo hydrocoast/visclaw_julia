@@ -35,7 +35,7 @@ ls = :solid
 #### output option
 prefix="eta"
 start_number=0
-ext=".png"  # .svg, .png or .gif in Plots
+ext=".svg"  # .svg, .png or .gif in Plots
 dpi=400 # resolusion dots per inch in case of .png or .gif
 fps=4 # frames per second (only gif)
 remove_old=true # remove old files

@@ -1,5 +1,5 @@
 ################################################################################
-function PlotsGaugesConf(conf::String="./conf_plots_gauge.jl", confobs::String="")
+function PlotsGaugesConf(conf::String="./conf_plots_gauge.jl")
 	# check
 	if !isfile(conf);
 		error("Not found: $conf")
@@ -10,21 +10,8 @@ function PlotsGaugesConf(conf::String="./conf_plots_gauge.jl", confobs::String="
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 	linespec = Claw.PlotsLineSpec(lw,lc,ls)
-	# include obs data of nto empty
-	if isempty(confobs)
-		# return value
-		return pltinfo, axinfo, outinfo, linespec
-	else
-		# check
-		if !isfile(confobs);
-			error("Not found: $confobs")
-		end
-        include(confobs)
-		lineobs = Claw.PlotsLineSpec(lwobs,lcobs,lsobs)
-
-		# return value
-		return pltinfo, axinfo, outinfo, linespec, gaugeobs, lineobs
-    end
+	# return value
+	return pltinfo, axinfo, outinfo, linespec
 end
 ################################################################################
 function PlotsGauges(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
@@ -68,14 +55,21 @@ function PlotsGaugeEach(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo
 	# each figure
 	for i = 1:ng
         plts[i] = Claw.PlotWaveform(gauges[i], lc=linespec.color, lw=linespec.width, ls=linespec.style)
-	    plts[i] = Plots.plot!(plts[i],xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, legendfont=axinfo.legfont)
-	    plts[i] = Plots.plot!(plts[i],tickfont=axinfo.tickfont, xticks=axinfo.xticks)
+	    plts[i] = Plots.plot!(plts[i],xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, legendfont=axinfo.legfont,tickfont=axinfo.tickfont)
 	end
+	# Claw.PlotsSpec
 	if !isempty(pltinfo.xlims);
 		plts = map(p -> Plots.plot!(p,xlims=pltinfo.xlims), plts)
 	end
 	if !isempty(pltinfo.ylims);
 		plts = map(p -> Plots.plot!(p,ylims=pltinfo.ylims), plts)
+	end
+	# Claw.PlotsAxes
+	if !isempty(axinfo.xticks);
+		plts = map(p -> Plots.plot!(p,xticks=axinfo.xticks), plts)
+	end
+	if !isempty(axinfo.yticks);
+		plts = map(p -> Plots.plot!(p,yticks=axinfo.yticks), plts)
 	end
 
 	## observed data

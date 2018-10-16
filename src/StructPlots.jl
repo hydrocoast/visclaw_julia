@@ -50,3 +50,14 @@ mutable struct PlotsLineSpec
     Claw.PlotsLineSpec(width, color, style) = new(width, color, style)
 end
 #########################################
+
+#########################################
+mutable struct MarkerSpec
+    msize::Int64
+    mcolor::Symbol
+    mfont::Plots.Font
+    # Constructor
+    Claw.MarkerSpec() = new(8,:auto,Plots.font(8,:left,:top,0.0,:black))
+    Claw.MarkerSpec(msize,mcolor,mfont) = new(msize,mcolor,mfont)
+end
+#########################################
