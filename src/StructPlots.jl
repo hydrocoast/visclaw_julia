@@ -9,7 +9,7 @@ mutable struct PlotsSpec
     # Constructor
     Claw.PlotsSpec() = new()
     Claw.PlotsSpec(dir) = new(dir,:coolwarm,(-1.0,1.0))
-    Claw.PlotsSpec(dir,cmap,clim,varname) = new(dir,cmap,clims)
+    Claw.PlotsSpec(dir,cmap,clim) = new(dir,cmap,clim)
 end
 #########################################
 
@@ -34,8 +34,8 @@ end
 #########################################
 
 #########################################
-"""
-Struct:
-"""
+#"""
+#Struct:
+#"""
 
 #########################################

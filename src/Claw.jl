@@ -24,7 +24,8 @@ include("LoadGauge.jl")
 using Plots:Plots
 Plots.pyplot()
 include("StructPlots.jl")
-include("PlotTools.jl")
+include("PlotsTools.jl")
+include("PlotsTopo.jl")
 include("easycheck.jl")
 
 using GMT:GMT

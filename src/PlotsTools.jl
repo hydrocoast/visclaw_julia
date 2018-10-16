@@ -246,14 +246,6 @@ end
 SLPbyStep(amrs::Claw.AMR; clim=slp_default, cmap::Symbol=slpcmap_default) =
 SurfacebyStep(amrs,clim=clim,cmap=cmap)
 
-###########################################
-## Function: topography and bathymetry
-###########################################
-function PlotTopo(geo::Claw.geometry; clim=(), cmap::Symbol=:delta)
-    plt = Plots.contourf(geo.x, geo.y, geo.topo, ratio=:equal, c=cmap, clims=clim)
-    return plt
-end
-###########################################
 
 ###########################################################
 ## Function: plot searfloor deformation in 2D, contourf
