@@ -24,9 +24,9 @@ xtickv= -3*sec1d+landtime:0.5*sec1d:1*sec1d+landtime
 xtickl=[@sprintf("%d",i) for i=-3*24:12:1*24] # hours
 xticks = (xtickv,xtickl)
 yticks = ()
-labfont = Plots.font(12)
-legfont = Plots.font(10)
-tickfont = Plots.font(10)
+labfont = Plots.font("sans-serif",12)
+legfont = Plots.font("sans-serif",10)
+tickfont = Plots.font("sans-serif",10)
 
 ### PlotsLine
 lw = 1.0

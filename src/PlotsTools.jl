@@ -56,9 +56,7 @@ function PlotsAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
     if !isempty(clim); plt = Plots.plot!(plt, clims=clim); end
 
     ## Appearances
-    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false,
-          xlabel="Longitude", ylabel="Latitude", guidefont=Plots.font("sans-serif",12),
-          tickfont=Plots.font(10), titlefont=Plots.font("sans-serif",10), bginside=Plots.RGB(.7,.7,.7))
+    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=Plots.RGB(.7,.7,.7))
 
     ## return value
     return plt
@@ -191,20 +189,6 @@ function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, g
     return plt
 end
 #############################################
-
-###########################################
-## Function: plot coastal lines
-###########################################
-function CoastalLines!(plt, geo::Claw.geometry)
-    plt = Plots.contour!(plt, geo.x, geo.y, geo.topo, ratio=:equal,
-                   levels=1, clims=(0,0), seriescolor=:grays, line=(:solid,1))
-    return plt
-end
-###########################################
-CoastalLines(geo::Claw.geometry) = CoastalLines!(Plots.plot(), geo)
-###########################################
-CoastalLineSeq!(plt,geo::Claw.geometry) = map(x->CoastalLines!(x,geo),plt)
-###########################################
 
 ###########################################
 ## Function: Print out

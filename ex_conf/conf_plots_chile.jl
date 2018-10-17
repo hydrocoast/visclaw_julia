@@ -21,9 +21,9 @@ xlabel = "Longitude"
 ylabel = "Latitude"
 xticks = ()
 yticks = ()
-labfont = Plots.font(12)
-legfont = Plots.font(10)
-tickfont = Plots.font(10)
+labfont = Plots.font("sans-serif",12)
+legfont = Plots.font("sans-serif",10)
+tickfont = Plots.font("sans-serif",10)
 
 #### output option
 prefix="plotseta"

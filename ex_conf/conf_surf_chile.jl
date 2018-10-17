@@ -13,23 +13,23 @@ cmap = :polar
 crange = "-1.0/1.0"
 Dscale="jBR+w10.0/0.3+o-1.5/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
 Bcb="xa0.2f0.1 y+l(m)" # B option in psscale
-Dcb=true
-Icb=false
-Vcb=false
-Zcb=false
+Dcb=true # -D makecpt
+Icb=false # -I makecpt
+Vcb=false # -V makecpt
+Zcb=false # -Z makecpt, no effect when no -T is used, or when using -Tz_min/z_max
 
 #### Coastline
 hascoast = true
-resolution = "h"
-coastpen = "0.01"
-landfill = "gray80"
-seafill = ""
-coastV = false
+resolution = "h" # -D, pscoast
+coastpen = "0.01"  # -W, pen attribute,
+landfill = "gray80" # -G, fill attribute
+seafill = "" # -S, fill attribute
+coastV = false # -V, verbose
 
 #### output option
 prefix="eta"
 start_number=0
-ext=".gif"  # .ps, .eps, .png (, .svg, .gif)
+ext=".gif" # .ps, .eps, .png or .gif
 dpi=400 # only .png
 remove_old=true
 fps=4 # only gif
