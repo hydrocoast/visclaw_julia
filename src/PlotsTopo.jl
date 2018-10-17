@@ -32,9 +32,8 @@ function PlotsTopo(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Cla
 	end
     plt = Plots.plot!(plt, tickfont=axinfo.tickfont)
 
-	# filename definition
-	output = joinpath(outinfo.figdir,"topoplots.svg")
-	Claw.savePlots(plt, output, outinfo)
+	# save the figure
+    Claw.PrintPlots(plt,outinfo,"topoplots.svg")
 
     # return value(s)
     return plt, geo

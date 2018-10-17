@@ -117,8 +117,8 @@ function makegif(outinfo::Claw.OutputSpec; orgfmt=".png"::String)
     giffile = prefix*".gif"
     if isfile(giffile); rm(giffile); end
     ## make an animation
-    run(`ffmpeg -i $prefix%03d$orgfmt -vf palettegen palette.png`)
-    run(`ffmpeg -y -r $fps -i $prefix%03d$orgfmt -i palette.png -filter_complex paletteuse $giffile`)
+    run(`ffmpeg -i $prefix%03d$orgfmt -vf palettegen palette.png -loglevel quiet`)
+    run(`ffmpeg -y -r $fps -i $prefix%03d$orgfmt -i palette.png -filter_complex paletteuse $giffile -loglevel quiet`)
     rm("palette.png")
 
     # return

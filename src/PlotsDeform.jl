@@ -41,9 +41,8 @@ function PlotsDeform(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::C
 	end
     plt = Plots.plot!(plt, tickfont=axinfo.tickfont)
 
-	# filename definition
-	output = joinpath(outinfo.figdir,"deformplots.svg")
-	Claw.savePlots(plt, output, outinfo)
+	# save the figure
+    Claw.PrintPlots(plt,outinfo,"deformplots.svg")
 
     # return value(s)
     return plt, dtopo

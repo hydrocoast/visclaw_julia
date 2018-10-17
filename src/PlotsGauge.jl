@@ -32,9 +32,8 @@ function PlotsGauges(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::C
     plt = Plots.plot!(plt,xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, legendfont=axinfo.legfont)
     plt = Plots.plot!(plt,tickfont=axinfo.tickfont, xticks=axinfo.xticks)
 
-	# filename definition
-	output = joinpath(outinfo.figdir,"gauges.svg")
-	Claw.savePlots(plt, output, outinfo)
+	# save the figure
+	Claw.PrintPlots(plt,outinfo,"gauges.svg")
 
 	# return value(s)
     return plt, gauges
@@ -86,10 +85,18 @@ function PlotsGaugeEach(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo
 	    end
 	end
 
-	## output
-	for i = 1:ng
-		output = joinpath(outinfo.figdir,"gauge"*@sprintf("%d",gauges[i].id)*".svg")
-		Claw.savePlots(plts[i], output, outinfo)
+	# check
+	if !(outinfo.ext == ".svg" || outinfo.ext == ".png" || outinfo.ext == ".gif")
+		println("No file was saved")
+	else
+		## output
+		for i = 1:ng
+			svgfile = joinpath(outinfo.figdir,"gauge"*@sprintf("%d",gauges[i].id)*".svg")
+			Plots.savefig(plts[i], svgfile)
+			if outinfo.ext == ".png"
+			    Claw.save2png(plts[i], svgfile, dpi=outinfo.dpi)
+		    end
+	    end
     end
 
 	# return value(s)

@@ -32,6 +32,7 @@ Plots.pyplot()
 include("StructPlots.jl")
 include("PlotsTools.jl")
 # Plots
+include("PlotsDraw.jl")
 include("PlotsCheck.jl")
 include("PlotsTopo.jl")
 include("PlotsDeform.jl")

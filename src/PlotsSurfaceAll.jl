@@ -42,17 +42,13 @@ function PlotsSurfaceAll(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinf
         flist = joinpath.(figdir,filter(x->occursin(prefix,x), readdir(figdir)))
         rm.(filter(x->occursin(".svg",x), flist))
 		rm.(filter(x->occursin(".png",x), flist))
+		rm.(filter(x->occursin(".gif",x), flist))
     end
 
-	prefix=joinpath(outinfo.figdir,outinfo.prefix)
-    # save figrue(s)
-	for i = 1:amrall.nstep
-        output = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".svg"
-		Claw.savePlots(plts[i], output, outinfo)
-	end
-
+	# save figures
+	Claw.PrintPlots(plts,outinfo)
 	if outinfo.ext == ".gif"
-		makegif(outinfo, orgfmt=".svg")
+		Claw.makegif(outinfo, orgfmt=".svg")
 	end
 
     # return value(s)
