@@ -82,7 +82,7 @@ end
 ################################################################################
 function PlotsCheck(conf::String="conf_plots.jl")
     if !isfile(conf);
-        error("File $specfile is not found")
+        error("File $conf is not found")
     end
     include(conf)
     pltinfo = Claw.PlotsSpec(maindir,cmap_surf,clim_surf,xlims,ylims)
