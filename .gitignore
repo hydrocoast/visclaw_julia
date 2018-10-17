@@ -10,3 +10,5 @@ tmp*
 gmt.history
 gmt.conf
 !fig/sample/*.*
+./conf_*.jl
+./main_*.jl
