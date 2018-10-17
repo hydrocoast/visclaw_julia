@@ -9,6 +9,8 @@ tmp*
 *.eps
 gmt.history
 gmt.conf
+conf_*.jl
+main_*.jl
 !fig/sample/*.*
-./conf_*.jl
-./main_*.jl
+!conf_*_chile.jl
+!conf_*_ike.jl
