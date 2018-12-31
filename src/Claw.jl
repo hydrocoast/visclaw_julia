@@ -12,7 +12,7 @@ using Dates
 using Interpolations
 
 # define CLAW path from shell
-include("./CLAWPATH.jl")
+include("CLAWPATH.jl")
 export CLAW
 
 # define structs and basic functions

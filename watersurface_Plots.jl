@@ -1,4 +1,4 @@
-if !any(occursin.("./src",LOAD_PATH)); push!(LOAD_PATH,"./src"); end
+include("./addpath.jl")
 using Claw
 
 #### set ./conf_plots.jl
