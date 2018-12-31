@@ -22,20 +22,23 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo:
     # water surface elavation
     Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
     # Colorbar
-    Claw.AMRColorbar!(amrall, cpt, outinfo=outinfo, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
+    Claw.AMRColorbar!(amrall, cpt, outinfo=outinfo, J=figinfo.J, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
     # Coastline
     if coastinfo.hascoast
-        Claw.AMRCoast!(amrall, outinfo=outinfo, R=figinfo.R, G=coastinfo.G, V=coastinfo.V);
+        Claw.AMRCoast!(amrall, outinfo=outinfo, J=figinfo.J, R=figinfo.R, G=coastinfo.G, V=coastinfo.V);
     end
     # Time
-    Claw.AMRTitle!(amrall, outinfo=outinfo, titlestr, V=figinfo.V)
+    Claw.AMRTitle!(amrall, outinfo=outinfo, J=figinfo.J, titlestr, V=figinfo.V)
     # Convert file format
     ### .ps => .eps => .png => .gif
     if outinfo.ext != ".ps"
+        # ps => eps
         Claw.ps2eps_series(amrall.nstep, outinfo=outinfo)
         if outinfo.ext != ".eps"
+            # eps => png
             Claw.eps2png_series(amrall.nstep, outinfo=outinfo, reserve=false)
-            if outinfo.ext != ".png"
+            if outinfo.ext == ".gif"
+                # png => gif
                 Claw.makegif(outinfo)
             end
         end

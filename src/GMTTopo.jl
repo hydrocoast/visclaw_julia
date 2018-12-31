@@ -30,9 +30,9 @@ function bathtopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
                      xoff=cptinfo.offset[1],yoff=cptinfo.offset[2])
     =#
     # set colorbar
-    Claw.Colorbar!(cpt, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
+    Claw.Colorbar!(cpt, J=J, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
     # draw coastline if coastinfo.hascoast is true
-    Claw.Coast!(coastinfo)
+    Claw.Coast!(coastinfo, J=J)
 
     # remove temporary files
     if outinfo.remove_old

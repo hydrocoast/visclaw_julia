@@ -28,9 +28,9 @@ function Coast!(; J=""::String, R=""::String, D="i", G=""::String, S=""::String,
     return nothing
 end
 ######################################################################
-function Coast!(coastinfo::Claw.CoastSpec)
+function Coast!(coastinfo::Claw.CoastSpec; J="")
     if coastinfo.hascoast
-        Claw.Coast!(D=coastinfo.D,G=coastinfo.G,S=coastinfo.S,W=coastinfo.W,V=coastinfo.V)
+        Claw.Coast!(J=J, D=coastinfo.D,G=coastinfo.G,S=coastinfo.S,W=coastinfo.W,V=coastinfo.V)
     end
     return nothing
 end
@@ -52,11 +52,11 @@ end
 """
 Set colorbar to default ps file
 """
-function Colorbar!(cpt::GMT.GMTcpt; B=""::String, D=""::String, V=true::Bool)
+function Colorbar!(cpt::GMT.GMTcpt; J=""::String, B=""::String, D=""::String, V=true::Bool)
     if !occursin(r"x",D)
-        GMT.colorbar!(J="",R="", B=B, C=cpt, D=D, V=V)
+        GMT.colorbar!(J=J, R="", B=B, C=cpt, D=D, V=V)
     else
-        GMT.colorbar!(B=B, C=cpt, D=D, V=V)
+        GMT.colorbar!(J=J, B=B, C=cpt, D=D, V=V)
     end
     return nothing
 end
@@ -64,7 +64,7 @@ end
 """
 Set colorbar to specified ps file
 """
-function ColorbarPS!(filename::String, cpt::GMT.GMTcpt; B=""::String, D=""::String, V=true::Bool)
+function ColorbarPS!(filename::String, cpt::GMT.GMTcpt; J=""::String, B=""::String, D=""::String, V=true::Bool)
     # building options
     opt=""
     if V; opt = opt*" -V"; end
@@ -75,7 +75,7 @@ function ColorbarPS!(filename::String, cpt::GMT.GMTcpt; B=""::String, D=""::Stri
     GMT.gmt("write $cptfile",cpt);
     # GMT script
     if !occursin(r"x",D)
-        GMT.gmt("psscale -J -R $Bopt -C$cptfile -D$D $opt -K -P -O >> $filename")
+        GMT.gmt("psscale -J$J -R $Bopt -C$cptfile -D$D $opt -K -P -O >> $filename")
     else
         GMT.gmt("psscale $Bopt -C$cptfile -D$D $opt -K -P -O >> $filename")
     end
@@ -88,7 +88,7 @@ end
 """
 place tiltle to specified psfile
 """
-function TitlePS!(filename::String, titlestr::String; font=titlefont_default,
+function TitlePS!(filename::String, titlestr::String; J=""::String, font=titlefont_default,
                   offset=titleoffset_default, V=true::Bool)
     # building options
     opt=""
@@ -102,7 +102,7 @@ function TitlePS!(filename::String, titlestr::String; font=titlefont_default,
         offsetopt="--MAP_TITLE_OFFSET=$offset"
     end
     # GMT script
-    GMT.gmt("psbasemap -J -R -Ba -Bnesw+t\"$titlestr\" $opt -K -P -O $fontopt $offsetopt >> $filename")
+    GMT.gmt("psbasemap -J$J -R -Ba -Bnesw+t\"$titlestr\" $opt -K -P -O $fontopt $offsetopt >> $filename")
     return nothing
 end
 ######################################################################
@@ -136,11 +136,11 @@ function AMRSurf(amrs::Claw.AMR, cpt::GMT.GMTcpt; outinfo::Claw.OutputSpec=Claw.
         GMT.basemap(J=J, R=R, B="af nesw+g$bgc", V=V)
         # makegrd
         tiles = amrs.amr[i]
-        G = Claw.tilegrd.(tiles, V=V);
+        G = Claw.tilegrd.(tiles, J=J, V=V);
         # surface
-        Claw.SurfTiles!(G,cpt,R=R,V=V)
+        Claw.SurfTiles!(G, cpt, J=J, R=R, V=V)
         # add frame if exists
-        if !isempty(B); GMT.basemap!(J="", R="", B=B, V=V); end;
+        if !isempty(B); GMT.basemap!(J=J, R="", B=B, V=V); end;
         # filename
         filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
         # move ps tile
@@ -170,7 +170,7 @@ end
 
 ######################################################################
 function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
-                      B=""::String, D=""::String, V=true::Bool)
+                      J=""::String, B=""::String, D=""::String, V=true::Bool)
     # prefix
     prefix=joinpath(outinfo.figdir,outinfo.prefix)
     # each figure
@@ -178,7 +178,7 @@ function AMRColorbar!(amrs::Claw.AMR, cpt::GMT.GMTcpt; outinfo::Claw.OutputSpec=
         # filename
         filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
         if !isfile(filename); println("Not found: $filename"); continue; end;
-        Claw.ColorbarPS!(filename, cpt, B=B,D=D,V=V)
+        Claw.ColorbarPS!(filename, cpt, J=J, B=B,D=D,V=V)
     end
     # end (return nothing)
     return nothing
@@ -188,7 +188,7 @@ end
 
 ######################################################################
 function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; outinfo::Claw.OutputSpec=Claw.OutputSpec(),
-                   font=titlefont_default, offset=titleoffset_default,  V=true::Bool)
+                   J=""::String, font=titlefont_default, offset=titleoffset_default,  V=true::Bool)
     # prefix
     prefix=joinpath(outinfo.figdir,outinfo.prefix)
     if amrs.nstep != length(title)
@@ -200,7 +200,7 @@ function AMRTitle!(amrs::Claw.AMR, title::Vector{String}; outinfo::Claw.OutputSp
         # filename
         filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
         if !isfile(filename); println("Not found: $filename"); continue; end;
-        Claw.TitlePS!(filename, title[i], font=font, V=V)
+        Claw.TitlePS!(filename, title[i], J=J, font=font, V=V)
     end
     # end (return nothing)
     return nothing

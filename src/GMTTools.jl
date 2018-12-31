@@ -163,7 +163,7 @@ end
 """
 make a grid file of Claw.Tiles for GMT
 """
-function tilegrd(tile::Claw.Tiles; V=true)
+function tilegrd(tile::Claw.Tiles; J=""::String, V=true)
     # var
     var = Claw.varnameintile(tile)
     # prameters & options
@@ -175,7 +175,7 @@ function tilegrd(tile::Claw.Tiles; V=true)
     ymat = repeat(yvec, outer=(length(xvec),1))
     # makegrd
     #if !any(.!isnan.(zdata)); return G=nothing; end;
-    G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, V=V)
+    G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], J=J, R=R, I=Δ, V=V)
     # return value (GMT.GMTgrid)
     return G
 end

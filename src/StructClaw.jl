@@ -164,6 +164,7 @@ mutable struct OutputSpec
     Claw.OutputSpec(figdir,prefix) = new(figdir,prefix,0,".eps",400,4,true)
     Claw.OutputSpec(figdir,prefix,start_number) = new(figdir,prefix,start_number,".eps",400,4,true)
     Claw.OutputSpec(figdir,prefix,start_number,ext,dpi) = new(figdir,prefix,start_number,ext,dpi,4,true)
+    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old) = new(figdir,prefix,start_number,ext,dpi,0,remove_old)
     Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old) = new(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 end
 #########################################
