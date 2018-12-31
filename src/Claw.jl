@@ -47,5 +47,6 @@ include("GMTDraw.jl")
 # make figures with GMT
 include("GMTTopo.jl")
 include("GMTSurfaceAll.jl")
+include("GMTStormAll.jl")
 
 end
