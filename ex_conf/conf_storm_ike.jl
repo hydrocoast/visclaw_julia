@@ -12,7 +12,7 @@ V = false # -V option (verbose)
 cmap = :wysiwyg
 crange = "960/1015/5"
 Dscale="jBR+w9.0/0.3+o-1.0/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
-Bcb="xa10g5 y+lhPa" # B option in psscale
+Bcb="xa10g10 y+lhPa" # B option in psscale
 Dcb=true # -D makecpt
 Icb=false # -I makecpt
 # Ncb=false # -N makecpt
@@ -22,7 +22,7 @@ Zcb=false # -Z makecpt, no effect when no -T is used, or when using -Tz_min/z_ma
 #### Coastline
 hascoast = true
 resolution = "h" # -D, pscoast
-coastpen = "thin,white"  # -W, pen attribute,
+coastpen = "thinnest,chocolate4"  # -W, pen attribute,
 landfill = "" # -G, fill attribute
 seafill = "" # -S, fill attribute
 coastV = false # -V, verbose

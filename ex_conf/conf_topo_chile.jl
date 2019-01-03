@@ -22,7 +22,7 @@ Zcb=false # -Z makecpt, no effect when no -T is used, or when using -Tz_min/z_ma
 #### Coastline
 hascoast = true
 resolution = "h" # -D, pscoast
-coastpen = "0.01"  # -W, pen attribute,
+coastpen = "thinnest"  # -W, pen attribute,
 landfill = "" # -G, fill attribute
 seafill = "" # -S, fill attribute
 coastV = false # -V, verbose

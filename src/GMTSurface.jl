@@ -12,7 +12,7 @@ function SurfTiles!(Gall::Vector{GMT.GMTgrid}, cpt::GMT.GMTcpt; J=""::String, R=
                        B=""::String, Q=true, V=true::Bool)
     for i = 1:length(Gall)
         G = Gall[i]
-        Claw.Surface!(G,cpt,J=J,R=R,B=B,Q=Q,V=V)
+        Claw.Surface!(G, cpt, J=J, R=R, B=B, Q=Q, V=V)
     end
     return nothing
 end

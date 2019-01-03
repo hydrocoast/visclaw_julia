@@ -19,17 +19,20 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::C
         rm.(filter(x->occursin(".ps",x), flist))
     end
 
-    #=
     # water surface elavation
-    Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
+    Claw.AMRPres(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
+
     # Colorbar
     Claw.AMRColorbar!(amrall, cpt, outinfo=outinfo, J=figinfo.J, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
+
     # Coastline
     if coastinfo.hascoast
-        Claw.AMRCoast!(amrall, outinfo=outinfo, J=figinfo.J, R=figinfo.R, G=coastinfo.G, V=coastinfo.V);
+        Claw.AMRCoast!(amrall, outinfo=outinfo, J=figinfo.J, R=figinfo.R, G=coastinfo.G, W=coastinfo.W, V=coastinfo.V);
     end
+
     # Time
     Claw.AMRTitle!(amrall, outinfo=outinfo, J=figinfo.J, titlestr, V=figinfo.V)
+
     # Convert file format
     ### .ps => .eps => .png => .gif
     if outinfo.ext != ".ps"
@@ -44,7 +47,7 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::C
             end
         end
     end
-    =#
+
     # return value
     return amrall
 end

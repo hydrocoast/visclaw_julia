@@ -1,5 +1,5 @@
 # Functions to draw figures with GMT package
-pen_default="0.02"
+pen_default="0.025" # thinnest
 
 ######################################################################
 """

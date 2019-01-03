@@ -50,6 +50,7 @@ include("GMTCoastlines.jl")
 include("GMTTopo.jl")
 include("GMTSurface.jl")
 include("GMTSurfaceAll.jl")
+include("GMTStorm.jl")
 include("GMTStormAll.jl")
 
 end
