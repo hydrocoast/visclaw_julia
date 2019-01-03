@@ -45,6 +45,8 @@ include("StructGMT.jl")
 include("GMTTools.jl")
 include("GMTColorbar.jl")
 include("GMTTitle.jl")
+include("GMTtxtvelo.jl")
+include("GMTpsvelo.jl")
 # make figures with GMT
 include("GMTCoastlines.jl")
 include("GMTTopo.jl")

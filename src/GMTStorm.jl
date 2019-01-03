@@ -1,11 +1,11 @@
 Annnot_default = "20"
 Contour_default = "10"
-Level_default = "960/1015"
+Level_default = "960/1020"
 pen_default = "thinnest"
 
 ######################################################################
 """
-Draw the spatial distribution of air pressure in a snapshot
+Colored contours of the air pressure
 """
 function Pressure!(G::GMT.GMTgrid, cpt::GMT.GMTcpt;
                    J=""::String, R=""::String, B=""::String, Q=true:Bool,
@@ -14,6 +14,9 @@ function Pressure!(G::GMT.GMTgrid, cpt::GMT.GMTcpt;
     return nothing
 end
 ######################################################################
+"""
+Contour lines of the air pressure
+"""
 function PresContour!(G::GMT.GMTgrid;
                       J=""::String, R=""::String, B=""::String,
                       A=Annnot_default, C=Contour_default, L=Level_default::String, W=pen_default,
@@ -23,6 +26,18 @@ function PresContour!(G::GMT.GMTgrid;
     GMT.grdcontour!(G, J=J, R=R, B="", C=C, L=L, W=W, V=V)
     return nothing
 end
+######################################################################
+
+#=
+######################################################################
+"""
+Wind field with arrows
+"""
+function Wind!(storm::Claw.stormgrid)
+
+end
+######################################################################
+=#
 
 
 ######################################################################

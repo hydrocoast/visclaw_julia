@@ -10,19 +10,32 @@ V = false # -V option (verbose)
 
 ### colormap, colorbar
 cmap = :wysiwyg
-crange = "960/1015/5"
+crange = "960/1020/5"
 Dscale="jBR+w9.0/0.3+o-1.0/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
 Bcb="xa10g10 y+lhPa" # B option in psscale
 Dcb=true # -D makecpt
-Icb=false # -I makecpt
+Icb=true # -I makecpt
 # Ncb=false # -N makecpt
 Vcb=false # -V makecpt
 Zcb=false # -Z makecpt, no effect when no -T is used, or when using -Tz_min/z_max
 
+### vector
+# -A
+Vlw = 0.01 # LineWidth
+Vhl = 0.10 # HeadLength
+Vhs = 0.05 # HeadSize
+# -Se <velscale> / <confidence> / <fontsize>
+Vscale = 0.025 # velscale
+Vconf = 0.0   # confidence
+Vfs = 12    # fontsize
+# -G
+Vcolor = "black"
+
+
 #### Coastline
 hascoast = true
 resolution = "h" # -D, pscoast
-coastpen = "thinnest,chocolate4"  # -W, pen attribute,
+coastpen = "thinnest,gray80"  # -W, pen attribute,
 landfill = "" # -G, fill attribute
 seafill = "" # -S, fill attribute
 coastV = false # -V, verbose
