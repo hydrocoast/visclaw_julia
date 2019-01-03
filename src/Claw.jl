@@ -43,9 +43,12 @@ using GMT:GMT
 # Setup
 include("StructGMT.jl")
 include("GMTTools.jl")
-include("GMTDraw.jl")
+include("GMTColorbar.jl")
+include("GMTTitle.jl")
 # make figures with GMT
+include("GMTCoastlines.jl")
 include("GMTTopo.jl")
+include("GMTSurface.jl")
 include("GMTSurfaceAll.jl")
 include("GMTStormAll.jl")
 

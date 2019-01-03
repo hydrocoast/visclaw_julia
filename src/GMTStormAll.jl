@@ -9,7 +9,6 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::C
     # GMT make cpt
     cpt = Claw.tilecpt(cptinfo.cmap, crange=cptinfo.crange, D=cptinfo.D, I=cptinfo.I, V=cptinfo.V, Z=cptinfo.Z)
 
-    #=
     # remove temporary files
     if outinfo.remove_old
         figdir=outinfo.figdir
@@ -20,6 +19,7 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::C
         rm.(filter(x->occursin(".ps",x), flist))
     end
 
+    #=
     # water surface elavation
     Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
     # Colorbar
@@ -57,11 +57,12 @@ function stormall(conf::String="./conf_storm.jl")
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     timeinfo = Claw.TimeSpec(origin,format)
     # draw
-    amrall = Claw.surfaceall(figinfo,cptinfo,outinfo=outinfo,coastinfo=coastinfo,timeinfo=timeinfo)
+    amrall = Claw.stormall(figinfo,cptinfo,outinfo=outinfo,coastinfo=coastinfo,timeinfo=timeinfo)
     # return value
     return amrall, figinfo, cptinfo, outinfo, coastinfo, timeinfo
 end
 ################################################################################
+#=
 function stormgif(conf::String="./conf_storm.jl")
     include(conf)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
@@ -70,3 +71,4 @@ function stormgif(conf::String="./conf_storm.jl")
     # return value
     return outinfo
 end
+=#

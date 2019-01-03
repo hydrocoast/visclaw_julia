@@ -1,3 +1,20 @@
+######################################################################
+"""
+Fill colors to topography and bathymetry surface
+"""
+function TopoMap(geo::Claw.geometry, cpt::GMT.GMTcpt; J=""::String, R=""::String,
+                 B=""::String, Q=true, V=true::Bool)
+    # makegrd
+    G = Claw.geogrd(geo)
+    # Topography with grdimage
+    GMT.grdimage(G, J=J, R=R, B=B, C=cpt, Q=Q, V=V)
+
+    return nothing
+end
+######################################################################
+
+
+
 output_default = "topogmt"
 ###############################################################################################
 """
