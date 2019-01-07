@@ -5,7 +5,7 @@
 #################################
 ## Function: fort.qxxxx reader
 #################################
-function LoadFortq(filename::String, ncol::Int; kw="surface"::String, params::Claw.param=Claw.param())
+function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::Claw.param=Claw.param())
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -16,12 +16,12 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, params::Cl
     idx = occursin.("grid_number",txtorg)
     ngrid = length(txtorg[idx])
 
-    if kw=="surface"
+    if vartype=="surface"
         amr = Array{Claw.patch}(undef,ngrid) ## preallocate
-    elseif kw=="storm"
+    elseif vartype=="storm"
         amr = Array{Claw.stormgrid}(undef,ngrid)
     else
-        error("kwarg kw is invalid")
+        error("kwarg vartype is invalid")
     end
 
     l = 1
@@ -42,14 +42,14 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, params::Cl
         ## read variables
         body = txtorg[l+9:l+9+(mx+1)*my-1]
 
-        if kw=="surface"
+        if vartype=="surface"
             vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
             bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
             vars[bath.<=0.0] .= NaN
             vars = vars.-params.eta0
             ## array
             amr[i] = Claw.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
-        elseif kw=="storm"
+        elseif vartype=="storm"
             ucol = ncol
             vcol = ncol+1
             pcol = ncol+2
@@ -75,7 +75,7 @@ function LoadFortq(filename::String, ncol::Int; kw="surface"::String, params::Cl
     return amr
 end
 #################################
-LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, kw="storm")
+LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, vartype="storm")
 #################################
 
 #################################
@@ -97,17 +97,17 @@ end
 ## Function: LoadFortq and LoadFortt
 ##      time-series of water surface
 #######################################
-function LoadSurface(loaddir::String; kw="surface"::String)
+function LoadSurface(loaddir::String; vartype="surface"::String)
 
     ## define the filepath & filename
-    if kw=="surface"
+    if vartype=="surface"
         fnamekw = "fort.q0"
         col=4
-    elseif kw=="storm"
+    elseif vartype=="storm"
         fnamekw = "fort.a0"
         col=5
 	else
-		error("Invalid input argument kw: $kw")
+		error("Invalid input argument vartype: $vartype")
     end
 
     ## make a list
@@ -123,17 +123,17 @@ function LoadSurface(loaddir::String; kw="surface"::String)
     ## the number of files
     nfile = length(flist)
     ## preallocate
-    if kw=="surface"
+    if vartype=="surface"
         amr = Vector{AbstractVector{Claw.patch}}(undef,nfile)
-    elseif kw=="storm"
+    elseif vartype=="storm"
         amr = Vector{AbstractVector{Claw.stormgrid}}(undef,nfile)
     end
     ## load all files
     tlap = vec(zeros(nfile,1))
     for it = 1:nfile
-        if kw=="surface"
+        if vartype=="surface"
             amr[it] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, params=params)
-        elseif kw=="storm"
+        elseif vartype=="storm"
             amr[it] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
         end
         tlap[it] = Claw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
@@ -146,5 +146,5 @@ function LoadSurface(loaddir::String; kw="surface"::String)
     return amrs
 end
 #######################################
-LoadStorm(loaddir::String) = LoadSurface(loaddir,kw="storm")
+LoadStorm(loaddir::String) = LoadSurface(loaddir,vartype="storm")
 #######################################
