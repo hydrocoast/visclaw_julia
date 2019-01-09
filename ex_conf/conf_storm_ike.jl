@@ -32,7 +32,7 @@ Avel = (0.01,0.10,0.05) # -A (LineWidth,  HeadLength, HeadSize)
 Svel = (0.025, 0.0, 12) # -Se <velscale> / <confidence> / <fontsize>
 Gvel = "black" # color
 skipvel = 3 # downsize
-legvel=("X12.1",-95.0,30.0,30,0) # (proj, X, Y, scale)
+legvel=("X12",-95.0,29.5,30,0) # (proj, X, Y, scale)
 Vvel = false
 
 #### Coastline

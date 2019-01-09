@@ -66,7 +66,7 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
 
         # title
         str=titlestr[i]
-        GMT.basemap!(J=figinfo.J,R="",B="af nesw+t\"$str\"", V=figinfo.V)
+        GMT.basemap!(J=figinfo.J,R="",B="nesw+t\"$str\"", V=figinfo.V)
 
         # filename
         filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
