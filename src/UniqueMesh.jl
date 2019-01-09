@@ -11,8 +11,28 @@ function meshline(tile::Claw.Tiles)
     xvec = repeat(xline, inner=(tile.my,1)) |> vec
     yvec = repeat(yline, outer=(tile.mx,1)) |> vec
 
+    ## return values
     return xvec, yvec
 end
+
+"""
+generate meshgrid
+"""
+function meshtile(tile::Claw.Tiles)
+    ## set the boundary
+    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
+    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
+    ## grid info
+    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
+    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
+    xmesh = repeat(xline', outer=(tile.my,1))
+    ymesh = repeat(yline,  outer=(1,tile.mx))
+
+    ## return values
+    return xmesh, ymesh
+end
+
+
 
 """
 polygon data (rectangle) from a tile in AMR
@@ -49,8 +69,6 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
     ## preallocate
     xall = Vector{Vector{Float64}}(undef,ntile)
     yall = Vector{Vector{Float64}}(undef,ntile)
-    uall = Vector{Vector{Float64}}(undef,ntile)
-    vall = Vector{Vector{Float64}}(undef,ntile)
     pall = Vector{Vector{Float64}}(undef,ntile)
 
     ## debugging
@@ -66,8 +84,6 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
         # convert type
         allp = GeometricalPredicates.Point.(xvec,yvec);
         # original values
-        uuniq = vec(tiles[i].u)
-        vuniq = vec(tiles[i].v)
         puniq = vec(tiles[i].slp)
 
         if tiles[i].AMRlevel != maxlevel
@@ -86,16 +102,12 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
             delindex = any(existfiner, dims=2) |> vec
             deleteat!(xvec,delindex)
             deleteat!(yvec,delindex)
-            deleteat!(uuniq,delindex)
-            deleteat!(vuniq,delindex)
             deleteat!(puniq,delindex)
         end
 
         ## assign values
         xall[i] = xvec
         yall[i] = yvec
-        uall[i] = uuniq
-        vall[i] = vuniq
         pall[i] = puniq
 
         ## debugging
@@ -106,14 +118,58 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
     end
 
     ## concatenate points in all tiles
-    #xvec = vcat(xall...)
-    #yvec = vcat(yall...)
-    #pvec = vcat(pall...)
-    # uall = vcat(uall...)
-    # vall = vcat(vall...)
-
-
+    xall = vcat(xall...)
+    yall = vcat(yall...)
+    pall = vcat(pall...)
 
     ## return values
-    return xall, yall, pall, uall, vall
+    return xall, yall, pall
+end
+
+
+
+"""
+get points which are not overlapped by any of other tiles
+"""
+function RemoveCoarseUV!(tiles::Vector{Claw.Tiles})
+    # number of the tiles
+    ntile = length(tiles)
+
+    ## deepest level
+    levels = getfield.(tiles,:AMRlevel);
+    maxlevel=findmax(levels)[1]
+
+    ## search points which are overlapped by the finer grids
+    #i = 1
+    for i=1:ntile
+        # all points in 1-column
+        xmesh, ymesh = Claw.meshtile(tiles[i])
+        # convert type
+        allp = GeometricalPredicates.Point.(xmesh,ymesh)
+
+        #if tiles[i].AMRlevel != maxlevel; continue; end
+
+        # compare the location of the target tile to that of other tiles
+        #j=ntile
+        for j = 1:ntile
+            if i==j; continue; end
+            if tiles[i].AMRlevel >= tiles[j].AMRlevel; continue; end
+            rect = Claw.polyrectangle(tiles[j])
+
+            for x = 1:tiles[i].mx
+                for y = 1:tiles[i].my
+                    inside = GeometricalPredicates.inpolygon(rect, allp[y,x])
+                    if inside
+                        tiles[i].u[y,x] = NaN
+                        tiles[i].v[y,x] = NaN
+                        ## debugging
+                        # print("(i,j,y,x) = ($i,$j,$y,$x)\n")
+                    end
+                end
+            end
+        end
+    end
+
+    ## return values
+    return tiles
 end

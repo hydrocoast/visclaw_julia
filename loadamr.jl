@@ -6,7 +6,7 @@ using Claw
 # Ike
 expath = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 stms = Claw.LoadStorm(expath)
-surfs = Claw.LoadSurface(expath)
+# surfs = Claw.LoadSurface(expath)
 
 #=
 # chile2010

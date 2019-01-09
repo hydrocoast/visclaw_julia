@@ -4,7 +4,7 @@ psvelo
 ###################################################
 function psvelo(filename::String, psname::String=GMT.fname_out(Dict())[1];
                 J="", R="", B="", A="", G="", S="",
-                V::Bool=true, P::Bool=true, O::Bool=true, K::Bool=true)
+                V::Bool=true, P::Bool=true, O::Bool=false, K::Bool=true)
 
     # TF options
     opts=""
