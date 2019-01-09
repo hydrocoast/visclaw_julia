@@ -3,16 +3,16 @@ figdir = "./fig/ike"
 if !isdir(figdir); mkdir(figdir); end
 #### basic setup of figure
 maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-proj = "X12/9.6"
-region = "d-100/-70/8/32"
-B = "a10f10 neSW"
+J = "X12/9.6"
+R="d-100/-80/16/32"
+B = "a5f5 neSW"
 V = false # -V option (verbose)
 
 ### colormap, colorbar
-cmap = :wysiwyg
-crange = "960/1020/5"
-Dscale="jBR+w9.0/0.3+o-1.0/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
-Bcb="xa10g10 y+lhPa" # B option in psscale
+cmap = :no_green
+crange = "950/1010/5"
+Dscale="jBR+w9.0/0.3+o-1.4/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
+Bcb="xa10g5 y+lhPa" # B option in psscale
 Dcb=true # -D makecpt
 Icb=true # -I makecpt
 # Ncb=false # -N makecpt

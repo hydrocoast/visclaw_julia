@@ -1,7 +1,7 @@
 include("loadamr.jl")
 using Claw
 
-
+using Printf
 using GMT: GMT
 
 function mindxdy(tiles::Vector{Claw.Tiles})
@@ -13,7 +13,7 @@ function mindxdy(tiles::Vector{Claw.Tiles})
     Δ = min(dx,dy)
 end
 
-function txtvelo_center(LON,LAT,Ux,Uy; skip=1::Int, offset=0::Int, filename="tmpvelo.txt")
+function txtvelo_center(LON,LAT,Ux,Uy; skip=1::Int, offset=0::Int, fname="tmpvelo.txt")
     ## count the element
     numel = length(vec(LON[1:skip:end,1:skip:end]))
 
@@ -29,14 +29,26 @@ function txtvelo_center(LON,LAT,Ux,Uy; skip=1::Int, offset=0::Int, filename="tmp
                   repeat([0.0], inner=(numel,4)) )
 
     ## output to file
-    isfile(filename) ? mode="a" : mode="w"
-    open(filename,mode) do file
+    isfile(fname) ? mode="a" : mode="w"
+    open(fname,mode) do file
         mode=="a" ? print(file,"\n") : nothing
         Base.print_array(file, outdat)
     end
     ## return
     return nothing
 end
+
+function txtveloscale(X,Y,Uscale; unit::String="m/s", fname="tmpscale.txt")
+
+    #Long. Lat. Evel Nvel Esig Nsig CorEN SITE
+    outdat = "$X $Y $Uscale 0.0  0.0 0.0 0.0 $Uscale $unit"
+    open(fname,"w") do file
+        @printf(file, "%s",outdat)
+    end
+
+    return nothing
+end
+
 
 
 t=5
@@ -45,16 +57,10 @@ ntile = length(tiles)
 
 Claw.RemoveCoarseUV!.(stms.amr);
 
-
-#B = "a10f10 neSW"
-#J = "X12/9.6"
-#R="d-100/-70/8/32"
-#J = "X12/7.2"
-#R="d-100/-80/20/32"
 J = "X12/9.6"
 R="d-100/-80/16/32"
 B = "a5f5 neSW"
-V=true
+V = false
 
 xall, yall, pall = Claw.UniqueMeshVector(stms.amr[t]);
 Δ = mindxdy(stms.amr[t])
@@ -98,12 +104,14 @@ for k=1:ntile
     txtvelo_center(X,Y,tiles[k].u,tiles[k].v, skip=3*tiles[k].AMRlevel)
 end
 
-
 #Claw.psvelo(tmpfile,J=J,R=R,B=B,A=arrow,S="e$Ssc/$Sco/0",G="black",V=V)
 Claw.psvelo!(tmpfile,J=J,R=R,B="",A=arrow,S="e$Ssc/$Sco/0",G="black",V=V)
 rm(tmpfile)
 
-
+scalefile="tmpscale.txt"
+txtveloscale(-95, 30, 30.0, fname=scalefile);
+Claw.psvelo!(scalefile, J="X12", R=R, B="", A=arrow, S="e$Ssc/$Sco/$FontSize", G="black", V=V)
+rm(scalefile)
 
 #=
 using Plots: Plots
@@ -116,9 +124,3 @@ for k = 1:length(tiles)
     # any(ind) ? print("$k, ") : nothing
 end
 =#
-
-
-
-
-#k = 1
-#tmpname = txtvelo_center(xall[k], yall[k], uall[k], vall[k], skip=)
