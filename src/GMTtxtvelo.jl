@@ -30,14 +30,12 @@ end
 """
 Make txt file for scale (psvelo)
 """
-function txtveloscale(X,Y,Uscale; unit::String="m/s")
-    tmpname = "tmpscale.txt"
-
+function txtveloscale(X,Y,Uscale; unit::String="m/s", fname="tmpscale.txt")
     #Long. Lat. Evel Nvel Esig Nsig CorEN SITE
     outdat = "$X $Y $Uscale 0.0  0.0 0.0 0.0 $Uscale $unit"
-    open(tmpname,"w") do file
+    open(fname,"w") do file
         @printf(file, "%s",outdat)
     end
 
-    return tmpname
+    return nothing
 end

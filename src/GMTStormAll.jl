@@ -1,9 +1,17 @@
 ################################################################################
-function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
-                  coastinfo::Claw.CoastSpec=Claw.CoastSpec(), outinfo::Claw.OutputSpec=Claw.OutputSpec())
+function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
+                  arwinfo::Claw.ArrowSpec=Claw.ArrowSpec(),
+                  coastinfo::Claw.CoastSpec=Claw.CoastSpec(),
+                  ctrinfo::Claw.ContourSpec=Claw.ContourSpec(),
+                  outinfo::Claw.OutputSpec=Claw.OutputSpec(),
+                  timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
+                  )
     # Free water surface
     # load
     amrall = Claw.LoadStorm(figinfo.dir)
+    Claw.RemoveCoarseUV!.(amrall.amr)
+
+    # convert timelaps to string
     titlestr = Claw.sec2str(amrall.timelap, timeinfo.origin, fmt=timeinfo.format)
 
     # GMT make cpt
@@ -19,19 +27,52 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::C
         rm.(filter(x->occursin(".ps",x), flist))
     end
 
-    # water surface elavation
-    Claw.AMRPres(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
+    for i = 1:amrall.nstep
 
-    # Colorbar
-    Claw.AMRColorbar!(amrall, cpt, outinfo=outinfo, J=figinfo.J, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
+        # pressure grdimage
+        G = Claw.grdpres(amrall.amr[i], R=figinfo.R, T=1.0, V=figinfo.V)
+        GMT.grdimage(G, J=figinfo.J, R=figinfo.R, B=figinfo.B, C=cpt, Q=true, V=V)
 
-    # Coastline
-    if coastinfo.hascoast
-        Claw.AMRCoast!(amrall, outinfo=outinfo, J=figinfo.J, R=figinfo.R, G=coastinfo.G, W=coastinfo.W, V=coastinfo.V);
+        # colorbar
+        GMT.colorbar!(J=figinfo.J, R="", B=cptinfo.B, C=cpt, D=cptinfo.Dscale, V=cptinfo.V)
+
+        # coastline
+        if coastinfo.hascoast
+            GMT.coast!(J=figinfo.J, R=figinfo.R, G=coastinfo.G, W=coastinfo.W, V=coastinfo.V)
+        end
+
+        # pressure contour
+        GMT.grdcontour!(G, J=figinfo.J, R=figinfo.R, B="",
+                        A=ctrinfo.A, C=ctrinfo.C,
+                        L=ctrinfo.L, W=ctrinfo.W,
+                        V=ctrinfo.V)
+
+        # wind field with vector
+        arrow = string(arwinfo.A[1])*"/"*string(arwinfo.A[2])*"/"*string(arwinfo.A[3])
+        Ssc=arwinfo.S[1]
+        Sco=arwinfo.S[2]
+        FS=arwinfo.S[3]
+        # wind
+        tmpfile = Claw.txtwind(amrall.amr[i], skip=arwinfo.skip)
+        Claw.psvelo!(tmpfile, J=figinfo.J, R=figinfo.R, B="",
+                     A=arrow, S="e$Ssc/$Sco/0", G=arwinfo.G, V=arwinfo.V)
+        rm(tmpfile)
+        # wind scale
+        scalefile="tmpscale.txt"
+        txtveloscale(arwinfo.leg[2], arwinfo.leg[3], arwinfo.leg[4], fname=scalefile);
+        Claw.psvelo!(scalefile, J=arwinfo.leg[1], R=figinfo.R, B="",
+                     A=arrow, S="e$Ssc/$Sco/$FS", G=arwinfo.G, V=arwinfo.V)
+        rm(scalefile)
+
+        # title
+        str=titlestr[i]
+        GMT.basemap!(J=figinfo.J,R="",B="af nesw+t\"$str\"", V=figinfo.V)
+
+        # filename
+        filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
+        # move ps tile
+        Claw.moveps(joinpath(outinfo.figdir,filename))
     end
-
-    # Time
-    Claw.AMRTitle!(amrall, outinfo=outinfo, J=figinfo.J, titlestr, V=figinfo.V)
 
     # Convert file format
     ### .ps => .eps => .png => .gif
@@ -58,20 +99,15 @@ function stormall(conf::String="./conf_storm.jl")
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
+    ctrinfo = Claw.ContourSpec(Acon,Ccon,Lcon,Wcon,Vcon)
+    arwinfo = Claw.ArrowSpec(Avel,Svel,Gvel,skipvel,legvel,Vvel)
     timeinfo = Claw.TimeSpec(origin,format)
     # draw
-    amrall = Claw.stormall(figinfo,cptinfo,outinfo=outinfo,coastinfo=coastinfo,timeinfo=timeinfo)
+    amrall = Claw.stormall(figinfo, cptinfo,
+                           outinfo=outinfo, coastinfo=coastinfo,
+                           ctrinfo=ctrinfo, arwinfo=arwinfo,
+                           timeinfo=timeinfo)
     # return value
     return amrall, figinfo, cptinfo, outinfo, coastinfo, timeinfo
 end
 ################################################################################
-#=
-function stormgif(conf::String="./conf_storm.jl")
-    include(conf)
-    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
-    # make animation
-    Claw.makegif(outinfo)
-    # return value
-    return outinfo
-end
-=#

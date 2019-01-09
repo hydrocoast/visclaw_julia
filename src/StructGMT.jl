@@ -1,6 +1,6 @@
 #########################################
 """
-Struct: Topography output configuration
+Struct: specification of topography output
 """
 mutable struct FigureSpec
     dir::String
@@ -19,7 +19,7 @@ end
 
 #########################################
 """
-Struct: pscoast configuration
+Struct: specification of pscoast
 """
 mutable struct CoastSpec
     hascoast::Bool
@@ -36,7 +36,7 @@ end
 
 #########################################
 """
-Struct: Colorbar output configuration
+Struct: specification of colorbar output
 """
 mutable struct ColorSpec
     cmap::Symbol
@@ -54,5 +54,44 @@ mutable struct ColorSpec
     Claw.ColorSpec(cmap,crange,Dscale,B,D,I) = new(cmap,crange,Dscale,B,D,I,false,false)
     Claw.ColorSpec(cmap,crange,Dscale,B,D,I,Z) = new(cmap,crange,Dscale,B,D,I,Z,false)
     Claw.ColorSpec(cmap,crange,Dscale,B,D,I,Z,V) = new(cmap,crange,Dscale,B,D,I,Z,V)
+end
+#########################################
+
+#########################################
+"""
+Struct: specification of contour
+"""
+mutable struct ContourSpec
+    A
+    C
+    L
+    W
+    V::Bool
+
+    # Constructor
+    Claw.ContourSpec() = new(20,10,"950/1010","gray90",false)
+    Claw.ContourSpec(A,C,L,W) = new(A,C,L,W,false)
+    Claw.ContourSpec(A,C,L,W,V) = new(A,C,L,W,V)
+end
+#########################################
+
+
+
+
+#########################################
+"""
+Struct: specification of arrow (psvelo)
+"""
+mutable struct ArrowSpec
+    A     # -A (LineWidth,  HeadLength, HeadSize)
+    S     # -Se <velscale> / <confidence> / <fontsize>
+    G
+    skip
+    leg
+    V::Bool
+    # Constructor
+    Claw.ArrowSpec() = new()
+    Claw.ArrowSpec(A,S,G,skip,leg) = new(A,S,G,skip,leg,false)
+    Claw.ArrowSpec(A,S,G,skip,leg,V) = new(A,S,G,skip,leg,V)
 end
 #########################################

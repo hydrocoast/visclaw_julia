@@ -4,52 +4,6 @@ using Claw
 using Printf
 using GMT: GMT
 
-function mindxdy(tiles::Vector{Claw.Tiles})
-    dxs = getfield.(tiles,:dx);
-    dx=findmin(dxs)[1]
-    dys = getfield.(tiles,:dy);
-    dy=findmin(dys)[1]
-
-    Δ = min(dx,dy)
-end
-
-function txtvelo_center(LON,LAT,Ux,Uy; skip=1::Int, offset=0::Int, fname="tmpvelo.txt")
-    ## count the element
-    numel = length(vec(LON[1:skip:end,1:skip:end]))
-
-    ## round
-    Ux = round.(Ux, digits=2)
-    Uy = round.(Uy, digits=2)
-
-    ## matrix
-    outdat = hcat(vec(LON[1:skip:end,1:skip:end]),
-                  vec(LAT[1:skip:end,1:skip:end]),
-                  vec(Ux[1:skip:end,1:skip:end]) ,
-                  vec(Uy[1:skip:end,1:skip:end]) ,
-                  repeat([0.0], inner=(numel,4)) )
-
-    ## output to file
-    isfile(fname) ? mode="a" : mode="w"
-    open(fname,mode) do file
-        mode=="a" ? print(file,"\n") : nothing
-        Base.print_array(file, outdat)
-    end
-    ## return
-    return nothing
-end
-
-function txtveloscale(X,Y,Uscale; unit::String="m/s", fname="tmpscale.txt")
-
-    #Long. Lat. Evel Nvel Esig Nsig CorEN SITE
-    outdat = "$X $Y $Uscale 0.0  0.0 0.0 0.0 $Uscale $unit"
-    open(fname,"w") do file
-        @printf(file, "%s",outdat)
-    end
-
-    return nothing
-end
-
-
 
 t=5
 tiles = stms.amr[t]
@@ -112,6 +66,8 @@ scalefile="tmpscale.txt"
 txtveloscale(-95, 30, 30.0, fname=scalefile);
 Claw.psvelo!(scalefile, J="X12", R=R, B="", A=arrow, S="e$Ssc/$Sco/$FontSize", G="black", V=V)
 rm(scalefile)
+
+
 
 #=
 using Plots: Plots

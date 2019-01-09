@@ -1,5 +1,20 @@
 ######################################
 """
+Min of dx, dy
+"""
+function mindxdy(tiles::Vector{Claw.Tiles})
+    dxs = getfield.(tiles,:dx);
+    dx=findmin(dxs)[1]
+    dys = getfield.(tiles,:dy);
+    dy=findmin(dys)[1]
+
+    Δ = min(dx,dy)
+end
+######################################
+
+
+######################################
+"""
 Range in simulation
 """
 function Range(tiles)
