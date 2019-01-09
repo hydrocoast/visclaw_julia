@@ -58,8 +58,9 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             p = [parse(Float64, body[(i-1)*(mx+1)+j][26*(pcol-1)+1:26*pcol]) for i=1:my, j=1:mx]
             p = p./1e+2
 
-            u[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
-            v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
+            # u[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
+            # v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
+			
             ## array
             amr[i] = Claw.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
         end

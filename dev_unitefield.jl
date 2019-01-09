@@ -1,71 +1,54 @@
-# include("loadamr.jl")
+include("loadamr.jl")
+using Claw
 
-using GeometricalPredicates: GeometricalPredicates
 
-tiles = stms.amr[1]
-ntile = length(tiles)
+using GMT: GMT
 
-levels = getfield.(tiles,:AMRlevel);
-maxlevel=findmax(levels)[1]
+function mindxdy(tiles::Vector{Claw.Tiles})
+    dxs = getfield.(tiles,:dx);
+    dx=findmin(dxs)[1]
+    dys = getfield.(tiles,:dy);
+    dy=findmin(dys)[1]
 
-function meshline(tile::Claw.Tiles)
-    ## set the boundary
-    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
-    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
-    ## grid info
-    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
-    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
-    xvec = repeat(xline, inner=(tile.my,1)) |> vec
-    yvec = repeat(yline, outer=(tile.mx,1)) |> vec
-
-    return xvec, yvec
+    Δ = min(dx,dy)
 end
 
-function PolyRectangle(tile::Claw.Tiles)
-    ## set the boundary
-    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
-    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
-    ## grid info
-    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
-    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
-
-    ll = GeometricalPredicates.Point(xline[1], yline[1])
-    lr = GeometricalPredicates.Point(xline[end], yline[1])
-    ur = GeometricalPredicates.Point(xline[end], yline[end])
-    ul = GeometricalPredicates.Point(xline[1], yline[end])
-    poly = GeometricalPredicates.Polygon(ll, lr, ur, ul)
-
-    return poly
-end
-#
-
-i=1
-#for i=1:ntile
-    #
-    # if tiles[i].AMRlevel == maxlevel; continue; end
-    mp = tiles[i].mx*tiles[i].my
-    xvec, yvec = meshline(tiles[i])
-    allp = GeometricalPredicates.Point.(xvec,yvec);
-    uuniq = vec(tiles[i].u)
-    vuniq = vec(tiles[i].v)
-    puniq = vec(tiles[i].slp)
-
-    #
-    existfiner = fill(false, (mp,ntile))
-    for j = 1:ntile
-        if i==j; continue; end
-        if tiles[i].AMRlevel >= tiles[j].AMRlevel; continue; end
-        println(j)
-        # j=ntile
-        rect = PolyRectangle(tiles[j])
-        existfiner[:,j] = [GeometricalPredicates.inpolygon(rect, allp[k]) for k=1:mp]
+function txtvelo_center(LON,LAT,Ux,Uy; skip=1::Real)
+    tmpname = "tmpwind.txt"
+    numel = length(LON[1:skip:end,1:skip:end])
+    outdat = [vec(LON[1:skip:end,1:skip:end]) vec(LAT[1:skip:end,1:skip:end]) vec(Ux[1:skip:end,1:skip:end]) vec(Uy[1:skip:end,1:skip:end]) repeat([0.0], inner=(numel,4)) ]
+    open(tmpname,"w") do file
+        Base.print_array(file, outdat)
     end
 
-    delindex = any(existfiner, dims=2) |> vec
-    deleteat!(xvec,delindex)
-    deleteat!(yvec,delindex)
-    deleteat!(uuniq,delindex)
-    deleteat!(vuniq,delindex)
-    deleteat!(puniq,delindex)
+    return tmpname
+end
 
-#end
+t=5
+xall, yall, pall, uall, vall = Claw.UniqueMeshVector(stms.amr[t]);
+Δ = mindxdy(stms.amr[1])
+
+J = "X12/9.6"
+B = "a10f10 neSW"
+R="d-100/-70/8/32"
+V=true
+
+G = GMT.surface([vcat(xall...) vcat(yall...) vcat(pall...)], R=R, I=Δ, T=1.0, V=V)
+
+# makecpt script
+cpttmp = "tmp.cpt"
+GMT.gmt("makecpt -Cno_green -T945/1005/5 -D -V -I > $cpttmp")
+cpt = GMT.gmt("read -Tc $cpttmp")
+# remove tmp
+rm(cpttmp)
+
+GMT.grdimage(G, J=J, R=R, B=B, C=cpt, Q=true, V=V)
+
+Dscale="jBR+w9.0/0.3+o-1.0/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
+Bcb="xa10g10 y+lhPa" # B option in psscale
+GMT.colorbar!(J=J, R="", B=Bcb, C=cpt, D=Dscale, V=V)
+GMT.coast!(J=J, R=R, B="", W="thinnest,white",V=V)
+GMT.grdcontour!(G, J=J, R=R, B="", C="10", L="945/1005", W="thinnest", V=V)
+
+#k = 1
+#tmpname = txtvelo_center(xall[k], yall[k], uall[k], vall[k], skip=)

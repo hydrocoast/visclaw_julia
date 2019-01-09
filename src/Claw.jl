@@ -10,6 +10,12 @@ using Printf
 using Dates
 using Interpolations
 
+
+using GeometricalPredicates: GeometricalPredicates
+
+using Plots:Plots
+Plots.pyplot()
+
 # define CLAW path from shell
 include("CLAWPATH.jl")
 export CLAW
@@ -22,11 +28,11 @@ include("Utils.jl")
 include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
-# File convert for output
+# Convert files for output
 include("ConvertFiles.jl")
+# Convert mesh data
+include("UniqueMesh.jl")
 
-using Plots:Plots
-Plots.pyplot()
 # Setup
 include("StructPlots.jl")
 include("PlotsTools.jl")

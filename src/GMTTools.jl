@@ -50,7 +50,6 @@ end
 """
 Determine J option
 """
-#function geoJ(geo::Claw.geometry; proj_base="Xd"::String, fwidth=10::Real, fheight=empty([],Real)::Real)
 function geoJ(geo::Claw.geometry; proj_base="X10d"::String)
     # find projection specifier
     J1 = match(r"^([a-zA-Z]+)", proj_base)
