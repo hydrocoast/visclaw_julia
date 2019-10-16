@@ -7,10 +7,10 @@ tmp*
 *.gif
 *.ps
 *.eps
-gmt.history
-gmt.conf
+gmt.*
 conf_*.jl
 main_*.jl
-!fig/sample/*.*
+my*
+!samples/*.*
 !conf_*_chile.jl
 !conf_*_ike.jl

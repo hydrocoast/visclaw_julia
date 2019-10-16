@@ -56,11 +56,12 @@ function SurfacebyStep(amrs::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.Plo
 		end
 
 		# show
-		plt = Plots.plot!(plt, show=true)
+		#plt = Plots.plot!(plt, show=true)
+		display(plt)
         cnt += 1
     end
 
-    # if no plotting is done
+    # if no plot is done
     if cnt==0
         plt = nothing
     end
@@ -77,7 +78,8 @@ function PlotsCheck(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes)
     plt = Claw.SurfacebyStep(amrall, pltinfo, axinfo)
 
     # return value(s)
-    return amrall, plt
+	#return amrall, plt
+    return plt
 end
 ################################################################################
 function PlotsCheck(conf::String="conf_plots.jl")
@@ -89,9 +91,11 @@ function PlotsCheck(conf::String="conf_plots.jl")
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 	# plots
-    amrall, plt = Claw.PlotsCheck(pltinfo, axinfo)
+    #amrall, plt = Claw.PlotsCheck(pltinfo, axinfo)
+	plt = Claw.PlotsCheck(pltinfo, axinfo)
 
     # return value(s)
-    return amrall, plt
+	#return amrall, plt
+    return plt
 end
 ################################################################################
