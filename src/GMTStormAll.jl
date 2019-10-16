@@ -1,15 +1,11 @@
 ################################################################################
-function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
-                  arwinfo::Claw.ArrowSpec=Claw.ArrowSpec(),
-                  coastinfo::Claw.CoastSpec=Claw.CoastSpec(),
-                  ctrinfo::Claw.ContourSpec=Claw.ContourSpec(),
-                  outinfo::Claw.OutputSpec=Claw.OutputSpec(),
-                  timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
-                  )
-    # Free water surface
-    # load
-    amrall = Claw.LoadStorm(figinfo.dir)
-    Claw.RemoveCoarseUV!.(amrall.amr)
+function GMTStormAll(amrall::Claw.AMR, figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
+                     arwinfo::Claw.ArrowSpec=Claw.ArrowSpec(),
+                     coastinfo::Claw.CoastSpec=Claw.CoastSpec(),
+                     ctrinfo::Claw.ContourSpec=Claw.ContourSpec(),
+                     outinfo::Claw.OutputSpec=Claw.OutputSpec(),
+                     timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
+                    )
 
     # convert timelaps to string
     titlestr = Claw.sec2str(amrall.timelap, timeinfo.origin, fmt=timeinfo.format)
@@ -66,7 +62,9 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
 
         # title
         str=titlestr[i]
-        GMT.basemap!(J=figinfo.J,R="",B="nesw+t\"$str\"", V=figinfo.V)
+        str="news+t"*str
+        str=replace(str, r"\s+" => "_")
+        GMT.basemap!(J=figinfo.J,R="",B=str, V=figinfo.V)
 
         # filename
         filename = prefix*@sprintf("%03d",(i-1)+outinfo.start_number)*".ps"
@@ -93,7 +91,7 @@ function stormall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
     return amrall
 end
 ################################################################################
-function stormall(conf::String="./conf_storm.jl")
+function GMTStormConf(conf::String="./conf_gmtstorm.jl")
     include(conf)
     figinfo = Claw.FigureSpec(maindir,proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
@@ -102,12 +100,8 @@ function stormall(conf::String="./conf_storm.jl")
     ctrinfo = Claw.ContourSpec(Acon,Ccon,Lcon,Wcon,Vcon)
     arwinfo = Claw.ArrowSpec(Avel,Svel,Gvel,skipvel,legvel,Vvel)
     timeinfo = Claw.TimeSpec(origin,format)
-    # draw
-    amrall = Claw.stormall(figinfo, cptinfo,
-                           outinfo=outinfo, coastinfo=coastinfo,
-                           ctrinfo=ctrinfo, arwinfo=arwinfo,
-                           timeinfo=timeinfo)
+
     # return value
-    return amrall, figinfo, cptinfo, outinfo, coastinfo, timeinfo
+    return figinfo, cptinfo, outinfo, coastinfo, ctrinfo, arwinfo, timeinfo
 end
 ################################################################################
