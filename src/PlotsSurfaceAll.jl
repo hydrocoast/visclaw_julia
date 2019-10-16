@@ -14,11 +14,9 @@ function PlotsSurfaceConf(conf::String="./conf_plots.jl")
     return pltinfo, axinfo, outinfo, markerinfo
 end
 ###############################################################################
-function PlotsSurfaceAll(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
-	                     bound::Bool=true, gridnumber::Bool=false, gauges="", minfo::Claw.MarkerSpec=Claw.MarkerSpec())
-    # Free water surface
-    # load
-    amrall = Claw.LoadSurface(pltinfo.dir)
+function PlotsSurfaceAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
+	                     bound::Bool=false, gridnumber::Bool=false, gauges="", minfo::Claw.MarkerSpec=Claw.MarkerSpec())
+
     # plot
     plts = Claw.PlotTimeSeries(amrall, clim=pltinfo.clim, cmap=pltinfo.cmap, bound=bound, gridnumber=gridnumber)
 	plts = map(p -> Plots.plot!(p,xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont,tickfont=axinfo.tickfont), plts)
@@ -57,6 +55,6 @@ function PlotsSurfaceAll(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinf
 	end
 
     # return value(s)
-	return plts, amrall
+	return plts
 end
 ###############################################################################
