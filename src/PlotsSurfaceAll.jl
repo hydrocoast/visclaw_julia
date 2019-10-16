@@ -23,11 +23,16 @@ function PlotsSurfaceAll(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinf
     plts = Claw.PlotTimeSeries(amrall, clim=pltinfo.clim, cmap=pltinfo.cmap, bound=bound, gridnumber=gridnumber)
 	plts = map(p -> Plots.plot!(p,xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont,tickfont=axinfo.tickfont), plts)
 
-	if !isempty(pltinfo.xlims);
+	if !isempty(pltinfo.xlims)
 		plts = map(p -> Plots.plot!(p,xlims=pltinfo.xlims), plts)
 	end
-	if !isempty(pltinfo.ylims);
+	if !isempty(pltinfo.ylims)
 		plts = map(p -> Plots.plot!(p,ylims=pltinfo.ylims), plts)
+	end
+
+	if outinfo.ext != ".svg"
+		if isempty(outinfo.dpi); outinfo.dpi==300; end
+		plts = map(p -> Plots.plot!(p,dpi=outinfo.dpi), plts)
 	end
 
     # show gauge locations if any
@@ -48,7 +53,7 @@ function PlotsSurfaceAll(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinf
 	# save figures
 	Claw.PrintPlots(plts,outinfo)
 	if outinfo.ext == ".gif"
-		Claw.makegif(outinfo, orgfmt=".svg")
+		Claw.makegif(outinfo, orgfmt=".png")
 	end
 
     # return value(s)

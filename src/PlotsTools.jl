@@ -33,9 +33,11 @@ function PrintPlots(plts::Vector{T}, outinfo::Claw.OutputSpec) where T<:Plots.Pl
 	# printout
     for i = 1:length(plts)
 		svgname = prefix*@sprintf("%03d",(i-1)+n)*".svg"
-        Plots.savefig(plts[i], svgname)
-		if outinfo.ext == ".png"
-			Claw.svg2png(svgname, dpi=outinfo.dpi)
+		if outinfo.ext == ".svg"
+            Plots.savefig(plts[i], svgname)
+	    else # outinfo.ext == ".png"
+			Plots.savefig(plts[i], replace(svgname, ".svg" => ".png"))
+			#Claw.svg2png(svgname, dpi=outinfo.dpi)
 		end
     end
 	# return
