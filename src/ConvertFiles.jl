@@ -7,7 +7,7 @@ function moveps(outps::String)
     if !occursin("/",outps)
         outeps="./"*outps
     end
-    tmpps = GMT.fname_out(Dict())[1]
+    tmpps = GMT.fname_out(Dict(), false)[1]
     run(`mv $tmpps $outps`)
     return nothing
 end
@@ -21,7 +21,7 @@ function saveaseps(outeps::String)
     if !occursin("/",outeps)
         outeps="./"*outeps
     end
-    tmpps = GMT.fname_out(Dict())[1]
+    tmpps = GMT.fname_out(Dict(), false)[1]
     run(`ps2eps -f -q $tmpps`)
     tmpeps= replace(tmpps, r"\.ps$" => ".eps")
     run(`mv $tmpeps $outeps`)
@@ -34,7 +34,7 @@ end
 Convert /tmp/GMTtmp.ps to png file
 """
 function saveaspng(outpng::String; dpi=400::Int64)
-    tmpps = GMT.fname_out(Dict())[1]
+    tmpps = GMT.fname_out(Dict(), false)[1]
     run(`ps2eps -f -q $tmpps`)
     tmpeps= replace(tmpps, r"\.ps$" => ".eps")
     run(`convert -density $dpi $tmpeps $outpng`)

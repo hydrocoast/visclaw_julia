@@ -2,7 +2,7 @@
 psvelo
 """
 ###################################################
-function psvelo(filename::String, psname::String=GMT.fname_out(Dict())[1];
+function psvelo(filename::String, psname::String=GMT.fname_out(Dict(), false)[1];
                 J="", R="", B="", A="", G="", S="",
                 V::Bool=true, P::Bool=true, O::Bool=false, K::Bool=true)
 
@@ -36,7 +36,7 @@ function psvelo(filename::String, psname::String=GMT.fname_out(Dict())[1];
     return nothing
 end
 ###################################################
-psvelo!(filename::String, psname::String=GMT.fname_out(Dict())[1];
+psvelo!(filename::String, psname::String=GMT.fname_out(Dict(), false)[1];
         J="", R="", B="", A="", G="", S="",
         V::Bool=true, P::Bool=true, K::Bool=true) =
 psvelo(filename,psname,J=J,R=R,B=B,A=A,G=G,S=S,V=V,P=P,K=K,O=true)
