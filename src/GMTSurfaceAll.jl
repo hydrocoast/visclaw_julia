@@ -1,9 +1,7 @@
 ################################################################################
-function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
-                    coastinfo::Claw.CoastSpec=Claw.CoastSpec(), outinfo::Claw.OutputSpec=Claw.OutputSpec())
-    # Free water surface
-    # load
-    amrall = Claw.LoadSurface(figinfo.dir)
+function GMTSurfaceAll(amrall::Claw.AMR, figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo::Claw.TimeSpec=Claw.TimeSpec(),
+                       coastinfo::Claw.CoastSpec=Claw.CoastSpec(), outinfo::Claw.OutputSpec=Claw.OutputSpec())
+
     titlestr = Claw.sec2str(amrall.timelap, timeinfo.origin, fmt=timeinfo.format)
 
     # GMT make cpt
@@ -47,20 +45,20 @@ function surfaceall(figinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec; timeinfo:
     return amrall
 end
 ################################################################################
-function surfaceall(conf::String="./conf_surf.jl")
+function GMTSurfaceConf(conf::String="./conf_gmtsurf.jl")
     include(conf)
     figinfo = Claw.FigureSpec(maindir,proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     timeinfo = Claw.TimeSpec(origin,format)
-    # draw
-    amrall = Claw.surfaceall(figinfo,cptinfo,outinfo=outinfo,coastinfo=coastinfo,timeinfo=timeinfo)
+
     # return value
-    return amrall, figinfo, cptinfo, outinfo, coastinfo, timeinfo
+    return figinfo, cptinfo, outinfo, coastinfo, timeinfo
 end
 ################################################################################
-function surfacegif(conf::String="./conf_surf.jl")
+#=
+function surfacegif(conf::String="./conf_gmtsurf.jl")
     include(conf)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
     # make animation
@@ -68,3 +66,4 @@ function surfacegif(conf::String="./conf_surf.jl")
     # return value
     return outinfo
 end
+=#

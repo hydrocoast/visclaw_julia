@@ -1,11 +1,6 @@
 include("./addpath.jl")
 using Claw
 
-#### set ./conf_plots.jl
-#pltinfo, axinfo, outinfo = Claw.PlotsSurfaceConf()
-
-### or specify conf file
-#=
 # -----------------------------
 # chile 2010
 # -----------------------------
@@ -22,7 +17,7 @@ amrall = Claw.LoadSurface(pltinfo.dir)
 # plot
 plts = Claw.PlotsSurfaceAll(amrall, pltinfo,axinfo,outinfo, gauges=gauges, minfo=minfo, bound=true, gridnumber=false)
 # -----------------------------
-=#
+
 
 # -----------------------------
 # ike
