@@ -1,11 +1,11 @@
 # VisClaw with Julia
 This repository aims to become one of the Clawpack visualization tools (see http://www.clawpack.org).  
-This allows us to make animations with the Julia language.   
-Any bug report would be appreciated.   
-
+This allows us to make animations with the Julia language like the following one:   
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/samples/ike.gif", width="500">
 </p>  
+
+Any bug report would be appreciated.   
 
 # Requirements
 ## Julia Packages
@@ -17,7 +17,7 @@ Any bug report would be appreciated.
 ## Other Softwares  
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
-In order to convert files, the following applications are required.  
+In order to convert files, the following application softwares are required.  
 - ImageMagick (convert)
 - ffmpeg
 
