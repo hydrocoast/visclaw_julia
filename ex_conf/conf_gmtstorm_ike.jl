@@ -9,7 +9,7 @@ B = "a5f5 neSW"
 V = false # -V option (verbose)
 
 ### colormap, colorbar
-cmap = :no_green
+cmap = :wysiwyg # or no_green
 crange = "950/1010/5"
 Dscale="jBR+w9.0/0.3+o-1.4/0.0" # Dj<justify>+w<length>/<width>+o<dx>/<dy>
 Bcb="xa10g5 y+lhPa" # B option in psscale

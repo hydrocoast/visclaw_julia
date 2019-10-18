@@ -18,7 +18,7 @@ amrall = Claw.LoadSurface(pltinfo.dir)
 plts = Claw.PlotsSurfaceAll(amrall, pltinfo,axinfo,outinfo, gauges=gauges, minfo=minfo, bound=true, gridnumber=false)
 # -----------------------------
 
-
+#=
 # -----------------------------
 # ike
 # -----------------------------
@@ -35,3 +35,4 @@ amrall = Claw.LoadSurface(pltinfo.dir)
 # plot
 plts = Claw.PlotsSurfaceAll(amrall, pltinfo,axinfo,outinfo, gauges=gauges, minfo=minfo, bound=true, gridnumber=true)
 # -----------------------------
+=#

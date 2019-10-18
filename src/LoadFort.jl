@@ -60,7 +60,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
 
             # u[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
             # v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
-			
+
             ## array
             amr[i] = Claw.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
         end
@@ -98,7 +98,8 @@ end
 ## Function: LoadFortq and LoadFortt
 ##      time-series of water surface
 #######################################
-function LoadSurface(loaddir::String; vartype="surface"::String)
+function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
+	                 vartype="surface"::String)
 
     ## define the filepath & filename
     if vartype=="surface"
@@ -123,21 +124,34 @@ function LoadSurface(loaddir::String; vartype="surface"::String)
 
     ## the number of files
     nfile = length(flist)
+
+	# file sequence to be loaded
+    if filesequence==0:0; filesequence = 1:nfile; end
+	if any(filesequence .< 1) || any(filesequence .> nfile)
+		error("Incorrect file sequence was specified. (This must be from 1 to $nfile)")
+	end
+
+	## the number of files (to be loaded)
+	nfile = length(filesequence)
+
     ## preallocate
     if vartype=="surface"
         amr = Vector{AbstractVector{Claw.patch}}(undef,nfile)
     elseif vartype=="storm"
         amr = Vector{AbstractVector{Claw.stormgrid}}(undef,nfile)
     end
+
     ## load all files
     tlap = vec(zeros(nfile,1))
-    for it = 1:nfile
+	cnt = 0
+    for it = filesequence
+		cnt += 1
         if vartype=="surface"
-            amr[it] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, params=params)
+            amr[cnt] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, params=params)
         elseif vartype=="storm"
-            amr[it] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
+            amr[cnt] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
         end
-        tlap[it] = Claw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
+        tlap[cnt] = Claw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
     end
 
     ## AMR Array
@@ -147,5 +161,24 @@ function LoadSurface(loaddir::String; vartype="surface"::String)
     return amrs
 end
 #######################################
-LoadStorm(loaddir::String) = LoadSurface(loaddir,vartype="storm")
+LoadSurface(loaddir::String, filestart::Int64, filend::Int64) =
+LoadSurface(loaddir, filestart:filend, vartype="surface")
+#######################################
+LoadSurface(loaddir::String, fileid::Int64) =
+LoadSurface(loaddir, fileid:fileid, vartype="surface")
+#######################################
+LoadSurface(loaddir::String) =
+LoadSurface(loaddir, 0:0, vartype="surface")
+######################################
+LoadStorm(loaddir::String, filesequence::AbstractVector{Int64}) =
+LoadSurface(loaddir, filesequence, vartype="storm")
+#######################################
+LoadStorm(loaddir::String, filestart::Int64, filend::Int64) =
+LoadSurface(loaddir, filestart:filend, vartype="storm")
+#######################################
+LoadStorm(loaddir::String, fileid::Int64) =
+LoadSurface(loaddir, fileid:fileid, vartype="storm")
+#######################################
+LoadStorm(loaddir::String) =
+LoadSurface(loaddir, 0:0, vartype="storm")
 #######################################
