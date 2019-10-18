@@ -6,7 +6,7 @@ function PlotsDeformConf(conf::String="./conf_plots.jl")
     end
 	# include
 	include(conf)
-	pltinfo = Claw.PlotsSpec(maindir,cmap_dtopo,clim_dtopo,xlims,ylims);
+	pltinfo = Claw.PlotsSpec(cmap_dtopo,clim_dtopo,xlims,ylims);
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 	# return value
@@ -16,9 +16,9 @@ end
 ###########################################################
 ## Function: plot searfloor deformation in 2D, contourf
 ###########################################################
-function PlotsDeform(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
+function PlotsDeform(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
 	# load
-    dtopofile, _ = Claw.dtopodata(pltinfo.dir)
+    dtopofile, _ = Claw.dtopodata(simdir)
     dtopo = Claw.LoadDeform(dtopofile);
     # conditions
     Plots.clibrary(:colorcet)

@@ -47,7 +47,7 @@ end
 ################################################################################
 function GMTSurfaceConf(conf::String="./conf_gmtsurf.jl")
     include(conf)
-    figinfo = Claw.FigureSpec(maindir,proj,region,B,V)
+    figinfo = Claw.FigureSpec(proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)

@@ -6,7 +6,7 @@ function PlotsSurfaceConf(conf::String="./conf_plots.jl")
     end
     # include
     include(conf)
-    pltinfo = Claw.PlotsSpec(maindir,cmap_surf,clim_surf,xlims,ylims);
+    pltinfo = Claw.PlotsSpec(cmap_surf,clim_surf,xlims,ylims);
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
     markerinfo = Claw.MarkerSpec(msize,mcolor,mfont)

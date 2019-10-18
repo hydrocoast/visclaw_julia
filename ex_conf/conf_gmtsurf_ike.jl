@@ -1,8 +1,8 @@
 #### Output
 figdir = "./fig/ike"
 if !isdir(figdir); mkdir(figdir); end
+
 #### basic setup of figure
-maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 proj = "X12/9.6"
 region = "d-100/-70/8/32"
 B = "a10f10 neSW"

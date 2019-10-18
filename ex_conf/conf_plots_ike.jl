@@ -1,11 +1,14 @@
 #### Output
 figdir = "./fig/ike"
 if !isdir(figdir); mkdir(figdir); end
+
 #### basic setup of figure
-maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 # color range and color palette
 cmap_surf=:rainbow
 clim_surf = (0.0,2.0);
+# color range and color palette
+cmap_slp =:isolum_r
+clim_slp = (960,1000);
 # color range and color palette
 cmap_topo =:delta
 clim_topo = (-6000,6000);

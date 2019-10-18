@@ -14,7 +14,8 @@ using Interpolations
 using GeometricalPredicates: GeometricalPredicates
 
 using Plots:Plots
-Plots.pyplot()
+Plots.plotly()
+Plots.clibrary(:colorcet)
 
 # define CLAW path from shell
 include("CLAWPATH.jl")

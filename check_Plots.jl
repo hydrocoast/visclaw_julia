@@ -1,9 +1,27 @@
 include("./addpath.jl")
 using Claw
 
-# easy checker
-### set "./conf_plots.jl"
-#Claw.PlotsCheck()
+using Plots:Plots
+Plots.plotly()
 
-#Claw.PlotsCheck("./ex_conf/conf_plots_chile.jl")
-Claw.PlotsCheck("./ex_conf/conf_plots_ike.jl")
+# easy checker
+
+# -----------------------------
+# chile 2010
+# -----------------------------
+simdir = joinpath(Claw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
+conffile = "./ex_conf/conf_plots_chile.jl"
+plt = Claw.PlotsCheck(simdir, conffile)
+# -----------------------------
+
+
+#=
+# -----------------------------
+# ike
+# -----------------------------
+simdir = joinpath(Claw.CLAW, "geoclaw/examples/storm-surge/ike/_output")
+conffile = "./ex_conf/conf_plots_ike.jl"
+plt = Claw.PlotsCheck(simdir, conffile)
+plt = Claw.PlotsCheck(simdir, conffile, vartype="storm")
+# -----------------------------
+=#

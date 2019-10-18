@@ -4,35 +4,33 @@ using Claw
 # -----------------------------
 # chile 2010
 # -----------------------------
-# gaugedata (read only)
-pltinfo, axinfo, outinfo, linespec = Claw.PlotsGaugesConf("./ex_conf/conf_gauge_chile.jl")
-plttmp, gauges = Claw.PlotsGaugeEach(pltinfo,axinfo,outinfo)
+simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 
 # load configurations
-pltinfo, axinfo, outinfo, minfo = Claw.PlotsSurfaceConf("ex_conf/conf_plots_chile.jl")
+conffile = "./ex_conf/conf_plots_chile.jl"
+pltinfo, axinfo, outinfo, minfo = Claw.PlotsSurfaceConf(conffile)
 
 # load water surface
-amrall = Claw.LoadSurface(pltinfo.dir)
+amrall = Claw.LoadSurface(simdir)
 
 # plot
-plts = Claw.PlotsSurfaceAll(amrall, pltinfo,axinfo,outinfo, gauges=gauges, minfo=minfo, bound=true, gridnumber=false)
+plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, outinfo, bound=true, gridnumber=false)
 # -----------------------------
 
 #=
 # -----------------------------
 # ike
 # -----------------------------
-# gaugedata (read only)
-pltinfo, axinfo, outinfo, linespec = Claw.PlotsGaugesConf("./ex_conf/conf_gauge_ike.jl")
-_, gauges = Claw.PlotsGaugeEach(pltinfo,axinfo,outinfo)
+simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 
 # load configurations
-pltinfo, axinfo, outinfo, minfo = Claw.PlotsSurfaceConf("ex_conf/conf_plots_ike.jl")
+conffile = "./ex_conf/conf_plots_ike.jl"
+pltinfo, axinfo, outinfo, minfo = Claw.PlotsSurfaceConf(conffile)
 
 # load water surface
-amrall = Claw.LoadSurface(pltinfo.dir)
+amrall = Claw.LoadSurface(simdir)
 
 # plot
-plts = Claw.PlotsSurfaceAll(amrall, pltinfo,axinfo,outinfo, gauges=gauges, minfo=minfo, bound=true, gridnumber=true)
+plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, outinfo, bound=true, gridnumber=true)
 # -----------------------------
 =#

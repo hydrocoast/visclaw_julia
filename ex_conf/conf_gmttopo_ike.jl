@@ -2,8 +2,8 @@
 #### Output
 figdir = "./fig/ike"
 if !isdir(figdir); mkdir(figdir); end
+
 #### basic setup of figure
-maindir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 ##  GMT options
 proj = "X12d" # -J, projection
 region = "" # -R, region

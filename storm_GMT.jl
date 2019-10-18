@@ -6,10 +6,12 @@ using Claw
 # ike
 # -----------------------------
 # load configurations
-figinfo, cptinfo, outinfo, coastinfo, ctrinfo, arwinfo, timeinfo = Claw.GMTStormConf("./ex_conf/conf_gmtstorm_ike.jl")
+simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
+conffile = "./ex_conf/conf_gmtstorm_ike.jl"
+figinfo, cptinfo, outinfo, coastinfo, ctrinfo, arwinfo, timeinfo = Claw.GMTStormConf(conffile)
 
 # load
-amrall = Claw.LoadStorm(figinfo.dir)
+amrall = Claw.LoadStorm(simdir)
 Claw.RemoveCoarseUV!.(amrall.amr)
 
 # plot

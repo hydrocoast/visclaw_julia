@@ -3,16 +3,14 @@
 Struct: configuration for Plots
 """
 mutable struct PlotsSpec
-    dir::String
     cmap::Symbol
     clim::Tuple{Real,Real}
     xlims::Tuple
     ylims::Tuple
     # Constructor
-    Claw.PlotsSpec() = new()
-    Claw.PlotsSpec(dir) = new(dir,:coolwarm,(-1.0,1.0),(),())
-    Claw.PlotsSpec(dir,arg1,arg2) = isa(arg1,Symbol) ? new(dir,arg1,arg2,(),()) : new(dir,:none,(0.0,0.0),arg1,arg2)
-    Claw.PlotsSpec(dir,cmap,clim,xlims,ylims) = new(dir,cmap,clim,xlims,ylims)
+    Claw.PlotsSpec() = new(:coolwarm,(-1.0,1.0),(),())
+    Claw.PlotsSpec(arg1,arg2) = isa(arg1,Symbol) ? new(arg1,arg2,(),()) : new(:none,(0.0,0.0),arg1,arg2)
+    Claw.PlotsSpec(cmap,clim,xlims,ylims) = new(cmap,clim,xlims,ylims)
 end
 #########################################
 

@@ -6,11 +6,15 @@ using Claw
 # -----------------------------
 # chile 2010
 # -----------------------------
-Claw.bathtopo("./ex_conf/conf_gmttopo_chile.jl")
+simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
+conffile = "./ex_conf/conf_gmttopo_chile.jl"
+Claw.bathtopo(simdir, conffile)
 # -----------------------------
 
 # -----------------------------
 # ike
 # -----------------------------
-#Claw.bathtopo("./ex_conf/conf_gmttopo_ike.jl")
+simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
+conffile = "./ex_conf/conf_gmttopo_ike.jl"
+Claw.bathtopo(simdir, conffile)
 # -----------------------------

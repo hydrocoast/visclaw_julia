@@ -3,7 +3,6 @@ arrowhead_default=(0.3,0.3)
 arrowlen_default=0.1
 slpcmap_default = :viridis_r
 etacmap_default = :coolwarm
-
 ######################################
 ## Function: filled contour
 ######################################
@@ -43,8 +42,6 @@ function PlotsAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
 		## plot
 	    plt = Plots.contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false, tickfont=10)
 
-		### colorbar ?????
-	    #if j==ntile; plt=Plots.plot!(plt,colorbar=true); end
     end
 
     ## xlims, ylims
@@ -56,6 +53,10 @@ function PlotsAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
 
     ## Appearances
     plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=Plots.RGB(.7,.7,.7))
+
+    ## colorbar
+	for i = 2:ntile; plt.series_list[i].plotattributes[:colorbar_entry] = false; end
+    plt.series_list[1].plotattributes[:colorbar_entry] = true
 
     ## return value
     return plt

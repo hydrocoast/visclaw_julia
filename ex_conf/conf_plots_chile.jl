@@ -1,8 +1,8 @@
 #### Output
 figdir = "./fig/chile2010"
 if !isdir(figdir); mkdir(figdir); end
+
 #### basic setup of figure
-maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output");
 # color range and color palette
 cmap_surf=:coolwarm
 clim_surf = (-0.5,0.5);

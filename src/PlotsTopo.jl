@@ -6,7 +6,7 @@ function PlotsTopoConf(conf::String="./conf_plots.jl")
     end
 	# include
 	include(conf)
-	pltinfo = Claw.PlotsSpec(maindir,cmap_topo,clim_topo,xlims,ylims);
+	pltinfo = Claw.PlotsSpec(cmap_topo,clim_topo,xlims,ylims);
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 	# return value
@@ -15,9 +15,9 @@ end
 ####################################################
 ## Function: plot topography and bathymetry in 2D
 ####################################################
-function PlotsTopo(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
+function PlotsTopo(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
 	# load
-    topofile, _ = Claw.topodata(pltinfo.dir)
+    topofile, _ = Claw.topodata(simdir)
     geo = Claw.LoadTopo(topofile);
     # conditions
     Plots.clibrary(:cmocean)

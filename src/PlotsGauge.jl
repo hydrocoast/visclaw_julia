@@ -6,7 +6,7 @@ function PlotsGaugesConf(conf::String="./conf_plots_gauge.jl")
 	end
 	# include
 	include(conf)
-	pltinfo = Claw.PlotsSpec(maindir,xlims,ylims);
+	pltinfo = Claw.PlotsSpec(xlims,ylims);
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
 	linespec = Claw.PlotsLineSpec(lw,lc,ls)
@@ -14,23 +14,29 @@ function PlotsGaugesConf(conf::String="./conf_plots_gauge.jl")
 	return pltinfo, axinfo, outinfo, linespec
 end
 ################################################################################
-function PlotsGauges(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
+function PlotsGauges(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
                      linespec::Claw.PlotsLineSpec=Claw.PlotsLineSpec())
     # Gauges
     # load Sim.
-    params = Claw.GeoData(pltinfo.dir)
-    gauges = Claw.LoadGauge(pltinfo.dir, eta0=params.eta0)
+    params = Claw.GeoData(simdir)
+    gauges = Claw.LoadGauge(simdir, eta0=params.eta0)
 
     # plot Sim.
     plt = Claw.PlotWaveforms(gauges, lc=linespec.color, lw=linespec.width, ls=linespec.style)
-	if !isempty(pltinfo.xlims);
+	if !isempty(pltinfo.xlims)
         plt = Plots.plot!(plt, xlims=pltinfo.xlims)
     end
-    if !isempty(pltinfo.ylims);
+    if !isempty(pltinfo.ylims)
         plt = Plots.plot!(plt, ylims=pltinfo.ylims)
     end
-    plt = Plots.plot!(plt,xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, legendfont=axinfo.legfont)
-    plt = Plots.plot!(plt,tickfont=axinfo.tickfont, xticks=axinfo.xticks)
+    plt = Plots.plot!(plt, xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, legendfont=axinfo.legfont)
+    plt = Plots.plot!(plt, tickfont=axinfo.tickfont)
+	if !isempty(axinfo.xticks)
+	    plt = Plots.plot!(plt, xticks=axinfo.xticks)
+    end
+	if !isempty(axinfo.yticks)
+	    plt = Plots.plot!(plt, yticks=axinfo.yticks)
+    end
 
 	# save the figure
 	Claw.PrintPlots(plt,outinfo,"gauges.svg")
@@ -39,13 +45,13 @@ function PlotsGauges(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::C
     return plt, gauges
 end
 ################################################################################
-function PlotsGaugeEach(pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
+function PlotsGaugeEach(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec;
                         linespec::Claw.PlotsLineSpec=Claw.PlotsLineSpec(), gaugeobs="",
 						lineobs::Claw.PlotsLineSpec=Claw.PlotsLineSpec(1.0,:black,:dash))
 	# Gauges
     # load Sim.
-    params = Claw.GeoData(pltinfo.dir)
-    gauges = Claw.LoadGauge(pltinfo.dir, eta0=params.eta0)
+    params = Claw.GeoData(simdir)
+    gauges = Claw.LoadGauge(simdir, eta0=params.eta0)
 
 	# the number of gauges
 	ng = length(gauges)

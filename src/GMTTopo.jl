@@ -20,12 +20,12 @@ output_default = "topogmt"
 """
 Draw Topography map in GMT
 """
-function bathtopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
+function bathtopo(simdir::String, topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
                   outinfo::Claw.OutputSpec=Claw.OutputSpec(),
                   coastinfo::Claw.CoastSpec=Claw.CoastSpec(),
                   fileout::String=output_default)
     # load
-    topofile, _ = Claw.topodata(topoinfo.dir)
+    topofile, _ = Claw.topodata(simdir)
     geo = Claw.LoadTopo(topofile);
 
     # options
@@ -74,15 +74,15 @@ function bathtopo(topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
     return geo, J, R
 end
 ###############################################################################################
-function bathtopo(conf::String="./conf_topo.jl"; fileout::String=output_default)
+function bathtopo(simdir::String, conf::String="./conf_topo.jl"; fileout::String=output_default)
     # load configuration - FigureSpec
     include(conf)
-    topoinfo = Claw.FigureSpec(maindir,proj,region,B,V)
+    topoinfo = Claw.FigureSpec(proj,region,B,V)
     cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
     outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
     coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
     # Draw
-    geo, topoinfo.J, topoinfo.R = Claw.bathtopo(topoinfo, cptinfo, outinfo=outinfo, coastinfo=coastinfo, fileout=fileout)
+    geo, topoinfo.J, topoinfo.R = Claw.bathtopo(simdir, topoinfo, cptinfo, outinfo=outinfo, coastinfo=coastinfo, fileout=fileout)
 
     # return value
     return geo, topoinfo, cptinfo, outinfo, coastinfo

@@ -1,8 +1,8 @@
 #### output option
 figdir = "./fig/chile2010"
 if !isdir(figdir); mkdir(figdir); end
+
 #### basic setup of figure
-maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 proj = "X10d" # -J option
 region = "-120/-60/-60/0" # -R option
 B = "a15f15 neSW" # -B option

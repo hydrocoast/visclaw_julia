@@ -1,10 +1,9 @@
 ### Configuration for Plots
+
 ##### output option
 figdir = "./fig/chile2010"
 if !isdir(figdir); mkdir(figdir); end
 ## chile2010
-maindir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output");
-
 ### lims
 sec1h = 3600.
 duration = 9. # hour
