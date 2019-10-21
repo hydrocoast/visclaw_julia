@@ -15,10 +15,7 @@ end
 ####################################################
 ## Function: plot topography and bathymetry in 2D
 ####################################################
-function PlotsTopo(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
-	# load
-    topofile, _ = Claw.topodata(simdir)
-    geo = Claw.LoadTopo(topofile);
+function PlotsTopo(geo::Claw.geometry, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
     # conditions
     Plots.clibrary(:cmocean)
     # plot
@@ -36,6 +33,6 @@ function PlotsTopo(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAx
     Claw.PrintPlots(plt,outinfo,"topoplots.svg")
 
     # return value(s)
-    return plt, geo
+    return plt
 end
 ####################################################
