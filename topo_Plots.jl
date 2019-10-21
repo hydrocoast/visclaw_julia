@@ -6,9 +6,11 @@ using Claw
 # -----------------------------
 # chile 2010
 # -----------------------------
+# load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
+# config
 conffile = "./ex_conf/conf_plots_chile.jl"
 pltinfo, axinfo, outinfo = Claw.PlotsTopoConf(conffile)
 # Plot
@@ -19,9 +21,11 @@ plt = Claw.PlotsTopo(topo, pltinfo, axinfo, outinfo)
 # -----------------------------
 # ike
 # -----------------------------
+# load
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
+# config
 conffile = "./ex_conf/conf_plots_ike.jl"
 pltinfo, axinfo, outinfo = Claw.PlotsTopoConf(conffile)
 # Plot
