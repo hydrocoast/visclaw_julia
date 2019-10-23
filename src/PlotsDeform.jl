@@ -16,10 +16,7 @@ end
 ###########################################################
 ## Function: plot searfloor deformation in 2D, contourf
 ###########################################################
-function PlotsDeform(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
-	# load
-    dtopofile, _ = Claw.dtopodata(simdir)
-    dtopo = Claw.LoadDeform(dtopofile);
+function PlotsDeform(dtopo::Claw.dtopo, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
     # conditions
     Plots.clibrary(:colorcet)
     # plot
@@ -45,6 +42,6 @@ function PlotsDeform(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.Plots
     Claw.PrintPlots(plt,outinfo,"deformplots.svg")
 
     # return value(s)
-    return plt, dtopo
+    return plt
 end
 ###########################################################
