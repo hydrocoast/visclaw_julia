@@ -5,6 +5,9 @@
 #################################
 ## Function: fort.qxxxx reader
 #################################
+"""
+Function: fort.qxxxx reader
+"""
 function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::Claw.param=Claw.param())
     ## file open
     f = open(filename,"r")
@@ -76,12 +79,18 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
     return amr
 end
 #################################
+"""
+Function: fort.axxxx reader
+"""
 LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, vartype="storm")
 #################################
 
 #################################
 ## Function: load time
 #################################
+"""
+Function: fort.txxxx reader
+"""
 function LoadFortt(filename::String)
     ## file open
     f = open(filename,"r")
@@ -98,6 +107,10 @@ end
 ## Function: LoadFortq and LoadFortt
 ##      time-series of water surface
 #######################################
+"""
+Function: LoadFortq and LoadFortt
+          time-series of water surface
+"""
 function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
 	                 vartype="surface"::String)
 
