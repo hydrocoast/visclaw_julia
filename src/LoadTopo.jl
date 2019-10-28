@@ -4,6 +4,9 @@ This module doesn't support topography composed of multiple files.
 #################################
 ## Function: read topo.data
 #################################
+"""
+Function: read topo.data
+"""
 function topodata(dirname::String)
     ## check args
     if !isdir(dirname); error("A directory $dirname is not found."); end;
@@ -23,6 +26,9 @@ end
 #################################
 ## Function: read dtopo.data
 #################################
+"""
+Function: read dtopo.data
+"""
 function dtopodata(dirname::String)
     ## check args
     if !isdir(dirname); error("A directory $dirname is not found."); end;
@@ -44,6 +50,9 @@ end
 #################################
 ## Function: load topography
 #################################
+"""
+Function: load topography
+"""
 function LoadTopo(filename::String; topotype=3::Int)
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;
@@ -104,6 +113,9 @@ end
 #########################################
 ## Function: load seafloor deformation
 #########################################
+"""
+Function: load seafloor deformation (dtopo)
+"""
 function LoadDeform(filename::String, topotype=3::Int)
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;

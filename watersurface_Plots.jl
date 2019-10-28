@@ -14,7 +14,8 @@ pltinfo, axinfo, outinfo, minfo = Claw.PlotsSurfaceConf(conffile)
 amrall = Claw.LoadSurface(simdir)
 
 # plot
-plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, outinfo, bound=true, gridnumber=false)
+plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, bound=true, gridnumber=false)
+Claw.PrintPlots(plts, outinfo)
 # -----------------------------
 
 #=
@@ -31,6 +32,7 @@ pltinfo, axinfo, outinfo, minfo = Claw.PlotsSurfaceConf(conffile)
 amrall = Claw.LoadSurface(simdir)
 
 # plot
-plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, outinfo, bound=true, gridnumber=true)
+plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, bound=true, gridnumber=true)
+Claw.PrintPlots(plts, outinfo)
 # -----------------------------
 =#

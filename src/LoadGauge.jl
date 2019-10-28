@@ -1,6 +1,9 @@
 #################################
 ## Function: gauge*.txt reader
 #################################
+"""
+Function: gauge*.txt reader
+"""
 function LoadGauge(dirname::String; eta0=0.0::Float64, labelhead="Gauge "::String)
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
