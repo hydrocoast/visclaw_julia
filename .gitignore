@@ -11,6 +11,7 @@ gmt.*
 conf_*.jl
 main_*.jl
 my*
+!fig
 !samples/*.*
 !conf_*_chile.jl
 !conf_*_ike.jl
