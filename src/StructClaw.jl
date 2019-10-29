@@ -27,7 +27,30 @@ end
 ###################################
 """
 Struct:
- data container of single patch
+ current u, v with patches
+"""
+struct uv <: Claw.Tiles
+    gridnumber::Int64
+    AMRlevel::Int64
+    mx::Int64
+    my::Int64
+    xlow::Float64
+    ylow::Float64
+    dx::Float64
+    dy::Float64
+    u :: AbstractArray{Float64,2}
+    v :: AbstractArray{Float64,2}
+    vel :: AbstractArray{Float64,2}
+    # Constructor
+    Claw.uv(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel) =
+    new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel)
+end
+###################################
+
+###################################
+"""
+Struct:
+ eta with patches
 """
 struct patch <: Claw.Tiles
     gridnumber::Int64

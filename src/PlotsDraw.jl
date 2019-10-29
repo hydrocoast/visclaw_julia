@@ -6,11 +6,13 @@ etacmap_default = :coolwarm
 ######################################
 ## Function: filled contour
 ######################################
-function PlotsAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
+function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; clim=(), cmap=etacmap_default::Symbol)
 	# check arg
-    if isdefined(tiles[1], :eta)
+    if isa(tiles[1], Claw.patch)
 		var = :eta
-	elseif isdefined(tiles[1], :slp)
+	elseif isa(tiles[1], Claw.uv)
+		var = :vel
+	elseif isa(tiles[1], Claw.stormgrid)
 		var = :slp
 	else
 	    error("Invalid argument")
@@ -51,12 +53,12 @@ function PlotsAMR2D!(plt, tiles; clim=(), cmap=etacmap_default::Symbol)
     ## color range
     if !isempty(clim); plt = Plots.plot!(plt, clims=clim); end
 
-    ## Appearances
-    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=Plots.RGB(.7,.7,.7))
-
-    ## colorbar
+	## colorbar
 	for i = 2:ntile; plt.series_list[i].plotattributes[:colorbar_entry] = false; end
     plt.series_list[1].plotattributes[:colorbar_entry] = true
+
+    ## Appearances
+    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=Plots.RGB(.7,.7,.7), colorbar=true)
 
     ## return value
     return plt
@@ -160,17 +162,31 @@ end
 #############################################
 function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
                         clim=(), cmap=etacmap_default)
+    #=
     ## check arg
+	if isa(tiles[1], Claw.patch)
+		vartype=""
+	elseif isa(tiles[1], Claw.uv)
+		DrawFunc=Claw.PlotsAMR2D
+	elseif isa(tiles[1], Claw.stormgrid)
+		DrawFunc=Claw.PlotsSLP
+	end
+	=#
+	#=
 	if isdefined(amrs.amr[1][1], :eta)
 		DrawFunc=Claw.PlotsAMR2D
 	elseif isdefined(amrs.amr[1][1], :slp)
 		DrawFunc=Claw.PlotsSLP
 	end
+	=#
+
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amrs.nstep)
     for i = 1:amrs.nstep
         ## pseudocolor
-        plt[i] = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap);
+        #plt[i] = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap)
+		plt[i] = Claw.PlotsAMR2D(amrs.amr[i], clim=clim, cmap=cmap)
+
         ## display time in title
         if showsec
             plt[i] = Plots.plot!(plt[i], title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))

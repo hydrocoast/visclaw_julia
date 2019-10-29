@@ -21,6 +21,8 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
 
     if vartype=="surface"
         amr = Array{Claw.patch}(undef,ngrid) ## preallocate
+	elseif vartype=="current"
+        amr = Array{Claw.uv}(undef,ngrid)
     elseif vartype=="storm"
         amr = Array{Claw.stormgrid}(undef,ngrid)
     else
@@ -52,6 +54,26 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             vars = vars.-params.eta0
             ## array
             amr[i] = Claw.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+
+		elseif vartype=="current"
+			ucol = ncol
+            vcol = ncol+1
+			# read
+			bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+			u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
+            v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
+			# replace to NaN
+			mask = bath.<=0.0
+			bath[mask] .= NaN
+            u[mask] .= NaN
+			v[mask] .= NaN
+			# calc
+            u = u./bath
+			v = v./bath
+			vel = sqrt.(u.^2 .+ v.^2)
+            ## array
+            amr[i] = Claw.uv(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
+
         elseif vartype=="storm"
             ucol = ncol
             vcol = ncol+1
@@ -118,6 +140,9 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     if vartype=="surface"
         fnamekw = "fort.q0"
         col=4
+	elseif vartype=="current"
+        fnamekw = "fort.q0"
+        col=2
     elseif vartype=="storm"
         fnamekw = "fort.a0"
         col=5
@@ -150,6 +175,8 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     ## preallocate
     if vartype=="surface"
         amr = Vector{AbstractVector{Claw.patch}}(undef,nfile)
+	elseif vartype=="current"
+        amr = Vector{AbstractVector{Claw.uv}}(undef,nfile)
     elseif vartype=="storm"
         amr = Vector{AbstractVector{Claw.stormgrid}}(undef,nfile)
     end
@@ -160,7 +187,9 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     for it = filesequence
 		cnt += 1
         if vartype=="surface"
-            amr[cnt] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, params=params)
+            amr[cnt] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
+		elseif vartype=="current"
+            amr[cnt] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
         elseif vartype=="storm"
             amr[cnt] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
         end
@@ -183,6 +212,8 @@ LoadSurface(loaddir, fileid:fileid, vartype="surface")
 LoadSurface(loaddir::String) =
 LoadSurface(loaddir, 0:0, vartype="surface")
 ######################################
+
+######################################
 LoadStorm(loaddir::String, filesequence::AbstractVector{Int64}) =
 LoadSurface(loaddir, filesequence, vartype="storm")
 #######################################
@@ -194,4 +225,18 @@ LoadSurface(loaddir, fileid:fileid, vartype="storm")
 #######################################
 LoadStorm(loaddir::String) =
 LoadSurface(loaddir, 0:0, vartype="storm")
+######################################
+
+#######################################
+LoadCurrent(loaddir::String, filesequence::AbstractVector{Int64}) =
+LoadSurface(loaddir, filesequence, vartype="current")
+#######################################
+LoadCurrent(loaddir::String, filestart::Int64, filend::Int64) =
+LoadSurface(loaddir, filestart:filend, vartype="current")
+#######################################
+LoadCurrent(loaddir::String, fileid::Int64) =
+LoadSurface(loaddir, fileid:fileid, vartype="current")
+#######################################
+LoadCurrent(loaddir::String) =
+LoadSurface(loaddir, 0:0, vartype="current")
 #######################################

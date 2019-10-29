@@ -44,6 +44,7 @@ include("PlotsTopo.jl")
 include("PlotsDeform.jl")
 include("PlotsGauge.jl")
 include("PlotsSurfaceAll.jl")
+include("PlotsCurrentAll.jl")
 
 using GMT:GMT
 # Setup

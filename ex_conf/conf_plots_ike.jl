@@ -5,16 +5,27 @@ if !isdir(figdir); mkdir(figdir); end
 #### basic setup of figure
 # color range and color palette
 cmap_surf=:rainbow
-clim_surf = (0.0,2.0);
+clim_surf = (0.0,2.0)
+prefix_surf="plotseta"
+
+# color range and color palette
+cmap_current =:isolum
+clim_current = (0.0,2.0)
+prefix_current="plotsvel"
+
 # color range and color palette
 cmap_slp =:isolum_r
-clim_slp = (960,1000);
+clim_slp = (960,1000)
+prefix_slp="plotsslp"
+
 # color range and color palette
 cmap_topo =:delta
-clim_topo = (-6000,6000);
+clim_topo = (-6000,6000)
+
 # color range and color palette
 cmap_dtopo =:coolwarm
-clim_dtopo = (-3.0,3.0);
+clim_dtopo = (-3.0,3.0)
+
 # lims
 xlims=(-99,-85)
 ylims=(22.,32)
@@ -29,7 +40,6 @@ legfont = Plots.font("sans-serif",10)
 tickfont = Plots.font("sans-serif",10)
 
 #### output option
-prefix="plotseta"
 start_number=0
 ext=".gif"  # .svg, .png or .gif in Plots
 dpi=400 # resolusion dots per inch in case of .png or .gif

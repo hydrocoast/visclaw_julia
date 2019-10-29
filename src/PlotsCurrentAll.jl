@@ -1,20 +1,20 @@
 ###############################################################################
-function PlotsSurfaceConf(conf::String="./conf_plots.jl")
+function PlotsCurrentConf(conf::String="./conf_plots.jl")
     # check
     if !isfile(conf);
         error("Not found: $conf")
     end
     # include
     include(conf)
-    pltinfo = Claw.PlotsSpec(cmap_surf,clim_surf,xlims,ylims);
+    pltinfo = Claw.PlotsSpec(cmap_current,clim_current,xlims,ylims);
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
-	outinfo = Claw.OutputSpec(figdir,prefix_surf,start_number,ext,dpi,fps,remove_old)
+	outinfo = Claw.OutputSpec(figdir,prefix_current,start_number,ext,dpi,fps,remove_old)
     markerinfo = Claw.MarkerSpec(msize,mcolor,mfont)
     # return value
     return pltinfo, axinfo, outinfo, markerinfo
 end
 ###############################################################################
-function PlotsSurfaceAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes;
+function PlotsCurrentAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes;
 	                     bound::Bool=false, gridnumber::Bool=false, gauges="", minfo::Claw.MarkerSpec=Claw.MarkerSpec())
 
     # plot
