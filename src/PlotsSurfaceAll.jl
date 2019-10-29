@@ -9,9 +9,8 @@ function PlotsSurfaceConf(conf::String="./conf_plots.jl")
     pltinfo = Claw.PlotsSpec(cmap_surf,clim_surf,xlims,ylims);
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
 	outinfo = Claw.OutputSpec(figdir,prefix_surf,start_number,ext,dpi,fps,remove_old)
-    markerinfo = Claw.MarkerSpec(msize,mcolor,mfont)
     # return value
-    return pltinfo, axinfo, outinfo, markerinfo
+    return pltinfo, axinfo, outinfo
 end
 ###############################################################################
 function PlotsSurfaceAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes;
@@ -26,11 +25,6 @@ function PlotsSurfaceAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw
 	end
 	if !isempty(pltinfo.ylims)
 		plts = map(p -> Plots.plot!(p,ylims=pltinfo.ylims), plts)
-	end
-
-    # show gauge locations if any
-	if !isempty(gauges) && isa(gauges,Vector{Claw.gauge})
-        plts = map(p -> Claw.PlotGaugeLocs!(p,gauges,ms=minfo.msize, mfc=minfo.mcolor, txtfont=minfo.mfont), plts)
 	end
 
     # return value(s)

@@ -51,3 +51,39 @@ function SurgeData(dirname::String)
     return surgedata
 end
 ###################################
+
+###################################
+"""
+Function: gauges.data reader
+"""
+function GaugeData(dirname::String)
+    # definition of filename
+    fname = joinpath(dirname,"gauges.data")
+    # check whether exist
+    if !isfile(fname); error("File $fname is not found."); end
+    # read all lines
+    open(fname,"r") do f
+        global txt = readlines(f)
+    end
+    # parse parameters
+    ngauges = parse(Int64, split(txt[occursin.("ngauges",txt)][1],r"\s+")[1])
+    # preallocate
+    gaugedata = Vector{Claw.gauge}(undef,ngauges)
+
+    # read gauge info
+    baseline = findfirst(x->occursin("ngauges", x), txt)
+    for i = 1:ngauges
+        txtline = split(txt[baseline+i],r"\s+")
+        if isempty(txtline[1]); txtline = txtline[2:end]; end
+        label = txtline[1]
+        id = parse(Int64,txtline[1])
+        loc = [parse(Float64,txtline[2]), parse(Float64,txtline[3])]
+        time = [parse(Float64,txtline[4]), parse(Float64,txtline[5])]
+        # instance
+        gaugedata[i] = Claw.gauge(label,id,0,loc,[],time,[])
+    end
+
+    # return values
+    return gaugedata
+end
+###################################

@@ -8,7 +8,7 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 
 # load configurations
 conffile = "./ex_conf/conf_plots_chile.jl"
-pltinfo, axinfo, outinfo, minfo = Claw.PlotsCurrentConf(conffile)
+pltinfo, axinfo, outinfo = Claw.PlotsCurrentConf(conffile)
 
 # load water current
 amrall = Claw.LoadCurrent(simdir)
@@ -27,7 +27,7 @@ simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 
 # load configurations
 conffile = "./ex_conf/conf_plots_ike.jl"
-pltinfo, axinfo, outinfo, minfo = Claw.PlotsCurrentConf(conffile)
+pltinfo, axinfo, outinfo = Claw.PlotsCurrentConf(conffile)
 
 # load water current
 amrall = Claw.LoadCurrent(simdir)

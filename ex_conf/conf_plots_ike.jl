@@ -45,8 +45,3 @@ ext=".gif"  # .svg, .png or .gif in Plots
 dpi=400 # resolusion dots per inch in case of .png or .gif
 fps=4 # frames per second (only gif)
 remove_old=true # remove old files
-
-### Marker
-msize = 6 # markersilze
-mcolor = :auto # marker face color
-mfont = Plots.font(10,:left,:top,0.0,:black) # text font

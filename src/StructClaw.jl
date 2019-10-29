@@ -163,8 +163,6 @@ mutable struct gauge
     time :: AbstractVector{Float64} # time
     eta :: AbstractVector{Float64} # surface
     # Constructor
-    Claw.gauge(label,id,nt,time,eta) = new(label,id,nt,[],[],time,eta)
-    Claw.gauge(label,id,nt,loc,time,eta) = new(label,id,nt,loc,[],time,eta)
     Claw.gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta)
 end
 ########################################
