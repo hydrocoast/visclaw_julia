@@ -22,8 +22,9 @@ include("CLAWPATH.jl")
 export CLAW
 
 # define structs and basic functions
+const KWARG = Dict{Symbol,Any}
 include("StructClaw.jl")
-include("Data.jl")
+include("LoadData.jl")
 include("Utils.jl")
 # Load
 include("LoadTopo.jl")
@@ -43,6 +44,8 @@ include("PlotsCheck.jl")
 include("PlotsTopo.jl")
 include("PlotsDeform.jl")
 include("PlotsGauge.jl")
+include("PlotsGaugeWaveform.jl")
+include("PlotsGaugeLocation.jl")
 include("PlotsSurfaceAll.jl")
 include("PlotsCurrentAll.jl")
 

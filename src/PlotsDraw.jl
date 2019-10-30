@@ -162,23 +162,6 @@ end
 #############################################
 function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
                         clim=(), cmap=etacmap_default)
-    #=
-    ## check arg
-	if isa(tiles[1], Claw.patch)
-		vartype=""
-	elseif isa(tiles[1], Claw.uv)
-		DrawFunc=Claw.PlotsAMR2D
-	elseif isa(tiles[1], Claw.stormgrid)
-		DrawFunc=Claw.PlotsSLP
-	end
-	=#
-	#=
-	if isdefined(amrs.amr[1][1], :eta)
-		DrawFunc=Claw.PlotsAMR2D
-	elseif isdefined(amrs.amr[1][1], :slp)
-		DrawFunc=Claw.PlotsSLP
-	end
-	=#
 
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amrs.nstep)
@@ -205,80 +188,3 @@ function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, g
     return plt
 end
 #############################################
-
-###########################################
-## Function: plot single gauge
-###########################################
-function PlotWaveform!(plt, gauge::Claw.gauge; lc=:auto, lw=1., ls=:solid)
-    plt = Plots.plot!(plt, gauge.time, gauge.eta, lc=lc, lw=lw, linestyle=ls, label=gauge.label);
-    return plt
-end
-###########################################
-PlotWaveform(gauge::Claw.gauge; lc=:auto, lw=1., ls=:solid) =
-PlotWaveform!(Plots.plot(),gauge, lc=lc, lw=lw, ls=ls)
-###########################################
-
-###########################################
-## Function: plot gauge
-###########################################
-function PlotWaveforms!(plt, gauges::Vector{Claw.gauge}; lc=:auto, lw=1., ls=:solid)
-    # Number of gauges
-    ngauge = length(gauges)
-    # Check the input arguments
-    lc = Claw.chkarglength!(lc,ngauge)
-    lw = Claw.chkarglength!(lw,ngauge)
-    ls = Claw.chkarglength!(ls,ngauge)
-    # plot
-    for i = 1:ngauge
-        plt = Claw.PlotWaveform!(plt, gauges[i], lc=lc[i], lw=lw[i], ls=ls[i])
-    end
-    # return value
-    return plt
-end
-###########################################
-function PlotWaveforms(gauges::Vector{Claw.gauge}; lc=:auto, lw=1., ls=:solid)
-    plt = Plots.plot()
-    plt = Claw.PlotWaveforms!(plt,gauges,lc=lc,lw=lw,ls=ls)
-    # return value
-    return plt
-end
-###########################################
-
-ms_default=8
-an_default = Plots.font(8,:left,:top,0.0,:black)
-###########################################
-## Function: plot gauge location
-###########################################
-function PlotGaugeLoc!(plt, gauge::Claw.gauge; ms=ms_default, mfc=:auto, txtfont=an_default)
-    an=" "*@sprintf("%s",gauge.id)
-    plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]],
-                         ann=(gauge.loc[1],gauge.loc[2],Plots.text(an,txtfont)),
-                         ms=ms, color=mfc, label="")
-    return plt
-end
-###########################################
-PlotGaugeLoc(gauge::Claw.gauge; ms=ms_default, mfc=:auto, txtfont=an_default) =
-PlotGaugeLoc!(Plots.plot(), gauge, ms=ms, mfc=mfc, txtfont=txtfont)
-###########################################
-function PlotGaugeLocs!(plt, gauges::Vector{Claw.gauge}; ms=ms_default, mfc=:auto, txtfont=an_default)
-    # Number of gauges
-    ngauge = length(gauges)
-    # Check the input arguments
-    ms = Claw.chkarglength!(ms,ngauge)
-    mfc = Claw.chkarglength!(mfc,ngauge)
-    txtfont = Claw.chkarglength!(txtfont,ngauge)
-    # plot
-    for i = 1:ngauge
-        plt = Claw.PlotGaugeLoc!(plt, gauges[i], ms=ms[i], mfc=mfc[i], txtfont=txtfont[i])
-    end
-    # return value
-    return plt
-end
-###########################################
-function PlotGaugeLocs(gauges::Vector{Claw.gauge}; ms=ms_default, mfc=:auto, txtfont=an_default)
-    plt = Plots.plot()
-    plt = PlotGaugeLocs!(plt, gauges, ms=ms, mfc=mfc, txtfont=txtfont)
-    # return value
-    return plt
-end
-###########################################

@@ -82,3 +82,9 @@ function PrintPlots(plt::Plots.Plot, outinfo::Claw.OutputSpec, svgname::String)
 	end
 end
 #####################################################
+"""
+Print out Plots.Plot
+"""
+PrintPlots(plt::Plots.Plot, outinfo::Claw.OutputSpec) =
+PrintPlots(plt::Plots.Plot, outinfo::Claw.OutputSpec, outinfo.prefix*".svg")
+#####################################################

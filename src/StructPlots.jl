@@ -21,8 +21,8 @@ Struct: configuration for Plots
 mutable struct PlotsAxes
     xlabel::String
     ylabel::String
-    xticks::Tuple
-    yticks::Tuple
+    xticks
+    yticks
     labfont::Plots.Font
     legfont::Plots.Font
     tickfont::Plots.Font

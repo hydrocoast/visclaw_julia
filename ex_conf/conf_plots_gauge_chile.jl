@@ -15,19 +15,15 @@ xlabel = "Time since earthquake (hour)"
 ylabel = "Amplitude (m)"
 xtickv=0:sec1h:sec1h*duration
 xtickl=[@sprintf("%d",i) for i=0:duration]
-xticks = (xtickv,xtickl)
-yticks = ()
+#xticks = []
+#xticks = (xtickv, xtickl)
+#yticks = ()
 labfont = Plots.font("sans-serif",12)
 legfont = Plots.font("sans-serif",10)
 tickfont = Plots.font("sans-serif",10)
 
-### PlotsLine
-lw = 1.0
-lc = :auto
-ls = :solid
-
 #### output option
-prefix="eta"
+prefix="waveform_gauge"
 start_number=0
 ext=".svg"  # .svg, .png or .gif in Plots
 dpi=400 # resolusion dots per inch in case of .png or .gif
