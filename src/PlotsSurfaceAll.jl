@@ -17,7 +17,7 @@ function PlotsSurfaceAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw
 	                     bound::Bool=false, gridnumber::Bool=false, gauges="", minfo::Claw.MarkerSpec=Claw.MarkerSpec())
 
     # plot
-    plts = Claw.PlotTimeSeries(amrall, clim=pltinfo.clim, cmap=pltinfo.cmap, bound=bound, gridnumber=gridnumber)
+    plts = Claw.PlotsTimeSeries(amrall, clim=pltinfo.clim, cmap=pltinfo.cmap, bound=bound, gridnumber=gridnumber)
 	plts = map(p -> Plots.plot!(p,xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, tickfont=axinfo.tickfont), plts)
 
 	if !isempty(pltinfo.xlims)

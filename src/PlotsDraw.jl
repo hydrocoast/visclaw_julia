@@ -160,7 +160,7 @@ end
 #############################################
 ## Function: plot time-series of AMR data
 #############################################
-function PlotTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
+function PlotsTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
                         clim=(), cmap=etacmap_default)
 
     ## plot time-series

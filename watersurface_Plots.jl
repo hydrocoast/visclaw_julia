@@ -4,7 +4,6 @@ using Claw
 using Plots
 plotlyjs()
 
-#=
 # -----------------------------
 # chile 2010
 # -----------------------------
@@ -21,13 +20,14 @@ gauges = Claw.GaugeData(simdir)
 
 # plot
 plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, bound=true, gridnumber=false)
-plts = map(p -> Claw.PlotGaugeLocs!(p, gauges, ms=4, mfc=:black, txtfont=Plots.font(8,:left,:top,0.0,:black)), plts)
+plts = map(p -> Claw.PlotsGaugeLocation!(p, gauges, ms=4, color=:black), plts)
 
 # save
 Claw.PrintPlots(plts, outinfo)
 # -----------------------------
-=#
 
+
+#=
 # -----------------------------
 # ike
 # -----------------------------
@@ -44,8 +44,9 @@ gauges = Claw.GaugeData(simdir)
 
 # plot
 plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, bound=true, gridnumber=true)
-plts = map(p -> Claw.PlotGaugeLocs!(p, gauges, ms=4, mfc=:auto, txtfont=Plots.font(10,:left,:top,0.0,:black)), plts)
+plts = map(p -> Claw.PlotsGaugeLocation!(p, gauges; color=:white), plts)
 
 # save
 Claw.PrintPlots(plts, outinfo)
 # -----------------------------
+=#
