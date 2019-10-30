@@ -3,6 +3,7 @@ using Claw
 
 ### Waveform plots from gauges
 using Plots
+pyplot()
 
 struct2dict(x) = Dict(fn=>getfield(x, fn) for fn ∈ fieldnames(typeof(x)))
 
@@ -36,7 +37,7 @@ plt = Claw.PlotsGaugeWaveform(gauges[1], lw=1.0)
 plt = Claw.PlotsGaugeWaveform!(plt, gaugeobs[1], lc=:black, lw=1.0, linestyle=:dash)
 plt = Plots.plot!(plt; struct2dict(pltinfo)...)
 plt = Plots.plot!(plt; xlabel=axinfo.xlabel, ylabel=axinfo.ylabel,
-                       xticks=axinfo.xticks,
+                       xticks=axinfo.xticks, legend=:topright,
                        guidefont=axinfo.labfont, tickfont=axinfo.tickfont, legendfont=axinfo.legfont)
 
 # save
@@ -44,7 +45,7 @@ Claw.PrintPlots(plt, outinfo)
 # -----------------------------
 
 
-#=
+
 # -----------------------------
 # ike
 # -----------------------------
@@ -67,4 +68,3 @@ plt = Plots.plot!(plt; xlabel=axinfo.xlabel, ylabel=axinfo.ylabel,
 # save
 Claw.PrintPlots(plt, outinfo)
 # -----------------------------
-=#

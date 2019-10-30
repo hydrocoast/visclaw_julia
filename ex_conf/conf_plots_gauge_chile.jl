@@ -16,7 +16,7 @@ ylabel = "Amplitude (m)"
 xtickv=0:sec1h:sec1h*duration
 xtickl=[@sprintf("%d",i) for i=0:duration]
 #xticks = []
-#xticks = (xtickv, xtickl)
+xticks = (xtickv, xtickl)
 #yticks = ()
 labfont = Plots.font("sans-serif",12)
 legfont = Plots.font("sans-serif",10)
