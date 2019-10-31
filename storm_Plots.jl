@@ -14,7 +14,7 @@ pltinfo, axinfo, outinfo = Claw.PlotsStormConf(conffile)
 
 # load
 amrall = Claw.LoadStorm(simdir, 5:6)
-#Claw.RemoveCoarseUV!.(amrall.amr)
+Claw.RemoveCoarseUV!.(amrall.amr)
 
 # plot
 plts = Claw.PlotsStormAll(amrall, pltinfo, axinfo)

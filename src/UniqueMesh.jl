@@ -171,5 +171,5 @@ function RemoveCoarseUV!(tiles::Vector{Claw.Tiles})
     end
 
     ## return values
-    return tiles
+    return
 end
