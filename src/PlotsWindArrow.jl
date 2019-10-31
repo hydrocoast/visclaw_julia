@@ -1,5 +1,5 @@
-arrowhead_default=(0.1,0.1)
-arrowlen_default=0.1
+arrowhead_default=(0.5,0.5)
+arrowlen_default=0.05
 
 ###########################################
 ## Function: Draw wind field with arrows
@@ -18,13 +18,14 @@ function PlotsWindArrow!(plt, tiles::AbstractVector{Claw.Tiles}, dc=5::Int64;
         xq = collect(x[1]:tiles[i].dx:x[2])
         yq = collect(y[1]:tiles[i].dy:y[2])
 
-        plt = Plots.quiver!(plt,
-              repeat(xq[1:dc:end], inner=(length(yq[1:dc:end]), 1)),
-              repeat(yq[1:dc:end], outer=(length(xq[1:dc:end]), 1)),
-              quiver=(len*vec(tiles[i].u[1:dc:end,1:dc:end]),
-                      len*vec(tiles[i].v[1:dc:end,1:dc:end])),
-                      arrow=Plots.arrow(:closed, :head, head[1], head[2]), color=:black,
-                      )
+        X = repeat(xq[1:dc:end], inner=(length(yq[1:dc:end]), 1))
+        Y = repeat(yq[1:dc:end], outer=(length(xq[1:dc:end]), 1))
+        U = len*vec(tiles[i].u[1:dc:end,1:dc:end])
+        V = len*vec(tiles[i].v[1:dc:end,1:dc:end])
+
+        plt = Plots.quiver!(plt, X, Y, quiver=(U, V),
+                            arrow=Plots.arrow(:closed, :head, head[1], head[2]),
+                            color=:black, colorbar=false)
     end
 
     ## return

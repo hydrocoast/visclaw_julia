@@ -41,7 +41,7 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; clim=(), cmap=etacm
 		val[end,:] = val[end-1,:]
 
 		## plot
-	    plt = Plots.contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false, tickfont=10)
+	    plt = Plots.contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false)
 
     end
 

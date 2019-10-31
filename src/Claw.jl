@@ -48,7 +48,7 @@ include("PlotsGaugeLocation.jl")
 include("PlotsSurfaceAll.jl")
 include("PlotsCurrentAll.jl")
 include("PlotsStormAll.jl")
-include("PlotsWind.jl")
+include("PlotsWindArrow.jl")
 
 using GMT:GMT
 # Setup
