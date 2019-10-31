@@ -30,7 +30,7 @@ gauges = Claw.LoadGauge(simdir, eta0=params.eta0)
 
 # conf
 conffile = "./ex_conf/conf_plots_gauge_chile.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsGaugesConf(conffile)
+pltinfo, axinfo, outinfo = Claw.PlotsGaugeConf(conffile)
 
 # plot
 plt = Claw.PlotsGaugeWaveform(gauges[1], lw=1.0)
@@ -57,7 +57,7 @@ gauges = Claw.LoadGauge(simdir, eta0=params.eta0)
 
 # conf simulation result
 conffile ="./ex_conf/conf_plots_gauge_ike.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsGaugesConf(conffile)
+pltinfo, axinfo, outinfo = Claw.PlotsGaugeConf(conffile)
 
 # plot
 plt = Claw.PlotsGaugeWaveform(gauges, lw=1.0)

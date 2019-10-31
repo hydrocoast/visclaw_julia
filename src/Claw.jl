@@ -39,7 +39,7 @@ include("UniqueMesh.jl")
 include("StructPlots.jl")
 include("PlotsTools.jl")
 # Plots
-include("PlotsDraw.jl")
+include("Plots2D.jl")
 include("PlotsCheck.jl")
 include("PlotsTopo.jl")
 include("PlotsDeform.jl")
