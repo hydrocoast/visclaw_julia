@@ -16,7 +16,7 @@ prefix_current="plotsvel"
 # color range and color palette
 cmap_slp =:isolum_r
 clim_slp = (960,1000)
-prefix_slp="plotsslp"
+prefix_slp="plotsstorm"
 
 # color range and color palette
 cmap_topo =:delta
