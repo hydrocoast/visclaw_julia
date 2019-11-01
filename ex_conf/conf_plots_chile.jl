@@ -5,7 +5,7 @@ if !isdir(figdir); mkdir(figdir); end
 #### basic setup of figure
 # color range and color palette
 cmap_surf=:coolwarm
-clim_surf = (-0.5,0.5);
+clim_surf = (-0.5,0.5)
 prefix_surf="plotseta"
 
 # color range and color palette
@@ -15,11 +15,11 @@ prefix_current="plotsvel"
 
 # color range and color palette
 cmap_topo =:delta
-clim_topo = (-6000,6000);
+clim_topo = (-6000,6000)
 
 # color range and color palette
 cmap_dtopo =:coolwarm
-clim_dtopo = (-3.0,3.0);
+clim_dtopo = (-3.0,3.0)
 
 # lims
 xlims=()

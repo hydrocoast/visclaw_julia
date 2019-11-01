@@ -40,8 +40,14 @@ function PlotsGaugeWaveform!(plt, gauges::Vector{Claw.gauge}; kwargs...)
     time_all = getfield.(gauges, :time)
     eta_all = getfield.(gauges, :eta)
     label_all = getfield.(gauges, :label)
-    # plot
-    plt = Plots.plot!(plt, time_all, eta_all; label=label_all, d...)
+	# number of gauges
+	ngauge = length(gauges)
+
+	for i = 1:ngauge
+        # plot
+        plt = Plots.plot!(plt, time_all[i], eta_all[i]; label=label_all[i], d...)
+	end
+
     # return
     return plt
 end

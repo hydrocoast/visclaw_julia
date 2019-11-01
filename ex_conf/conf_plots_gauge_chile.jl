@@ -17,7 +17,7 @@ xtickv=0:sec1h:sec1h*duration
 xtickl=[@sprintf("%d",i) for i=0:duration]
 #xticks = []
 xticks = (xtickv, xtickl)
-#yticks = ()
+yticks = ()
 labfont = Plots.font("sans-serif",12)
 legfont = Plots.font("sans-serif",10)
 tickfont = Plots.font("sans-serif",10)

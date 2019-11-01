@@ -18,12 +18,12 @@ function GMTSurfaceAll(amrall::Claw.AMR, figinfo::Claw.FigureSpec, cptinfo::Claw
     end
 
     # water surface elavation
-    Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V);
+    Claw.AMRSurf(amrall, cpt, outinfo=outinfo, J=figinfo.J, R=figinfo.R, B=figinfo.B, V=figinfo.V)
     # Colorbar
     Claw.AMRColorbar!(amrall, cpt, outinfo=outinfo, J=figinfo.J, B=cptinfo.B, D=cptinfo.Dscale, V=cptinfo.V)
     # Coastline
     if coastinfo.hascoast
-        Claw.AMRCoast!(amrall, outinfo=outinfo, J=figinfo.J, R=figinfo.R, G=coastinfo.G, V=coastinfo.V);
+        Claw.AMRCoast!(amrall, outinfo=outinfo, J=figinfo.J, R=figinfo.R, G=coastinfo.G, V=coastinfo.V)
     end
     # Time
     Claw.AMRTitle!(amrall, outinfo=outinfo, J=figinfo.J, titlestr, V=figinfo.V)
@@ -57,13 +57,3 @@ function GMTSurfaceConf(conf::String="./conf_gmtsurf.jl")
     return figinfo, cptinfo, outinfo, coastinfo, timeinfo
 end
 ################################################################################
-#=
-function surfacegif(conf::String="./conf_gmtsurf.jl")
-    include(conf)
-    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
-    # make animation
-    Claw.makegif(outinfo)
-    # return value
-    return outinfo
-end
-=#

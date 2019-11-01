@@ -2,7 +2,7 @@ include("./addpath.jl")
 using Claw
 
 using Plots:Plots
-Plots.plotly()
+Plots.plotlyjs()
 
 # easy checker
 

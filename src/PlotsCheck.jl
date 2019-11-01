@@ -96,19 +96,6 @@ function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsA
 end
 ##############################################################################
 
-#=
-################################################################################
-function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes)
-    # load
-    amrall = Claw.LoadSurface(simdir)
-    # plt
-    plt = Claw.SurfacebyStep(simdir, pltinfo, axinfo)
-
-    # return value(s)
-	#return amrall, plt
-    return plt
-end
-=#
 ################################################################################
 function PlotsCheck(simdir::String, conf::String="conf_plots.jl"; vartype="surface"::String)
     if !isfile(conf);
@@ -122,7 +109,7 @@ function PlotsCheck(simdir::String, conf::String="conf_plots.jl"; vartype="surfa
 		pltinfo = Claw.PlotsSpec(cmap_slp,clim_slp,xlims,ylims)
 	end
 	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
-	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
+	outinfo = Claw.OutputSpec(figdir,prefix_surf,start_number,ext,dpi,fps,remove_old)
 
 	# plots
 	plt = Claw.PlotsCheck(simdir, pltinfo, axinfo, vartype=vartype)
