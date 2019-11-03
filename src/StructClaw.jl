@@ -167,6 +167,53 @@ mutable struct gauge
 end
 ########################################
 
+########################################
+"""
+Struct: fgmax grid
+"""
+struct fgmaxgrid
+    FGid :: Int64
+    file :: String
+    nval :: Int64
+    nx :: Int64
+    ny :: Int64
+    xlims :: Tuple{Float64,Float64}
+    ylims :: Tuple{Float64,Float64}
+
+    # Constructor
+    Claw.fgmaxgrid(FGid,file,nval) = new(FGid,file,nval,0,0,(0.0,0.0),(0.0,0.0))
+    Claw.fgmaxgrid(FGid,file,nval,nx,ny,xlims,ylims) = new(FGid,file,nval,nx,ny,xlims,ylims)
+end
+########################################
+
+########################################
+"""
+Struct: fgmax values
+"""
+struct fgmaxval
+    h :: AbstractArray{Float64,2}
+    v :: AbstractArray{Float64,2}
+    M :: AbstractArray{Float64,2}
+    Mflux :: AbstractArray{Float64,2}
+    hmin :: AbstractArray{Float64,2}
+    th :: AbstractArray{Float64,2}
+    tv :: AbstractArray{Float64,2}
+    tM :: AbstractArray{Float64,2}
+    tMflux :: AbstractArray{Float64,2}
+    thmin :: AbstractArray{Float64,2}
+
+    # Constructor
+    Claw.fgmaxval(h,th) = new(h, emptyF, emptyF, emptyF, emptyF,
+                              th, emptyF, emptyF, emptyF, emptyF)
+    Claw.fgmaxval(h,v,th,tv) = new(h, v, emptyF, emptyF, emptyF,
+                                   th, tv, emptyF, emptyF, emptyF)
+    Claw.fgmaxval(h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
+              new(h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+end
+########################################
+
+
+
 #########################################
 """
 Struct: Output files configuration

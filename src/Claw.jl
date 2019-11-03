@@ -23,8 +23,11 @@ export CLAW
 
 # define structs and basic functions
 const KWARG = Dict{Symbol,Any}
+const emptyF = Array{Float64}(undef, 0, 0)
+
 include("StructClaw.jl")
 include("LoadData.jl")
+include("LoadFGmaxGrid.jl")
 include("Utils.jl")
 # Load
 include("LoadTopo.jl")
