@@ -52,6 +52,7 @@ include("PlotsSurfaceAll.jl")
 include("PlotsCurrentAll.jl")
 include("PlotsStormAll.jl")
 include("PlotsWindArrow.jl")
+include("PlotsFGmax.jl")
 
 using GMT:GMT
 # Setup

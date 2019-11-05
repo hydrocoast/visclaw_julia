@@ -45,21 +45,41 @@ LoadFGmaxGrid(fg::Claw.fgmaxgrid) = LoadFGmaxGrid(fg.file; FGid=fg.FGid, nval=fg
 
 #################################
 """
-Function: fort.FGx.valuemax reader
+Function: fort.FGx.valuemax and fort.FGx.aux1 reader
 """
 function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
 
-    # filename
+
+    # fort.FGx.aux1
+    filename = "fort.FG"*@sprintf("%d",FGid)*".aux1"
+    auxfile = joinpath(loaddir,filename)
+    ## check
+    if !isfile(auxfile); error("Not found: $auxfile"); end
+
+    # load
+    dat = readdlm(auxfile)
+
+    # assign
+    h = permutedims(reshape(dat[:,3], (nx, ny)), [2 1])
+    # --------------- need to be revised
+    #
+    #
+    #
+    #
+    # --------------- need to be revised
+
+
+
+    # fort.FGx.valuemax
     filename = "fort.FG"*@sprintf("%d",FGid)*".valuemax"
     loadfile = joinpath(loaddir,filename)
-
     ## check
     if !isfile(loadfile); error("Not found: $loadfile"); end
 
     # load
     dat = readdlm(loadfile)
 
-
+    # assign
     if nval == 1
         h = permutedims(reshape(dat[:,4], (nx, ny)), [2 1])
         th = permutedims(reshape(dat[:,6], (nx, ny)), [2 1])

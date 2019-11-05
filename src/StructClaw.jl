@@ -190,7 +190,8 @@ end
 """
 Struct: fgmax values
 """
-struct fgmaxval
+mutable struct fgmaxval
+    bath :: AbstractArray{Float64,2}
     h :: AbstractArray{Float64,2}
     v :: AbstractArray{Float64,2}
     M :: AbstractArray{Float64,2}
@@ -203,12 +204,12 @@ struct fgmaxval
     thmin :: AbstractArray{Float64,2}
 
     # Constructor
-    Claw.fgmaxval(h,th) = new(h, emptyF, emptyF, emptyF, emptyF,
-                              th, emptyF, emptyF, emptyF, emptyF)
-    Claw.fgmaxval(h,v,th,tv) = new(h, v, emptyF, emptyF, emptyF,
-                                   th, tv, emptyF, emptyF, emptyF)
-    Claw.fgmaxval(h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
-              new(h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+    Claw.fgmaxval(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
+                                   th, emptyF, emptyF, emptyF, emptyF)
+    Claw.fgmaxval(bath,h,v,th,tv) = new(h, v, emptyF, emptyF, emptyF,
+                                        th, tv, emptyF, emptyF, emptyF)
+    Claw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
+              new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
 end
 ########################################
 
