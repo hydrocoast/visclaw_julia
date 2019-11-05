@@ -60,14 +60,10 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     dat = readdlm(auxfile)
 
     # assign
-    h = permutedims(reshape(dat[:,3], (nx, ny)), [2 1])
-    # --------------- need to be revised
-    #
-    #
-    #
-    #
-    # --------------- need to be revised
-
+    npnt, ncol = size(dat)
+    nlevel = ncol - 2
+    #bath_level = dat[:,3:end]
+    bath = permutedims(reshape(dat[:,3], (nx, ny)), [2 1])
 
 
     # fort.FGx.valuemax
@@ -78,6 +74,15 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
 
     # load
     dat = readdlm(loadfile)
+
+    #=
+    level = convert.(Int64, dat[:,3])
+    bath = fill(NaN, (npnt,1))
+    for i = 1:nlevel
+      bath[level.==i] .= bath_level[level.==i, 1]
+    end
+    bath = permutedims(reshape(bath, (nx, ny)), [2 1])
+    =#
 
     # assign
     if nval == 1
@@ -108,11 +113,11 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     if nval_save > nval; nval_save = nval; end
 
     if nval_save == 1
-        fgmaxval = Claw.fgmaxval(h,th)
+        fgmaxval = Claw.fgmaxval(bath,h,th)
     elseif nval_save == 2
-        fgmaxval = Claw.fgmaxval(h,v,th,tv)
+        fgmaxval = Claw.fgmaxval(bath,h,v,th,tv)
     elseif nval_save == 5
-        fgmaxval = Claw.fgmaxval(h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+        fgmaxval = Claw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
     else
         error("nval_save $nval_save must be either 1, 2 or 5.")
     end

@@ -6,7 +6,11 @@ function PlotsFGmax!(plt, fg::Claw.fgmaxgrid, fgmax::Claw.fgmaxval, var::Symbol;
     y = collect(Float64, LinRange(fg.ylims[1], fg.ylims[end], fg.ny))
     # get var
     val = getfield(fgmax, var)
-    #
+
+    # correct
+    #if var==:h
+    #    val = val - fgmax.bath
+    #end
 
     #plt = Plots.contourf!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, kwargs...)
     plt = Plots.heatmap!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, kwargs...)
