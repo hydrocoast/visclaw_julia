@@ -4,16 +4,25 @@ function PlotsFGmax!(plt, fg::Claw.fgmaxgrid, fgmax::Claw.fgmaxval, var::Symbol;
     # vector
     x = collect(Float64, LinRange(fg.xlims[1], fg.xlims[end], fg.nx))
     y = collect(Float64, LinRange(fg.ylims[1], fg.ylims[end], fg.ny))
+
+    # ocean grids
+    ocean = fgmax.bath.<=0.0
+
     # get var
     val = getfield(fgmax, var)
-
+    # check
+    if isempty(val); error("Empty: $var"); end
     # correct
-    #if var==:h
-    #    val = val - fgmax.bath
-    #end
+    if var==:h
+        val[ocean] = val[ocean] + fgmax.bath[ocean]
+    elseif var==:hmin
+        val[ocean] = -val[ocean] + fgmax.bath[ocean]
+    end
 
-    #plt = Plots.contourf!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, kwargs...)
-    plt = Plots.heatmap!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, kwargs...)
+    val[.!ocean] .= NaN
+
+    # plot
+    plt = Plots.plot!(plt, x, y, val; ratio=:equal, xlims=fg.xlims, ylims=fg.ylims, kwargs...)
 
     # return
     return plt

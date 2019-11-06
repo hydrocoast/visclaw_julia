@@ -28,8 +28,7 @@ function LoadFGmaxGrid(fname::String; FGid=0::Int64, nval=0::Int64)
         x2, y2 = parse.(Float64, split(strip(txt[9]), r"\s+")[1:2])
     end
 
-    #x = collect(Float64, LinRange(x1, x2, nx))
-    #y = collect(Float64, LinRange(y1, y2, ny))
+    # Constructor
     fgmaxgrid = Claw.fgmaxgrid(FGid, fname, nval, nx, ny, (x1,x2), (y1,y2))
 
     # return
@@ -62,8 +61,7 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     # assign
     npnt, ncol = size(dat)
     nlevel = ncol - 2
-    #bath_level = dat[:,3:end]
-    bath = permutedims(reshape(dat[:,3], (nx, ny)), [2 1])
+    bath_level = dat[:,3:end]
 
 
     # fort.FGx.valuemax
@@ -75,14 +73,14 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     # load
     dat = readdlm(loadfile)
 
-    #=
-    level = convert.(Int64, dat[:,3])
-    bath = fill(NaN, (npnt,1))
-    for i = 1:nlevel
-      bath[level.==i] .= bath_level[level.==i, 1]
+    ## bathymetry
+    level = dat[:,3]
+
+    bath = bath_level[:,end]
+    for i = nlevel-1:-1:1
+        bath[level.==i] .= bath_level[level.==i,i]
     end
     bath = permutedims(reshape(bath, (nx, ny)), [2 1])
-    =#
 
     # assign
     if nval == 1
@@ -122,6 +120,7 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
         error("nval_save $nval_save must be either 1, 2 or 5.")
     end
 
+    # return
     return fgmaxval
 
 end
@@ -131,4 +130,33 @@ Function: fort.FGx.valuemax reader
 """
 LoadFGmax(loaddir::String, fg::Claw.fgmaxgrid; nval_save::Int64=fg.nval) =
 LoadFGmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
+#################################
+
+
+#################################
+function FGtMinute!(fgmax::Claw.fgmaxval)
+    fgmax.th = fgmax.th./6.0e1
+    if !isempty(fgmax.tv)
+        fgmax.tv = fgmax.tv./6.0e1
+    end
+    if !isempty(fgmax.tM)
+        fgmax.tM = fgmax.tM./6.0e1
+        fgmax.tMflux = fgmax.tMflux./6.0e1
+        fgmax.thmin = fgmax.thmin./6.0e1
+    end
+    return
+end
+#################################
+function FGtHour!(fgmax::Claw.fgmaxval)
+    fgmax.th = fgmax.th./3.6e3
+    if !isempty(fgmax.tv)
+        fgmax.tv = fgmax.tv./3.6e3
+    end
+    if !isempty(fgmax.tM)
+        fgmax.tM = fgmax.tM./3.6e3
+        fgmax.tMflux = fgmax.tMflux./3.6e3
+        fgmax.thmin = fgmax.thmin./3.6e3
+    end
+    return
+end
 #################################

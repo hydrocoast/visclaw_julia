@@ -206,7 +206,7 @@ mutable struct fgmaxval
     # Constructor
     Claw.fgmaxval(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
                                    th, emptyF, emptyF, emptyF, emptyF)
-    Claw.fgmaxval(bath,h,v,th,tv) = new(h, v, emptyF, emptyF, emptyF,
+    Claw.fgmaxval(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
                                         th, tv, emptyF, emptyF, emptyF)
     Claw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
               new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
