@@ -2,6 +2,8 @@ include("./addpath.jl")
 using Claw
 
 ### Seafloor deformation (for tsunami simulation)
+using Plots
+gr()
 
 # -----------------------------
 # chile 2010
@@ -10,9 +12,8 @@ using Claw
 simdir = joinpath(Claw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 dtopofile, ntopo = Claw.dtopodata(simdir)
 dtopo = Claw.LoadDeform(dtopofile)
-# config
-conffile = "./ex_conf/conf_plots_chile.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsDeformConf(conffile)
+
 # plot
-plt = Claw.PlotsDeform(dtopo, pltinfo, axinfo, outinfo)
+plt = Claw.PlotsTopo(dtopo; color=:coolwarm, clims=(-3.0,3.0), linetype=:contourf)
+#Plots.savefig(plt, "fig/dtopo_chile.svg")
 # -----------------------------

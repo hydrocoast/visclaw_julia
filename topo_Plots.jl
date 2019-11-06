@@ -2,6 +2,9 @@ include("./addpath.jl")
 using Claw
 
 ### Topography and bathymetry
+using Plots
+gr()
+
 
 # -----------------------------
 # chile 2010
@@ -10,11 +13,9 @@ using Claw
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
-# config
-conffile = "./ex_conf/conf_plots_chile.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsTopoConf(conffile)
-# Plot
-plt = Claw.PlotsTopo(topo, pltinfo, axinfo, outinfo)
+
+plt = Claw.PlotsTopo(topo; color=:delta, clims=(-6000,6000), linetype=:contourf)
+#Plots.savefig(plt, "fig/topoplots_chile.svg")
 # -----------------------------
 
 #=
@@ -25,10 +26,9 @@ plt = Claw.PlotsTopo(topo, pltinfo, axinfo, outinfo)
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
-# config
-conffile = "./ex_conf/conf_plots_ike.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsTopoConf(conffile)
+
 # Plot
-plt = Claw.PlotsTopo(topo, pltinfo, axinfo, outinfo)
+plt = Claw.PlotsTopo(topo; color=:delta, clims=(-6000,6000), linetype=:heatmap)
+#Plots.savefig(plt, "fig/topoplots_ike.svg")
 # -----------------------------
 =#

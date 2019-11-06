@@ -1,38 +1,25 @@
-####################################################
-function PlotsTopoConf(conf::String="./conf_plots.jl")
-	# check
-	if !isfile(conf);
-		error("Not found: $conf")
-    end
-	# include
-	include(conf)
-	pltinfo = Claw.PlotsSpec(cmap_topo,clim_topo,xlims,ylims);
-	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
-	outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old)
-	# return value
-	return pltinfo, axinfo, outinfo
+"""
+Function: plot topography and bathymetry in 2D
+"""
+function PlotsTopo!(plt, geo::Claw.Topo; kwargs...)
+
+    if isa(geo, Claw.geometry)
+		z = geo.topo
+	elseif isa(geo, Claw.dtopo)
+		z = geo.deform
+	end
+
+	# plot
+	plt = Plots.plot!(plt, geo.x, geo.y, z;
+	                  xlims=extrema(geo.x), ylims=extrema(geo.y),
+	                  axis_ratio=:equal, kwargs...)
+
+	# return
+	return plt
 end
 ####################################################
-## Function: plot topography and bathymetry in 2D
-####################################################
-function PlotsTopo(geo::Claw.geometry, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes, outinfo::Claw.OutputSpec)
-    # conditions
-    Plots.clibrary(:cmocean)
-    # plot
-	plt = Plots.contourf(geo.x, geo.y, geo.topo, ratio=:equal, c=pltinfo.cmap, clims=pltinfo.clim)
-    plt = Plots.plot!(plt, xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont)
-	if !isempty(axinfo.xticks)
-		plt = Plots.plot!(plt,xticks=axinfo.xticks)
-	end
-	if !isempty(axinfo.yticks)
-		plt = Plots.plot!(plt,yticks=axinfo.yticks)
-	end
-    plt = Plots.plot!(plt, tickfont=axinfo.tickfont)
-
-	# save the figure
-    Claw.PrintPlots(plt,outinfo,"topoplots.svg")
-
-    # return value(s)
-    return plt
-end
+"""
+Function: plot topography and bathymetry in 2D
+"""
+PlotsTopo(geo::Claw.Topo; kwargs...) = PlotsTopo!(Plots.plot(), geo; kwargs...)
 ####################################################

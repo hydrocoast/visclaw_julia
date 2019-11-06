@@ -18,14 +18,6 @@ cmap_slp =:isolum_r
 clim_slp = (960,1000)
 prefix_slp="plotsstorm"
 
-# color range and color palette
-cmap_topo =:delta
-clim_topo = (-6000,6000)
-
-# color range and color palette
-cmap_dtopo =:coolwarm
-clim_dtopo = (-3.0,3.0)
-
 # lims
 xlims=(-99,-85)
 ylims=(22.,32)

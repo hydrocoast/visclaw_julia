@@ -82,12 +82,13 @@ struct AMR
 end
 ###################################
 
+abstract type Topo end
 ###################################
 """
 Struct:
  Topography and Bathymetry
 """
-struct geometry
+struct geometry <: Topo
     ncols :: Int64
     nrows :: Int64
     x :: Vector{Float64}
@@ -104,7 +105,7 @@ end
 Struct:
  seafloor deformation for tsunami computation
 """
-struct dtopo
+struct dtopo <: Topo
     mx :: Int64
     my :: Int64
     x :: Vector{Float64}

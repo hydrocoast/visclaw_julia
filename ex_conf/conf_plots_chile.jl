@@ -13,13 +13,6 @@ cmap_current =:isolum
 clim_current = (0.0,0.5)
 prefix_current="plotsvel"
 
-# color range and color palette
-cmap_topo =:delta
-clim_topo = (-6000,6000)
-
-# color range and color palette
-cmap_dtopo =:coolwarm
-clim_dtopo = (-3.0,3.0)
 
 # lims
 xlims=()
