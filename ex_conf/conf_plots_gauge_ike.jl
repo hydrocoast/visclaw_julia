@@ -11,7 +11,7 @@ if !isdir(figdir); mkdir(figdir); end
 #format = "yyyy/mm/dd HH:MM" # format
 
 ### lims
-sec1h = 3600.
+sec1h = 3.6e3
 sec1d = 24*sec1h
 xlims = (-3*sec1d, 1*sec1d)
 ylims = (-0.5,4.0)
