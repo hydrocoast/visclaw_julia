@@ -14,7 +14,8 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
 
-plt = Claw.PlotsTopo(topo; color=:delta, clims=(-6000,6000), linetype=:contourf)
+plt = Claw.PlotsTopo(topo; linetype=:contourf,
+                     color=:delta, clims=(-6000,6000))
 #Plots.savefig(plt, "fig/topoplots_chile.svg")
 # -----------------------------
 
@@ -28,7 +29,8 @@ topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
 
 # Plot
-plt = Claw.PlotsTopo(topo; color=:delta, clims=(-6000,6000), linetype=:heatmap)
+plt = Claw.PlotsTopo(topo; linetype=:heatmap,
+                     color=:delta, clims=(-6000,6000))
 #Plots.savefig(plt, "fig/topoplots_ike.svg")
 # -----------------------------
 =#

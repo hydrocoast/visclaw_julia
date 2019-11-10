@@ -3,7 +3,7 @@ an_default = Plots.font(8,:left,:top,0.0,:black)
 
 ###########################################
 """
-Function: plot gauge location using Plots
+Function: plot a gauge location using Plots
 """
 function PlotsGaugeLocation!(plt, gauge::Claw.gauge; kwargs...)
     # keyword args

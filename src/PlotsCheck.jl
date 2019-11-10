@@ -2,19 +2,20 @@
 # Function: draw two-dimensional distribution at a certain step repeatedly
 ##############################################################################
 #function SurfacebyStep(amrs::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes)
-function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes; vartype="surface"::String)
+#function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes; vartype="surface"::String)
+function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
 
 	 ## define the filepath & filename
      if vartype=="surface"
          fnamekw = "fort.q0"
          col=4
 		 LoadFunction = Claw.LoadSurface
-		 DrawFunction = Claw.PlotsAMR2D
+		 #DrawFunction = Claw.PlotsAMR2D
      elseif vartype=="storm"
          fnamekw = "fort.a0"
          col=5
 		 LoadFunction = Claw.LoadStorm
-		 DrawFunction = Claw.PlotsSLP
+		 #DrawFunction = Claw.PlotsSLP
  	else
  		error("Invalid input argument vartype: $vartype")
      end
@@ -32,10 +33,6 @@ function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsA
     ## the number of files
     nfile = length(flist)
 
-
-    ### display the number of final step
-    #println("Input anything but integer if you want to exit.")
-    #@printf("The final step: %d\n",nfile)
 
     ### draw figures until nothing or invalid number is input
     ex=0 # initial value
@@ -62,24 +59,11 @@ function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsA
 		amrs = LoadFunction(simdir, i)
 
         # draw figure
-        plt = DrawFunction(amrs.amr[1], clim=pltinfo.clim, cmap=pltinfo.cmap)
-        plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
-        plt = Plots.plot!(plt, clim=pltinfo.clim, cb=:best)
-		# pltinfo
-		if !isempty(pltinfo.xlims);
-			plt = Plots.plot!(plt,xlims=pltinfo.xlims)
-		end
-		if !isempty(pltinfo.ylims);
-			plt = Plots.plot!(plt,ylims=pltinfo.ylims)
-		end
-		# axinfo
-		plt = Plots.plot!(plt, xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont,tickfont=axinfo.tickfont)
-		if !isempty(axinfo.xticks)
-			plt = Plots.plot!(plt,xticks=axinfo.xticks)
-		end
-		if !isempty(axinfo.yticks)
-			plt = Plots.plot!(plt,yticks=axinfo.yticks)
-		end
+        #plt = DrawFunction(amrs.amr[1], clim=pltinfo.clim, cmap=pltinfo.cmap)
+        #plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
+        #plt = Plots.plot!(plt, clim=pltinfo.clim, cb=:best)
+		plt = Claw.PlotsAMR2D(amrs.amr[1]; kwargs...)
+		plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
 
 		# show
 		#plt = Plots.plot!(plt, show=true)
@@ -95,26 +79,3 @@ function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsA
     return plt
 end
 ##############################################################################
-
-################################################################################
-function PlotsCheck(simdir::String, conf::String="conf_plots.jl"; vartype="surface"::String)
-    if !isfile(conf);
-        error("File $conf is not found")
-    end
-    include(conf)
-
-	if vartype=="surface"
-		pltinfo = Claw.PlotsSpec(cmap_surf,clim_surf,xlims,ylims)
-	elseif vartype=="storm"
-		pltinfo = Claw.PlotsSpec(cmap_slp,clim_slp,xlims,ylims)
-	end
-	axinfo = Claw.PlotsAxes(xlabel,ylabel,xticks,yticks,labfont,legfont,tickfont)
-	outinfo = Claw.OutputSpec(figdir,prefix_surf,start_number,ext,dpi,fps,remove_old)
-
-	# plots
-	plt = Claw.PlotsCheck(simdir, pltinfo, axinfo, vartype=vartype)
-
-    # return value(s)
-    return plt
-end
-################################################################################

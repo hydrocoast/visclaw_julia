@@ -14,6 +14,7 @@ dtopofile, ntopo = Claw.dtopodata(simdir)
 dtopo = Claw.LoadDeform(dtopofile)
 
 # plot
-plt = Claw.PlotsTopo(dtopo; color=:coolwarm, clims=(-3.0,3.0), linetype=:contourf)
+plt = Claw.PlotsTopo(dtopo; linetype=:contourf,
+                     color=:coolwarm, clims=(-3.0,3.0))
 #Plots.savefig(plt, "fig/dtopo_chile.svg")
 # -----------------------------

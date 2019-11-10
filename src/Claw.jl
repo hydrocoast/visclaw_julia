@@ -40,12 +40,12 @@ include("UniqueMesh.jl")
 
 # Setup
 include("StructPlots.jl")
+include("PlotsArgs.jl")
 include("PlotsTools.jl")
 # Plots
 include("Plots2D.jl")
 include("PlotsCheck.jl")
 include("PlotsTopo.jl")
-include("PlotsDeform.jl")
 include("PlotsGaugeWaveform.jl")
 include("PlotsGaugeLocation.jl")
 include("PlotsSurfaceAll.jl")
