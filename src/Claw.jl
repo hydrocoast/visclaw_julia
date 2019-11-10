@@ -37,9 +37,9 @@ include("LoadGauge.jl")
 include("ConvertFiles.jl")
 # Convert mesh data
 include("UniqueMesh.jl")
+include("ParseArgs.jl")
 
 # Setup
-include("PlotsArgs.jl")
 include("PlotsTools.jl")
 # Plots
 include("Plots2D.jl")

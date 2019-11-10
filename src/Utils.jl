@@ -37,26 +37,6 @@ function Range(tiles)
 end
 ######################################
 
-############################################
-"""
-Check arguments and resize
-"""
-function chkarglength!(var, nlen::Int)
-    # Scolor Symbol
-    if isa(var,Symbol) || isa(var,Plots.Font)
-        var = ntuple(i -> var, nlen)
-        return var
-    end
-    if (length(var) != nlen) && (length(var) != 1);
-        error("The length of lc must correspond to that of gauge or 1.");
-    end
-    if length(var) == 1
-        var = var*ones(nlen,1) |> vec
-    end
-    return var
-end
-############################################
-
 ##########################################################
 """
 Get correct property name from the type of Claw.Tiles

@@ -15,6 +15,8 @@ function parse_from_keys(d::Dict, symbs)
 	return nothing, d
 end
 
+# Plots
+# -----------------------------
 """
 key: seriestype
 To parse a value of the key in kwargs

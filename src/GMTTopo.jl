@@ -14,11 +14,19 @@ end
 ######################################################################
 
 
+#=
+"""
+Draw topography map in GMT
+"""
+function
+
+end
+=#
 
 output_default = "topogmt"
 ###############################################################################################
 """
-Draw Topography map in GMT
+Draw topography map in GMT
 """
 function GMTTopo(geo::Claw.geometry, topoinfo::Claw.FigureSpec, cptinfo::Claw.ColorSpec;
                   outinfo::Claw.OutputSpec=Claw.OutputSpec(),
@@ -69,17 +77,5 @@ function GMTTopo(geo::Claw.geometry, topoinfo::Claw.FigureSpec, cptinfo::Claw.Co
 
     # return value
     return J, R
-end
-###############################################################################################
-function GMTTopoConf(conf::String="./conf_topo.jl")
-    # load configuration - FigureSpec
-    include(conf)
-    topoinfo = Claw.FigureSpec(proj,region,B,V)
-    cptinfo = Claw.ColorSpec(cmap,crange,Dscale,Bcb,Dcb,Icb,Vcb,Zcb)
-    outinfo = Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old)
-    coastinfo = Claw.CoastSpec(hascoast,resolution,coastpen,landfill,seafill,coastV)
-
-    # return value
-    return topoinfo, cptinfo, outinfo, coastinfo
 end
 ###############################################################################################

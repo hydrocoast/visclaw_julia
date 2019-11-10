@@ -3,7 +3,7 @@
 """
 Get the edge of region
 """
-function geoR(geo::Claw.geometry)
+function geoR(geo::Claw.Topo)
     xs=geo.x[1]
     xe=geo.x[end]
     ys=geo.y[1]
@@ -17,15 +17,14 @@ end
 """
 Generate grd data with type of Claw.geometry
 """
-function geogrd(geo::Claw.geometry; V=false::Bool)
+function geogrd(geo::Claw.Topo; kwargs...)
 
     Δ = (geo.x[end]-geo.x[1])/(geo.ncols-1)
     R = Claw.geoR(geo)
     xvec = repeat(geo.x, inner=(geo.nrows,1))
     yvec = repeat(geo.y, outer=(geo.ncols,1))
 
-    #G = GMT.gmt("surface -R$xyrange -I$Δ", [xvec[:] yvec[:] geo.topo[:]])
-    G = GMT.surface([xvec[:] yvec[:] geo.topo[:]], R=R, I=Δ, V=V)
+    G = GMT.surface([xvec[:] yvec[:] geo.topo[:]]; R=R, I=Δ, kwargs...)
 
     return G
 end
