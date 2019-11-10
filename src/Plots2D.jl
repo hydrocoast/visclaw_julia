@@ -17,12 +17,15 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
 
     # parse keyword args
     kwdict = KWARG(kwargs)
+    # -----------------------------
     # linetype
     seriestype, kwdict = Claw.parse_seriestype(kwdict)
     if seriestype == nothing; seriestype=:contourf; end
+    # -----------------------------
     # color
     seriescolor, kwdict = Claw.parse_seriescolor(kwdict)
     if seriescolor == nothing; seriescolor=:auto; end
+    # -----------------------------
     # color axis
     clims, kwdict = Claw.parse_clims(kwdict)
     if clims == nothing
@@ -34,9 +37,16 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
         #clims = (minimum(minimum.(filter.(!isnan, vals))),
         #         maximum(maximum.(filter.(!isnan, vals))))
     end
+    # -----------------------------
     # background_color_inside
     bginside, kwdict = Claw.parse_bgcolor_inside(kwdict)
     if bginside == nothing; bginside = Plots.RGB(.7,.7,.7); end
+    # -----------------------------
+    # colorbar_title
+    cbtitle, kwdict = Claw.parse_colorbar_title(kwdict)
+    if cbtitle==nothing; cbtitle=""; end
+    # -----------------------------
+
 
 
     ## the number of tiles
@@ -65,8 +75,12 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
     end
 
     ## xlims, ylims
-    xlim, ylim = Claw.Range(tiles)
-    plt = Plots.plot!(plt, xlims=xlim, ylims=ylim)
+    xlims, kwdict = Claw.parse_xlims(kwdict)
+    ylims, kwdict = Claw.parse_ylims(kwdict)
+    xrange, yrange = Claw.Range(tiles)
+    xlims = xlims==nothing ? xrange : xlims
+    ylims = ylims==nothing ? yrange : ylims
+    plt = Plots.plot!(plt, xlims=xlims, ylims=ylims)
 
     if isempty(kwdict); plt = Plots.plot!(plt; kwdict...); end
 
@@ -78,7 +92,7 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
     plt.series_list[1].plotattributes[:colorbar_entry] = true
 
     ## Appearances
-    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=true)
+    plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=true, colorbar_title=cbtitle)
 
     ## return value
     return plt
@@ -155,10 +169,6 @@ function PlotsTimeSeries(amrs::Claw.AMR; showsec::Bool=true, bound=false::Bool, 
         if gridnumber
             plt[i] = Claw.GridNumber!(plt[i], amrs.amr[i])
         end
-
-        ## xlims, ylims
-        xlim, ylim = Claw.Range(amrs.amr[i])
-        plt[i] = Plots.plot!(plt[i], xlims=xlim, ylims=ylim)
 
     end
 

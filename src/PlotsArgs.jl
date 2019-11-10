@@ -21,14 +21,24 @@ To parse a value of the key in kwargs
 """
 parse_seriestype(d::Dict) =
 parse_from_keys(d, [:seriestype, :st, :t, :typ, :linetype, :lt])
-
+# -----------------------------
 parse_seriescolor(d::Dict) =
 parse_from_keys(d, [:seriescolor, :c, :color, :colour])
-
+# -----------------------------
 parse_clims(d::Dict) =
 parse_from_keys(d, [:clims, :clim, :cbarlims, :cbar_lims, :climits, :color_limits])
-
+# -----------------------------
 parse_bgcolor_inside(d::Dict) =
 parse_from_keys(d, [:background_color_inside, :bg_inside, :bginside,
                     :bgcolor_inside, :bg_color_inside, :background_inside,
                     :background_colour_inside, :bgcolour_inside, :bg_colour_inside])
+# -----------------------------
+parse_xlims(d::Dict) =
+parse_from_keys(d, [:xlims, :xlim, :xlimit, :xlimits])
+# -----------------------------
+parse_ylims(d::Dict) =
+parse_from_keys(d, [:ylims, :ylim, :ylimit, :ylimits])
+# -----------------------------
+parse_colorbar_title(d::Dict) =
+parse_from_keys(d, [:colorbar_title])
+# -----------------------------

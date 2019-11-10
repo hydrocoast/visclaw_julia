@@ -10,6 +10,7 @@ Plots.gr()
 # -----------------------------
 simdir = joinpath(Claw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 plt = Claw.PlotsCheck(simdir; color=:balance, clims=(-0.5,0.5))
+#plt = Claw.PlotsCheck(simdir; vartype="current", color=:isolum, clims=(0.0,0.1))
 # -----------------------------
 
 

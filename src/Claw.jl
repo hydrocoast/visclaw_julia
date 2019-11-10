@@ -39,7 +39,6 @@ include("ConvertFiles.jl")
 include("UniqueMesh.jl")
 
 # Setup
-include("StructPlots.jl")
 include("PlotsArgs.jl")
 include("PlotsTools.jl")
 # Plots
@@ -48,9 +47,6 @@ include("PlotsCheck.jl")
 include("PlotsTopo.jl")
 include("PlotsGaugeWaveform.jl")
 include("PlotsGaugeLocation.jl")
-#include("PlotsCurrentAll.jl")
-#include("PlotsStormAll.jl")
-include("PlotsWindArrow.jl")
 include("PlotsFGmax.jl")
 
 using GMT:GMT

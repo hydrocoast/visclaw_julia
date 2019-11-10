@@ -20,5 +20,5 @@ plt_v = Claw.PlotsFGmax(fg[1], fgmax[1], :v; linetype=:contourf, color=:rainbow,
 plt_th = Claw.PlotsFGmax(fg[1], fgmax[1], :th; linetype=:contourf, color=:darktest_r, colorbar_title="(min)", title="th")
 plt_tv = Claw.PlotsFGmax(fg[1], fgmax[1], :tv; linetype=:contourf, color=:darktest_r, colorbar_title="(min)", title="tv")
 
-# 
+# subplot layout
 plts = plot(plt_h, plt_v, plt_th, plt_tv, layout=(2,2), size=(800,600))

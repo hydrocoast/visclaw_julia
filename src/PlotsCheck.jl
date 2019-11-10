@@ -1,23 +1,21 @@
 ##############################################################################
-# Function: draw two-dimensional distribution at a certain step repeatedly
-##############################################################################
-#function SurfacebyStep(amrs::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes)
-#function PlotsCheck(simdir::String, pltinfo::Claw.PlotsSpec, axinfo::Claw.PlotsAxes; vartype="surface"::String)
+"""
+Quick checker of the spatial distribution
+"""
 function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
 
-	 ## define the filepath & filename
+     ## define the filepath & filename
      if vartype=="surface"
          fnamekw = "fort.q0"
-         col=4
-		 LoadFunction = Claw.LoadSurface
-		 #DrawFunction = Claw.PlotsAMR2D
+         LoadFunction = Claw.LoadSurface
+     elseif vartype=="current"
+         fnamekw = "fort.q0"
+         LoadFunction = Claw.LoadCurrent
      elseif vartype=="storm"
          fnamekw = "fort.a0"
-         col=5
-		 LoadFunction = Claw.LoadStorm
-		 #DrawFunction = Claw.PlotsSLP
- 	else
- 		error("Invalid input argument vartype: $vartype")
+         LoadFunction = Claw.LoadStorm
+     else
+         error("Invalid input argument vartype: $vartype")
      end
 
      ## make a list
@@ -27,8 +25,8 @@ function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
      if sum(idx)==0; error("File named $fnamekw was not found"); end
      flist = flist[idx]
 
- 	# load geoclaw.data
- 	params = Claw.GeoData(simdir)
+     # load geoclaw.data
+     params = Claw.GeoData(simdir)
 
     ## the number of files
     nfile = length(flist)
@@ -56,18 +54,15 @@ function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
             continue
         end
 
-		amrs = LoadFunction(simdir, i)
+        amrs = LoadFunction(simdir, i)
 
         # draw figure
-        #plt = DrawFunction(amrs.amr[1], clim=pltinfo.clim, cmap=pltinfo.cmap)
-        #plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
-        #plt = Plots.plot!(plt, clim=pltinfo.clim, cb=:best)
-		plt = Claw.PlotsAMR2D(amrs.amr[1]; kwargs...)
-		plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
+        plt = Claw.PlotsAMR2D(amrs.amr[1]; kwargs...)
+        plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
 
-		# show
-		#plt = Plots.plot!(plt, show=true)
-		display(plt)
+        # show
+        #plt = Plots.plot!(plt, show=true)
+        display(plt)
         cnt += 1
     end
 
