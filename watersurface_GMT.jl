@@ -7,26 +7,28 @@ using Claw
 # -----------------------------
 # load configurations
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-conffile = "./ex_conf/conf_gmtsurf_chile.jl"
-figinfo, cptinfo, outinfo, coastinfo, timeinfo = Claw.GMTSurfaceConf(conffile)
-
 # load water surface
-amrall = Claw.LoadSurface(simdir)
+amrall = Claw.LoadSurface(simdir, 2:3)
 
+# makegrd
+G = Claw.tilegrd.(amrall.amr[2])
+#=
+# makecpt
+GMT.gmt("makecpt -Cpolar -D -T-1.0/1.0 > tmp.cpt")
+cpt = GMT.gmt("read -Tc tmp.cpt")
+rm("tmp.cpt")
+=#
 # plot
-Claw.GMTSurfaceAll(amrall, figinfo, cptinfo, outinfo=outinfo,
-                   coastinfo=coastinfo, timeinfo=timeinfo)
+
 # -----------------------------
 
 
-
+#=
 # -----------------------------
 # ike
 # -----------------------------
 # load configurations
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-conffile = "./ex_conf/conf_gmtsurf_ike.jl"
-figinfo, cptinfo, outinfo, coastinfo, timeinfo = Claw.GMTSurfaceConf(conffile)
 
 # load water surface
 amrall = Claw.LoadSurface(simdir)
@@ -35,3 +37,4 @@ amrall = Claw.LoadSurface(simdir)
 Claw.GMTSurfaceAll(amrall, figinfo, cptinfo, outinfo=outinfo,
                    coastinfo=coastinfo, timeinfo=timeinfo)
 # -----------------------------
+=#

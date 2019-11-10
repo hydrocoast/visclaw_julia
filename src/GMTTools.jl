@@ -108,35 +108,6 @@ end
 
 ###################################################
 """
-Generate cpt for Claw.geometry
-"""
-function geocpt(palette="earth"::String; crange="-7000/4500"::String, D=true, I=false, V=true, Z=false)
-    # building options
-    opt=""
-    if D; opt = opt*" -D"; end
-    if I; opt = opt*" -I"; end
-    if V; opt = opt*" -V"; end
-    if Z; opt = opt*" -Z"; end
-    # makecpt script
-    tmpcpt = "tmp.cpt"
-    if Z
-        GMT.gmt("makecpt -C$palette $opt > $tmpcpt")
-    else
-        GMT.gmt("makecpt -C$palette -T$crange $opt > $tmpcpt")
-    end
-    cpt = GMT.gmt("read -Tc $tmpcpt")
-    # remove tmp
-    rm(tmpcpt)
-    # return cpt
-    return cpt
-end
-###################################################
-function geocpt(cptinfo::Claw.ColorSpec)
-    Claw.geocpt(cptinfo.cmap,crange=cptinfo.crange,D=cptinfo.D,I=cptinfo.I,V=cptinfo.V,Z=cptinfo.Z)
-end
-
-###################################################
-"""
 Determine -Dx option in colorbar(psscale), vertical alignment
 """
 function cboptDx(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
@@ -171,12 +142,22 @@ function tileR(tile::Claw.Tiles)
     return xyrange
 end
 ###################################################
-
+#=
+function tileR(tiles::AbstractVecor{Claw.Tiles})
+    xs = minimum(getfield.(tiles, :xlow))
+    ys = minimum(getfield.(tiles, :xlow))
+    xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
+    ye = round(tile.ylow + tile.my*tile.dy, digits=4)
+    xyrange="$xs/$xe/$ys/$ye"
+    # return value
+    return xyrange
+end
 ###################################################
+=#
 """
 make a grid file of Claw.Tiles for GMT
 """
-function tilegrd(tile::Claw.Tiles; J=""::String, V=true)
+function tilegrd(tile::Claw.Tiles; kwargs...)
     # var
     var = Claw.varnameintile(tile)
     # prameters & options
@@ -188,18 +169,10 @@ function tilegrd(tile::Claw.Tiles; J=""::String, V=true)
     ymat = repeat(yvec, outer=(length(xvec),1))
     # makegrd
     #if !any(.!isnan.(zdata)); return G=nothing; end;
-    G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], J=J, R=R, I=Δ, V=V)
+    G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, kwargs...)
     # return value (GMT.GMTgrid)
     return G
 end
-###################################################
-
-###################################################
-"""
-Generate cpt for Claw.Tiles
-"""
-tilecpt(palette="polar"::Union{String,Symbol}; crange="-1.0/1.0"::String, D=true, I=false, V=true, Z=false) =
-Claw.geocpt(palette,crange=crange, D=D,I=I,V=V,Z=Z)
 ###################################################
 
 ###################################################
