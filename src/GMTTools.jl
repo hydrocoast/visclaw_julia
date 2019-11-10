@@ -15,9 +15,9 @@ end
 
 ###################################################
 """
-Generate grd data with type of Claw.geometry
+Generate grd data, Claw.geometry
 """
-function geogrd(geo::Claw.Topo; kwargs...)
+function geogrd(geo::Claw.geometry; kwargs...)
 
     Δ = (geo.x[end]-geo.x[1])/(geo.ncols-1)
     R = Claw.geoR(geo)
@@ -29,17 +29,32 @@ function geogrd(geo::Claw.Topo; kwargs...)
     return G
 end
 ###################################################
+"""
+Generate grd data, Claw.dtopo
+"""
+function geogrd(geo::Claw.dtopo; kwargs...)
+
+    Δ = (geo.x[end]-geo.x[1])/(geo.mx-1)
+    R = Claw.geoR(geo)
+    xvec = repeat(geo.x, inner=(geo.my,1))
+    yvec = repeat(geo.y, outer=(geo.mx,1))
+
+    G = GMT.surface([xvec[:] yvec[:] geo.deform[:]]; R=R, I=Δ, kwargs...)
+
+    return G
+end
+###################################################
 
 ###################################################
 """
 Derive height/width ratio
 """
-function axratio(geo::Claw.geometry,fwidth::Real)
+function axratio(geo::Claw.Topo, fwidth::Real)
     xs=geo.x[1]
     xe=geo.x[end]
     ys=geo.y[1]
     ye=geo.y[end]
-    fheight = round((ye-ys)/(xe-xs),digits=2)*fwidth
+    fheight = round((ye-ys)/(xe-xs), digits=2)*fwidth
     # return value
     return fheight
 end
@@ -49,7 +64,7 @@ end
 """
 Determine J option
 """
-function geoJ(geo::Claw.geometry; proj_base="X10d"::String)
+function geoJ(geo::Claw.Topo; proj_base="X10d"::String)
     # find projection specifier
     J1 = match(r"^([a-zA-Z]+)", proj_base)
     J2 = match(r"([a-zA-Z]+).+?([a-zA-Z]+)", proj_base)
