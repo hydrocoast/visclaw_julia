@@ -1,4 +1,17 @@
+#=
+function PlotsSurfaceAll(amrall::Claw.AMR; bound::Bool=false, gridnumber::Bool=false, minfo::Claw.MarkerSpec=Claw.MarkerSpec())
+
+    # plot
+    plts = Claw.PlotsTimeSeries(amrall, clim=pltinfo.clim, cmap=pltinfo.cmap, bound=bound, gridnumber=gridnumber)
+	plts = map(p -> Plots.plot!(p,xlabel=axinfo.xlabel, ylabel=axinfo.ylabel, guidefont=axinfo.labfont, tickfont=axinfo.tickfont), plts)
+
+    # return value(s)
+	return plts
+end
+=#
+
 ###############################################################################
+#=
 function PlotsSurfaceConf(conf::String="./conf_plots.jl")
     # check
     if !isfile(conf);
@@ -31,3 +44,4 @@ function PlotsSurfaceAll(amrall::Claw.AMR, pltinfo::Claw.PlotsSpec, axinfo::Claw
 	return plts
 end
 ###############################################################################
+=#

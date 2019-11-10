@@ -19,8 +19,8 @@ clim_slp = (960,1000)
 prefix_slp="plotsstorm"
 
 # lims
-xlims=(-99,-85)
-ylims=(22.,32)
+xlims=(-99.0,-85.0)
+ylims=(22.0,32.0)
 
 ### Axes
 xlabel = "Longitude"

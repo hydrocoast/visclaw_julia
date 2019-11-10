@@ -1,11 +1,7 @@
-slp_default=(960,1015)
-slpcmap_default = :viridis_r
-etacmap_default = :coolwarm
-
 ######################################
-## Function: filled contour
-######################################
-#function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; clim=(), cmap=etacmap_default::Symbol)
+"""
+Function: plot values of AMR grids in two-dimension
+"""
 function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
     # check arg
     if isa(tiles[1], Claw.patch)
@@ -64,8 +60,6 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
         val[end,:] = val[end-1,:]
 
         ## plot
-        #plt = Plots.contour!(plt,xvec,yvec,val, c=(cmap), clims=clim, fill=true, colorbar=false)
-        #plt = Plots.contourf!(plt, xvec, yvec, val, c=(cmap), clims=clim, colorbar=false)
         plt = Plots.plot!(plt, xvec, yvec, val, seriestype=seriestype, c=seriescolor, clims=clims, colorbar=false)
 
     end
@@ -85,7 +79,6 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
 
     ## Appearances
     plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=true)
-    #plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, colorbar=true)
 
     ## return value
     return plt
@@ -93,23 +86,14 @@ end
 ######################################
 PlotsAMR2D(tiles; kwargs...) =
 PlotsAMR2D!(Plots.plot(), tiles; kwargs...)
-
-#=
-######################################
-PlotsAMR2D(tiles; clim=(), cmap=etacmap_default::Symbol) =
-PlotsAMR2D!(Plots.plot(), tiles, clim=clim, cmap=cmap)
-######################################
-PlotsSLP!(plt, tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
-PlotsAMR2D!(plt, tiles, clim=clim, cmap=cmap)
-######################################
-PlotsSLP(tiles; clim=slp_default, cmap=slpcmap_default::Symbol) =
-PlotsSLP!(Plots.plot(), tiles, clim=clim, cmap=cmap)
-=#
 ######################################
 
+
+
 #######################################
-## Function: Add the grid numbers
-#######################################
+"""
+Function: add the grid numbers
+"""
 function GridNumber!(plt, tiles; fs=10, fc=:black)
     ## the number of tiles
     ntile = length(tiles)
@@ -126,8 +110,9 @@ end
 #######################################
 
 #######################################
-## Function: Draw the boundaries
-#######################################
+"""
+Function: draw boundaries
+"""
 function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
     ## the number of tiles
     ntile = length(tiles)
@@ -144,18 +129,19 @@ function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
 end
 #######################################
 
-#############################################
-## Function: plot time-series of AMR data
-#############################################
-function PlotsTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, gridnumber=false::Bool,
-                        clim=(), cmap=etacmap_default)
+#######################################
+"""
+Function: plot time-series of AMR data
+"""
+function PlotsTimeSeries(amrs::Claw.AMR; showsec::Bool=true, bound=false::Bool, gridnumber=false::Bool,
+                         kwargs...)
 
     ## plot time-series
     plt = Array{Plots.Plot}(undef,amrs.nstep)
     for i = 1:amrs.nstep
         ## pseudocolor
         #plt[i] = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap)
-        plt[i] = Claw.PlotsAMR2D(amrs.amr[i], clim=clim, cmap=cmap)
+        plt[i] = Claw.PlotsAMR2D(amrs.amr[i]; kwargs...)
 
         ## display time in title
         if showsec
@@ -169,6 +155,11 @@ function PlotsTimeSeries(amrs::Claw.AMR; showsec=true::Bool, bound=false::Bool, 
         if gridnumber
             plt[i] = Claw.GridNumber!(plt[i], amrs.amr[i])
         end
+
+        ## xlims, ylims
+        xlim, ylim = Claw.Range(amrs.amr[i])
+        plt[i] = Plots.plot!(plt[i], xlims=xlim, ylims=ylim)
+
     end
 
     ## return plots

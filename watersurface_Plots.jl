@@ -2,16 +2,15 @@ include("./addpath.jl")
 using Claw
 
 using Plots
-plotlyjs()
+gr()
+#plotlyjs()
+#pyplot()
+
 
 # -----------------------------
 # chile 2010
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-
-# load configurations
-conffile = "./ex_conf/conf_plots_chile.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsSurfaceConf(conffile)
 
 # load water surface
 amrall = Claw.LoadSurface(simdir)
@@ -19,11 +18,15 @@ amrall = Claw.LoadSurface(simdir)
 gauges = Claw.GaugeData(simdir)
 
 # plot
-plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, bound=true, gridnumber=false)
-plts = map(p -> Claw.PlotsGaugeLocation!(p, gauges, ms=4, color=:black), plts)
+plts = Claw.PlotsTimeSeries(amrall; c=:coolwarm, clims=(-0.5,0.5),
+                            xguide="Longitude", yguide="Latitude",
+                            )
+plts = map(p -> Claw.PlotsGaugeLocation!(p, gauges; ms=4, color=:black), plts)
 
-# save
-Claw.PrintPlots(plts, outinfo)
+# save images
+Claw.PlotsPrint(plts, "fig/chile2010_eta.svg")
+# gif
+Claw.Plotsgif(plts, "fig/chile2010_eta.gif", fps=4)
 # -----------------------------
 
 
@@ -33,20 +36,22 @@ Claw.PrintPlots(plts, outinfo)
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 
-# load configurations
-conffile = "./ex_conf/conf_plots_ike.jl"
-pltinfo, axinfo, outinfo = Claw.PlotsSurfaceConf(conffile)
-
 # load water surface
 amrall = Claw.LoadSurface(simdir)
 # gauge locations (from gauges.data)
 gauges = Claw.GaugeData(simdir)
 
 # plot
-plts = Claw.PlotsSurfaceAll(amrall, pltinfo, axinfo, bound=true, gridnumber=true)
+plts = Claw.PlotsTimeSeries(amrall; c=:darkrainbow, clims=(-0.5,2.0),
+                            xguide="Longitude", yguide="Latitude",
+                            xlims=(-99.0,-85.0), ylims=(22.0,32.0),
+                            gridnumber=true,
+                            )
 plts = map(p -> Claw.PlotsGaugeLocation!(p, gauges; color=:white), plts)
 
 # save
-Claw.PrintPlots(plts, outinfo)
+Claw.PlotsPrint(plts, "fig/ike_eta.svg")
+# gif
+Claw.Plotsgif(plts, "fig/ike_eta.gif", fps=4)
 # -----------------------------
 =#
