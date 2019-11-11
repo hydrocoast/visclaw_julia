@@ -1,15 +1,67 @@
-# Plotting with GMT
 ###################################################
 """
-Get the edge of region
+Get x and y ranges of a tile in String
 """
-function geoR(geo::Claw.Topo)
-    xs=geo.x[1]
-    xe=geo.x[end]
-    ys=geo.y[1]
-    ye=geo.y[end]
+function getR_tile(tile::Claw.Tiles)
+    xs = tile.xlow
+    ys = tile.ylow
+    xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
+    ye = round(tile.ylow + tile.my*tile.dy, digits=4)
+    xyrange="$xs/$xe/$ys/$ye"
+    # return value
+    return xyrange
+end
+###################################################
+
+function getlims(tiles::Vector{Claw.Tiles})
+    x1 = minimum(getfield.(tiles, :xlow))
+    y1 = minimum(getfield.(tiles, :ylow))
+    x2 = maximum(round.(getfield.(tiles, :xlow) .+ getfield.(tiles, :mx).*getfield.(tiles, :dx), digits=4))
+    y2 = maximum(round.(getfield.(tiles, :ylow) .+ getfield.(tiles, :my).*getfield.(tiles, :dy), digits=4))
+    return x1, x2, y1, y2
+end
+###################################################
+"""
+Get x and y ranges in String for -R
+"""
+function getR(tiles::Vector{Claw.Tiles})
+    xs, xe, ys, ye = Claw.getlims(tiles)
+    return "$xs/$xe/$ys/$ye"
+end
+###################################################
+"""
+Get x and y ranges in String for -R
+"""
+function getR(topo::Claw.Topo)
+    xs=topo.x[1]
+    xe=topo.x[end]
+    ys=topo.y[1]
+    ye=topo.y[end]
     xyrange="$xs/$xe/$ys/$ye"
     return xyrange
+end
+###################################################
+"""
+Get height/width ratio
+"""
+function axesratio(tiles::Vector{Claw.Tiles})
+    xs, xe, ys, ye = Claw.getlims(tiles)
+    hwratio = (ye-ys)/(xe-xs)
+    # return value
+    return hwratio
+end
+###################################################
+"""
+Get height/width ratio
+"""
+function axesratio(topo::Claw.Topo)
+    xs=topo.x[1]
+    xe=topo.x[end]
+    ys=topo.y[1]
+    ye=topo.y[end]
+    hwratio = (ye-ys)/(xe-xs)
+    # return value
+    return hwratio
 end
 ###################################################
 
@@ -20,7 +72,7 @@ Generate grd data, Claw.geometry
 function geogrd(geo::Claw.geometry; kwargs...)
 
     Δ = (geo.x[end]-geo.x[1])/(geo.ncols-1)
-    R = Claw.geoR(geo)
+    R = Claw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.nrows,1))
     yvec = repeat(geo.y, outer=(geo.ncols,1))
 
@@ -35,7 +87,7 @@ Generate grd data, Claw.dtopo
 function geogrd(geo::Claw.dtopo; kwargs...)
 
     Δ = (geo.x[end]-geo.x[1])/(geo.mx-1)
-    R = Claw.geoR(geo)
+    R = Claw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.my,1))
     yvec = repeat(geo.y, outer=(geo.mx,1))
 
@@ -45,26 +97,13 @@ function geogrd(geo::Claw.dtopo; kwargs...)
 end
 ###################################################
 
-###################################################
-"""
-Derive height/width ratio
-"""
-function axratio(geo::Claw.Topo, fwidth::Real)
-    xs=geo.x[1]
-    xe=geo.x[end]
-    ys=geo.y[1]
-    ye=geo.y[end]
-    fheight = round((ye-ys)/(xe-xs), digits=2)*fwidth
-    # return value
-    return fheight
-end
-###################################################
 
 ###################################################
 """
-Determine J option
+Correct J option
 """
-function geoJ(geo::Claw.Topo; proj_base="X10d"::String)
+#function getJ(geo; proj_base="X10d"::String)
+function getJ(proj_base::String, hwratio::Real)
     # find projection specifier
     J1 = match(r"^([a-zA-Z]+)", proj_base)
     J2 = match(r"([a-zA-Z]+).+?([a-zA-Z]+)", proj_base)
@@ -86,12 +125,12 @@ function geoJ(geo::Claw.Topo; proj_base="X10d"::String)
     regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?).+?([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
     chkheight = match(regex, proj_base)
     if chkheight === nothing
-        fheight = Claw.axratio(geo, fwidth)
+        fheight = hwratio*fwidth
     else
         fheight = parse(Float64, chkheight.captures[2])
     end
 
-    # generation of J option
+    # generate J option
     if occursin("/",proj_base) && chkheight !== nothing
         proj = proj_base
     else
@@ -128,40 +167,14 @@ function cboptDj(;loc="BR",cbwid=0.3, cblen=10.0, xoff=-1.5, yoff=0.0)
 end
 ###################################################
 
-###################################################
-"""
-Get coverage of tiles
-"""
-function tileR(tile::Claw.Tiles)
-    xs = tile.xlow
-    ys = tile.ylow
-    xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
-    ye = round(tile.ylow + tile.my*tile.dy, digits=4)
-    xyrange="$xs/$xe/$ys/$ye"
-    # return value
-    return xyrange
-end
-###################################################
-#=
-function tileR(tiles::AbstractVecor{Claw.Tiles})
-    xs = minimum(getfield.(tiles, :xlow))
-    ys = minimum(getfield.(tiles, :xlow))
-    xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
-    ye = round(tile.ylow + tile.my*tile.dy, digits=4)
-    xyrange="$xs/$xe/$ys/$ye"
-    # return value
-    return xyrange
-end
-###################################################
-=#
 """
 make a grid file of Claw.Tiles for GMT
 """
 function tilegrd(tile::Claw.Tiles; kwargs...)
     # var
-    var = Claw.varnameintile(tile)
+    var = Claw.keytile(tile)
     # prameters & options
-    R = Claw.tileR(tile)
+    R = Claw.getR_tile(tile)
     Δ = tile.dx
     #xvec, yvec, zdata = Claw.tilezcenter(tile, var)
     xvec, yvec, zdata = Claw.tilez(tile, var)
@@ -169,7 +182,8 @@ function tilegrd(tile::Claw.Tiles; kwargs...)
     ymat = repeat(yvec, outer=(length(xvec),1))
     # makegrd
     #if !any(.!isnan.(zdata)); return G=nothing; end;
-    G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, kwargs...)
+    #G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, kwargs...)
+    G = GMT.nearneighbor([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, S=2Δ, kwargs...)
     # return value (GMT.GMTgrid)
     return G
 end

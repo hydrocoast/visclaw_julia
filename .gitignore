@@ -7,6 +7,7 @@ tmp*
 *.gif
 *.ps
 *.eps
+*.grd
 gmt.*
 conf_*.jl
 main_*.jl

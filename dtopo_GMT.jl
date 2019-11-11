@@ -21,8 +21,8 @@ cpt = GMT.gmt("read -Tc tmp.cpt")
 rm("tmp.cpt")
 
 # plot
-region = Claw.geoR(dtopo)
-proj = Claw.geoJ(dtopo, proj_base="X10d")
+region = Claw.getR(dtopo)
+proj = Claw.getJ("X10d", Claw.axesratio(dtopo))
 
 GMT.grdimage(G, C=cpt, J=proj, R=region, B="a5f5 neSW", Q=true, V=true)
 GMT.colorbar!(J=proj, R=region, B="a1.0f0.5/:\"(m)\":", D="jBR+w10.0/0.3+o-1.5/0.0", V=true)

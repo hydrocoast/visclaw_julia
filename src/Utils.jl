@@ -39,12 +39,14 @@ end
 
 ##########################################################
 """
-Get correct property name from the type of Claw.Tiles
+Get the main property name from Claw.Tiles
 """
-function varnameintile(tile::Claw.Tiles)
+function keytile(tile::Claw.Tiles)
     # type check
     if isa(tile, Claw.patch)
         var = :eta
+    elseif isa(tile, Claw.uv)
+        var = :vel
     elseif isa(tile, Claw.stormgrid)
         var = :slp
     else
@@ -87,7 +89,7 @@ end
 Get Z values of cells at the grid lines
 """
 function tilez(tile::Claw.Tiles, var::Symbol; digits=4)
-    xvec,yvec, val = Claw.tilezmargin(tile, var, digits=digits)
+    xvec, yvec, val = Claw.tilezmargin(tile, var, digits=digits)
     itp = interpolate((yvec, xvec), val, Gridded(Linear()))
 
     ## set the boundary

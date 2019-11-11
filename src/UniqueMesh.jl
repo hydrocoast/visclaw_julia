@@ -61,10 +61,12 @@ get points which are not overlapped by any of other tiles
 function UniqueMeshVector(tiles::Vector{Claw.Tiles})
     # number of the tiles
     ntile = length(tiles)
+    # var
+    var = Claw.keytile(tiles[1])
 
     ## deepest level
-    levels = getfield.(tiles,:AMRlevel);
-    maxlevel=findmax(levels)[1]
+    levels = getfield.(tiles, :AMRlevel);
+    maxlevel = maximum(levels)
 
     ## preallocate
     xall = Vector{Vector{Float64}}(undef,ntile)
@@ -84,7 +86,7 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
         # convert type
         allp = GeometricalPredicates.Point.(xvec,yvec);
         # original values
-        puniq = vec(tiles[i].slp)
+        puniq = vec(getfield(tiles[i], var))
 
         if tiles[i].AMRlevel != maxlevel
             # preallocate

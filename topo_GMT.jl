@@ -15,11 +15,14 @@ topo = Claw.LoadTopo(topofile)
 # makegrd
 G = Claw.geogrd(topo; V=true)
 # makecpt
-cpt = GMT.makecpt(; C=:earth, T="-7000/4500", D="i")
+#cpt = GMT.makecpt(; C=:earth, T="-7000/4500", D="i")
+GMT.gmt("makecpt -Cearth -D -T-7000/4500 > tmp.cpt")
+cpt = GMT.gmt("read -Tc tmp.cpt")
+rm("tmp.cpt")
 
 # plot
-region = Claw.geoR(topo)
-proj = Claw.geoJ(topo, proj_base="X10d")
+region = Claw.getR(topo)
+proj = Claw.getJ("X10d", Claw.axesratio(topo))
 GMT.grdimage(G, C=cpt, J=proj, R=region, B="a15f15 neSW", Q=true, V=true)
 GMT.colorbar!(J=proj, R=region, B="a1000f500/:\"(m)\":", D="jBR+w10.0/0.3+o-1.5/0.0", V=true)
 GMT.coast!(J=proj, R=region, D=:i, W=:thinnest, V=true)
