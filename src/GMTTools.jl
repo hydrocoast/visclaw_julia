@@ -167,27 +167,6 @@ function cboptDj(;loc="BR",cbwid=0.3, cblen=10.0, xoff=-1.5, yoff=0.0)
 end
 ###################################################
 
-"""
-make a grid file of Claw.Tiles for GMT
-"""
-function tilegrd(tile::Claw.Tiles; kwargs...)
-    # var
-    var = Claw.keytile(tile)
-    # prameters & options
-    R = Claw.getR_tile(tile)
-    Δ = tile.dx
-    #xvec, yvec, zdata = Claw.tilezcenter(tile, var)
-    xvec, yvec, zdata = Claw.tilez(tile, var)
-    xmat = repeat(xvec, inner=(length(yvec),1))
-    ymat = repeat(yvec, outer=(length(xvec),1))
-    # makegrd
-    #if !any(.!isnan.(zdata)); return G=nothing; end;
-    #G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, kwargs...)
-    G = GMT.nearneighbor([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, S=2Δ, kwargs...)
-    # return value (GMT.GMTgrid)
-    return G
-end
-###################################################
 
 ###################################################
 """
