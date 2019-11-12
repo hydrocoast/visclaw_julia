@@ -8,6 +8,9 @@ tmp*
 *.ps
 *.eps
 *.grd
+*.txt
+*.pdf
+*.sh
 gmt.*
 conf_*.jl
 main_*.jl

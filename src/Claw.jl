@@ -33,8 +33,6 @@ include("Utils.jl")
 include("LoadTopo.jl")
 include("LoadFort.jl")
 include("LoadGauge.jl")
-# Convert files for output
-include("ConvertFiles.jl")
 # Convert mesh data
 include("UniqueMesh.jl")
 include("ParseArgs.jl")
@@ -51,18 +49,12 @@ include("PlotsFGmax.jl")
 
 using GMT:GMT
 # Setup
-include("StructGMT.jl")
 include("GMTTools.jl")
-include("GMTColorbar.jl")
-include("GMTTitle.jl")
 include("GMTtxtvelo.jl")
 include("GMTpsvelo.jl")
 # make figures with GMT
-include("GMTCoastlines.jl")
-include("GMTTopo.jl")
 include("GMTSurface.jl")
-include("GMTSurfaceAll.jl")
-include("GMTStorm.jl")
-include("GMTStormAll.jl")
+#include("GMTStorm.jl")
+#include("GMTStormAll.jl")
 
 end
