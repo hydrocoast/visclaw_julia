@@ -9,7 +9,6 @@ gr()
 # -----------------------------
 # ike
 # -----------------------------
-# load configurations
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 
 # load

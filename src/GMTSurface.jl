@@ -68,7 +68,48 @@ end
 
 ###################################################
 """
-make a grid file of Claw.Tiles
+make a grid file of Claw.Tiles with landmask
+"""
+function tilegrd(tile::Claw.Tiles; spacing_unit::String="", kwargs...)
+    # var
+    var = Claw.keytile(tile)
+    # prameters & options
+    R = Claw.getR_tile(tile)
+    Δ = tile.dx
+    r = sqrt(2.0)Δ
+    #xvec, yvec, zdata = Claw.tilezcenter(tile, var)
+    xvec, yvec, zdata = Claw.tilez(tile, var)
+    xmat = repeat(xvec, inner=(length(yvec),1))
+    ymat = repeat(yvec, outer=(length(xvec),1))
+
+    if !isempty(spacing_unit)
+        Δ = "$(Δ)"*spacing_unit
+    end
+
+    # if NaN in all
+    if !any(.!isnan.(zdata[:]))
+        tmp_eta = "eta_tile.grd"
+        faint="tmp.txt"
+        open(faint, "w") do file
+            Base.print_array(file, [xmat[:] ymat[:]])
+        end
+        GMT.gmt("grdmask $faint -R$R -I$Δ -S$Δ -NNaN/NaN/NaN -G$tmp_eta ")
+        G = GMT.gmt("read -Tg $tmp_eta")
+        rm(faint, force=true)
+    else
+        # eta grid
+        G = GMT.surface([xmat[:] ymat[:] zdata[:]]; R=R, I=Δ, kwargs...)
+    end
+
+    # return value (GMT.GMTgrid)
+    return G
+end
+###################################################
+
+
+###################################################
+"""
+make a grid file of Claw.Tiles with landmask
 """
 function tilegrd_mask(tile::Claw.Tiles, maskfile::String=""; spacing_unit::String="", kwargs...)
     # var
