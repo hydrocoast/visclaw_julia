@@ -12,15 +12,6 @@ function getR_tile(tile::Claw.Tiles)
     return xyrange
 end
 ###################################################
-
-function getlims(tiles::Vector{Claw.Tiles})
-    x1 = minimum(getfield.(tiles, :xlow))
-    y1 = minimum(getfield.(tiles, :ylow))
-    x2 = maximum(round.(getfield.(tiles, :xlow) .+ getfield.(tiles, :mx).*getfield.(tiles, :dx), digits=4))
-    y2 = maximum(round.(getfield.(tiles, :ylow) .+ getfield.(tiles, :my).*getfield.(tiles, :dy), digits=4))
-    return x1, x2, y1, y2
-end
-###################################################
 """
 Get x and y ranges in String for -R
 """

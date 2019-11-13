@@ -2,18 +2,22 @@
 """
 Function: plot values of AMR grids in two-dimension
 """
-function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
+function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; wind::Bool=false, kwargs...)
+
     # check arg
     if isa(tiles[1], Claw.patch)
         var = :eta
     elseif isa(tiles[1], Claw.uv)
         var = :vel
     elseif isa(tiles[1], Claw.stormgrid)
-        var = :slp
+        if wind
+            var = :u
+        else
+            var = :slp
+        end
     else
         error("Invalid argument")
     end
-
 
     # parse keyword args
     kwdict = KWARG(kwargs)
@@ -63,7 +67,11 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
         yvec = collect(Float64, y[1]-0.5tiles[i].dy:tiles[i].dy:y[2]+0.5tiles[i].dy+1e-4);
         ## adjust data
         val = zeros(tiles[i].my+2,tiles[i].mx+2)
-        val[2:end-1,2:end-1] = getfield(tiles[i], var)
+        if !wind
+            val[2:end-1,2:end-1] = getfield(tiles[i], var)
+        else
+            val[2:end-1,2:end-1] = sqrt.(getfield(tiles[i], :u).^2 .+ getfield(tiles[i], :v).^2)
+        end
         val[2:end-1,1] = val[2:end-1,2]
         val[2:end-1,end] = val[2:end-1,end-1]
         val[1,:] = val[2,:]
@@ -77,7 +85,9 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; kwargs...)
     ## xlims, ylims
     xlims, kwdict = Claw.parse_xlims(kwdict)
     ylims, kwdict = Claw.parse_ylims(kwdict)
-    xrange, yrange = Claw.Range(tiles)
+    x1, x2, y1, y2 = Claw.getlims(tiles)
+    xrange = (x1, x2)
+    yrange = (y1, y2)
     xlims = xlims==nothing ? xrange : xlims
     ylims = ylims==nothing ? yrange : ylims
     plt = Plots.plot!(plt, xlims=xlims, ylims=ylims)

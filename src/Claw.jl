@@ -14,8 +14,6 @@ using Interpolations
 using GeometricalPredicates: GeometricalPredicates
 
 using Plots:Plots
-Plots.plotly()
-Plots.clibrary(:colorcet)
 
 # define CLAW path from shell
 include("CLAWPATH.jl")
@@ -35,9 +33,9 @@ include("LoadFort.jl")
 include("LoadGauge.jl")
 # Convert mesh data
 include("UniqueMesh.jl")
-include("ParseArgs.jl")
 
 # Setup
+include("PlotsArgs.jl")
 include("PlotsTools.jl")
 # Plots
 include("Plots2D.jl")
@@ -51,10 +49,8 @@ using GMT:GMT
 # Setup
 include("GMTTools.jl")
 include("GMTtxtvelo.jl")
-include("GMTpsvelo.jl")
 # make figures with GMT
 include("GMTSurface.jl")
-#include("GMTStorm.jl")
-#include("GMTStormAll.jl")
+include("GMTStorm.jl")
 
 end

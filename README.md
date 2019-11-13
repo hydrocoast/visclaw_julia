@@ -9,17 +9,13 @@ Any bug report would be appreciated.
 
 # Requirements
 ## Julia Packages
-- [Julia](https://github.com/JuliaLang/julia) v1.0.0
+- [Julia](https://github.com/JuliaLang/julia) v1.0.0 or later
 - [Plots.jl](https://github.com/JuliaPlots/Plots.jl)
 - [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl)
 - [GMT.jl](https://github.com/GenericMappingTools/GMT.jl)
 
 ## Other Softwares  
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
-
-In order to convert files, the following application softwares are required.  
-- ImageMagick (convert)
-- ffmpeg
 
 # Usage Examples
 In preparation, set a variable `CLAW` in `src/CLAWPATH.jl`  
@@ -32,15 +28,12 @@ This process can be neglected when your OS is Linux.
 Execute the following scripts in Julia REPL after the simulation of chile2010 (GeoClaw example) is done.  
 ```julia
 include("topo_GMT.jl")
-include("watersurface_GMT.jl")
+include("watersurface_GMT_chile.jl")
 ```
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/samples/chile_topo.png", width="400">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/samples/chile.gif", width="400">
 </p>  
-
-Detailed figure configurations are described in `ex_conf/conf_topo_chile.jl` and `ex_conf/conf_surf_chile.jl`.  
-You can make figures which meet your requirements by editing these `conf_*.jl` files.  
 
 
 ## Plots.jl

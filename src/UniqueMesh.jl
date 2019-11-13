@@ -1,37 +1,3 @@
-"""
-generate meshgrid in 1-column
-"""
-function meshline(tile::Claw.Tiles)
-    ## set the boundary
-    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
-    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
-    ## grid info
-    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
-    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
-    xvec = repeat(xline, inner=(tile.my,1)) |> vec
-    yvec = repeat(yline, outer=(tile.mx,1)) |> vec
-
-    ## return values
-    return xvec, yvec
-end
-
-"""
-generate meshgrid
-"""
-function meshtile(tile::Claw.Tiles)
-    ## set the boundary
-    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
-    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
-    ## grid info
-    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
-    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
-    xmesh = repeat(xline', outer=(tile.my,1))
-    ymesh = repeat(yline,  outer=(1,tile.mx))
-
-    ## return values
-    return xmesh, ymesh
-end
-
 
 
 """
@@ -96,7 +62,7 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
             for j = 1:ntile
                 if i==j; continue; end
                 if tiles[i].AMRlevel >= tiles[j].AMRlevel; continue; end
-                rect = polyrectangle(tiles[j])
+                rect = Claw.polyrectangle(tiles[j])
                 existfiner[:,j] = [GeometricalPredicates.inpolygon(rect, allp[k]) for k=1:mp]
             end
 

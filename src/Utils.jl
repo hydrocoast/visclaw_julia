@@ -1,43 +1,49 @@
+###################################################
+function getlims(tiles::Vector{Claw.Tiles})
+    x1 = minimum(getfield.(tiles, :xlow))
+    y1 = minimum(getfield.(tiles, :ylow))
+    x2 = maximum(round.(getfield.(tiles, :xlow) .+ getfield.(tiles, :mx).*getfield.(tiles, :dx), digits=4))
+    y2 = maximum(round.(getfield.(tiles, :ylow) .+ getfield.(tiles, :my).*getfield.(tiles, :dy), digits=4))
+    return x1, x2, y1, y2
+end
+###################################################
+
 ######################################
 """
-Min of dx, dy
+generate meshgrid in 1-column
 """
-function mindxdy(tiles::Vector{Claw.Tiles})
-    dxs = getfield.(tiles,:dx);
-    dx=findmin(dxs)[1]
-    dys = getfield.(tiles,:dy);
-    dy=findmin(dys)[1]
+function meshline(tile::Claw.Tiles)
+    ## set the boundary
+    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
+    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
+    ## grid info
+    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
+    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
+    xvec = repeat(xline, inner=(tile.my,1)) |> vec
+    yvec = repeat(yline, outer=(tile.mx,1)) |> vec
 
-    Δ = min(dx,dy)
+    ## return values
+    return xvec, yvec
+end
+######################################
+"""
+generate meshgrid
+"""
+function meshtile(tile::Claw.Tiles)
+    ## set the boundary
+    x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
+    y = [tile.ylow, tile.ylow+tile.dy*tile.my]
+    ## grid info
+    xline = collect(Float64, x[1]+0.5tile.dx:tile.dx:x[2]-0.5tile.dx+1e-4)
+    yline = collect(Float64, y[1]+0.5tile.dy:tile.dy:y[2]-0.5tile.dy+1e-4)
+    xmesh = repeat(xline', outer=(tile.my,1))
+    ymesh = repeat(yline,  outer=(1,tile.mx))
+
+    ## return values
+    return xmesh, ymesh
 end
 ######################################
 
-
-######################################
-"""
-Range in simulation
-"""
-function Range(tiles)
-    xmin = minimum(getfield.(tiles, :xlow))
-    ymin = minimum(getfield.(tiles, :ylow))
-    ## the number of tiles
-    ntile = length(tiles)
-
-    global xmax = copy(xmin)
-    global ymax = copy(ymin)
-    for k = 1:ntile
-        xmax = max(tiles[k].xlow+tiles[k].dx*tiles[k].mx, xmax)
-        ymax = max(tiles[k].ylow+tiles[k].dy*tiles[k].my, ymax)
-    end
-
-    xrange = (xmin, xmax)
-    yrange = (ymin, ymax)
-
-    return (xrange, yrange)
-end
-######################################
-
-##########################################################
 """
 Get the main property name from Claw.Tiles
 """
@@ -128,41 +134,3 @@ function tilezcenter(tile::Claw.Tiles, var::Symbol; digits=4)
     return xvec, yvec, val
 end
 ############################################################
-
-#=
-###################################################
-"""
-Vector{Float64} in second to Vector{String} (second, hour, day)
-"""
-function sec2str(timelap::Vector{Float64}, unit="hour"::String; fmt="")
-    sprintf(f,x) = @eval @sprintf($f, $x)
-    if unit=="second"
-        if isempty(fmt); fmt="%0.0f"; end;
-        fmtstr=fmt*" s"
-        strs = map(i-> sprintf(fmtstr,i), timelap);
-    elseif unit=="minute"
-        if isempty(fmt); fmt="%5.0f"; end;
-        fmtstr=fmt*" min"
-        strs = map(i-> sprintf(fmtstr,i), timelap./60);
-    elseif unit=="hour"
-        if isempty(fmt); fmt="%5.2f"; end;
-        fmtstr=fmt*" h"
-        strs = map(i-> sprintf(fmtstr,i), timelap./3600);
-    elseif unit=="day"
-        if isempty(fmt); fmt="%0.2f"; end;
-        fmtstr=fmt*" day"
-        strs = map(i-> sprintf(fmtstr,i), timelap./(24*3600));
-    end
-end
-###################################################
-
-###################################################
-"""
-Vector{Float64} in second to DateTime
-"""
-function sec2str(timelap::Vector{Float64}, timeorigin::Dates.DateTime; fmt="yyyy/mm/dd HH:MM")
-    dtm = timeorigin .+ Dates.Second.(timelap)
-    datstr = Dates.format.(dtm,fmt);
-end
-###################################################
-=#
