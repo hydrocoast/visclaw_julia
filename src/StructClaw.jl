@@ -82,21 +82,23 @@ struct AMR
 end
 ###################################
 
-abstract type Topo end
+abstract type AbstractTopo end
 ###################################
 """
 Struct:
- Topography and Bathymetry
+ topography and bathymetry
 """
-struct geometry <: Topo
+struct Topo <: AbstractTopo
     ncols :: Int64
     nrows :: Int64
     x :: Vector{Float64}
     y :: Vector{Float64}
-    topo :: AbstractArray{Float64,2}
+    dx :: Float64
+    dy :: Float64
+    elevation :: AbstractArray{Float64,2}
     # Constructor
-    Claw.geometry(ncols, nrows, x, y, topo) =
-              new(ncols, nrows, x, y, topo)
+    Claw.Topo(ncols, nrows, x, y, dx, dy, elevation) =
+          new(ncols, nrows, x, y, dx, dy, elevation)
 end
 ###################################
 
@@ -105,17 +107,19 @@ end
 Struct:
  seafloor deformation for tsunami computation
 """
-struct dtopo <: Topo
+struct DTopo <: AbstractTopo
     mx :: Int64
     my :: Int64
     x :: Vector{Float64}
     y :: Vector{Float64}
+    dx :: Float64
+    dy :: Float64
     mt :: Int64
     t0 :: Float64
     dt :: Float64
     deform :: AbstractArray{Float64,2}
     # Constructor
-    Claw.dtopo(mx,my,x,y,mt,t0,dt,deform) = new(mx,my,x,y,mt,t0,dt,deform)
+    Claw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform) = new(mx,my,x,y,dx,dy,mt,t0,dt,deform)
 end
 ##########################################################
 
@@ -125,7 +129,7 @@ Struct: parameters in geoclaw.data
 """
 struct param
     cs :: Int64 # coordinate system
-    p0::Float64 # ambient pressure
+    p0:: Float64 # ambient pressure
     R :: Float64 # earth radious
     eta0 :: Float64 # sea level
     n ::Float64 # manning coafficient
@@ -213,42 +217,3 @@ mutable struct fgmaxval
               new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
 end
 ########################################
-
-
-
-#########################################
-"""
-Struct: Output files configuration
-"""
-mutable struct OutputSpec
-    figdir::String # save directory
-    prefix::String # prefix for time-series plot
-    start_number::Int64 # initial step number for time-series plot
-    ext::String # .ps, .eps, .png (.svg, .gif)
-    dpi::Int64 # only .png and .gif
-    fps::Int64 # only .gif
-    remove_old::Bool # remove old files if true
-    # Constructor
-    Claw.OutputSpec() = new(".","step",0,".eps",400,4,true)
-    Claw.OutputSpec(figdir) = new(figdir,"step",0,".eps",400,4,true)
-    Claw.OutputSpec(figdir,prefix) = new(figdir,prefix,0,".eps",400,4,true)
-    Claw.OutputSpec(figdir,prefix,start_number) = new(figdir,prefix,start_number,".eps",400,4,true)
-    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi) = new(figdir,prefix,start_number,ext,dpi,4,true)
-    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,remove_old) = new(figdir,prefix,start_number,ext,dpi,0,remove_old)
-    Claw.OutputSpec(figdir,prefix,start_number,ext,dpi,fps,remove_old) = new(figdir,prefix,start_number,ext,dpi,fps,remove_old)
-end
-#########################################
-
-#########################################
-"""
-Struct: Time in unit or datetime
-"""
-mutable struct TimeSpec
-    origin::Union{Dates.DateTime,String}
-    format::String
-    # Constructor
-    Claw.TimeSpec() = new("hour","%0.1f")
-    Claw.TimeSpec(origin) = isa(origin,Dates.DateTime) ? new(origin,"yyyy/mm/dd HH:MM") : new(origin,"%0.1f")
-    Claw.TimeSpec(origin,format) = new(origin,format)
-end
-#########################################

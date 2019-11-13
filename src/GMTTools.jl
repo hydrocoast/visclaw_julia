@@ -32,7 +32,7 @@ end
 """
 Get x and y ranges in String for -R
 """
-function getR(topo::Claw.Topo)
+function getR(topo::Claw.AbstractTopo)
     xs=topo.x[1]
     xe=topo.x[end]
     ys=topo.y[1]
@@ -54,7 +54,7 @@ end
 """
 Get height/width ratio
 """
-function axesratio(topo::Claw.Topo)
+function axesratio(topo::Claw.AbstractTopo)
     xs=topo.x[1]
     xe=topo.x[end]
     ys=topo.y[1]
@@ -67,26 +67,26 @@ end
 
 ###################################################
 """
-Generate grd data, Claw.geometry
+Generate grd data, Claw.Topo
 """
-function geogrd(geo::Claw.geometry; kwargs...)
+function geogrd(geo::Claw.Topo; kwargs...)
 
-    Δ = (geo.x[end]-geo.x[1])/(geo.ncols-1)
+    Δ = geo.dx
     R = Claw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.nrows,1))
     yvec = repeat(geo.y, outer=(geo.ncols,1))
 
-    G = GMT.surface([xvec[:] yvec[:] geo.topo[:]]; R=R, I=Δ, kwargs...)
+    G = GMT.surface([xvec[:] yvec[:] geo.elevation[:]]; R=R, I=Δ, kwargs...)
 
     return G
 end
 ###################################################
 """
-Generate grd data, Claw.dtopo
+Generate grd data, Claw.DTopo
 """
-function geogrd(geo::Claw.dtopo; kwargs...)
+function geogrd(geo::Claw.DTopo; kwargs...)
 
-    Δ = (geo.x[end]-geo.x[1])/(geo.mx-1)
+    Δ = geo.dx
     R = Claw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.my,1))
     yvec = repeat(geo.y, outer=(geo.mx,1))
@@ -142,41 +142,5 @@ function getJ(proj_base::String, hwratio::Real)
     end
     # return value
     return proj
-end
-###################################################
-
-###################################################
-"""
-Determine -Dx option in colorbar(psscale), vertical alignment
-"""
-function cboptDx(;cbx=11::Real, cblen=10::Real, cby=cblen/2,
-                 cbwid=max(round(0.04*cblen, sigdigits=2),0.25))
-    Dcb="x$cbx/$cby/$cblen/$cbwid"
-    # return value
-    return Dcb
-end
-###################################################
-
-###################################################
-"""
-Determine -Dj option in colorbar(psscale) with +w{length}/{width} and +o{dx}/{dy}
-"""
-function cboptDj(;loc="BR",cbwid=0.3, cblen=10.0, xoff=-1.5, yoff=0.0)
-    Dcb = "j$loc+w$cblen/$cbwid+o$xoff/$yoff"
-    return Dcb
-end
-###################################################
-
-
-###################################################
-"""
-convert -B option
-"""
-function setBscript(B::String)
-    if occursin("-B",B); return B; end
-    Bopt = replace(B, r"^\s+|\s+$" => "")
-    Bopt = replace(Bopt, r"\s+" => " -B")
-    Bopt = replace(Bopt, r"^" => "-B")
-    return Bopt
 end
 ###################################################

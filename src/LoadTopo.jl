@@ -1,6 +1,3 @@
-#=
-This module doesn't support topography composed of multiple files.
-=#
 #################################
 ## Function: read topo.data
 #################################
@@ -104,7 +101,7 @@ function LoadTopo(filename::String; topotype=3::Int)
     end
     topo[topo.==nodata] .= NaN ## replace nodate to NaN
     topo = reverse(topo, dims=1) ## flip
-    geo = Claw.geometry(ncols, nrows, x, y, topo)
+    geo = Claw.Topo(ncols, nrows, x, y, cellsize, cellsize, topo)
 
     return geo
 end
@@ -170,7 +167,7 @@ function LoadDeform(filename::String, topotype=3::Int)
     end
     deform = reverse(deform, dims=1) ## flip
     #deform[abs.(deform).<1e-2] .= NaN
-    dtopodata = Claw.dtopo(mx,my,x,y,mt,t0,dt,deform)
+    dtopodata = Claw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform)
 
     return dtopodata
 end

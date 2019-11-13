@@ -1,10 +1,14 @@
 default_masktxt = "topo4mask.txt"
 default_maskgrd = "topomask.grd"
 
-function landmask_asc(topo::Claw.geometry, filename::String=default_masktxt)
+###################################################
+"""
+output [x y z] data in txt for masking
+"""
+function landmask_asc(topo::Claw.Topo, filename::String=default_masktxt)
     xv = vec(repeat(topo.x, inner=(topo.nrows,1)));
     yv = vec(repeat(topo.y, outer=(topo.ncols,1)));
-    topov = vec(topo.topo);
+    topov = vec(topo.elevation);
 
     inds = topov .< 0.0 # ocean
     deleteat!(xv, inds)
@@ -16,7 +20,12 @@ function landmask_asc(topo::Claw.geometry, filename::String=default_masktxt)
     end
     return filename
 end
+###################################################
 
+###################################################
+"""
+output masking grid
+"""
 function landmask_grd(txtfile::String=default_masktxt;
                       grdfile::String="", kwargs...)
     # check
@@ -54,6 +63,7 @@ function landmask_grd(txtfile::String=default_masktxt;
         return nothing
     end
 end
+###################################################
 
 
 ###################################################

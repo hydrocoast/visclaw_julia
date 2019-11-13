@@ -129,6 +129,7 @@ function tilezcenter(tile::Claw.Tiles, var::Symbol; digits=4)
 end
 ############################################################
 
+#=
 ###################################################
 """
 Vector{Float64} in second to Vector{String} (second, hour, day)
@@ -164,3 +165,4 @@ function sec2str(timelap::Vector{Float64}, timeorigin::Dates.DateTime; fmt="yyyy
     datstr = Dates.format.(dtm,fmt);
 end
 ###################################################
+=#

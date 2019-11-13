@@ -12,7 +12,6 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 # load topo
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
-Δtopo = (topo.x[end]-topo.x[1])/(topo.ncols-1)
 
 # makecpt
 cpt = GMT.makecpt(C=:polar, T="-1.0/1.0", D=true, V=true)
@@ -26,10 +25,11 @@ proj = Claw.getJ("X10d", Claw.axesratio(amrall.amr[1]))
 
 # masking
 landmask_txt = Claw.landmask_asc(topo)
-Gland = Claw.landmask_grd(landmask_txt, R=region, I=Δtopo, S="$(sqrt(2.0)Δtopo)d")
+Gland = Claw.landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d")
+
 
 for i = 1:amrall.nstep
-    timestr = "+t"*@sprintf("%d", amrall.timelap[i])
+    timestr = "+t"*@sprintf("%03d", amrall.timelap[i]/60.0)*"_min"
     outps = "fig/surf_step"*@sprintf("%03d", i)*".ps"
 
     # land-masked surface grids
@@ -45,4 +45,6 @@ for i = 1:amrall.nstep
     # save
     cp(GMT.fname_out(Dict())[1], outps, force=true)
 end
+
+rm(landmask_txt, force=true)
 # -----------------------------
