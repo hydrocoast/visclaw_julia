@@ -42,5 +42,5 @@ plt = Plots.plot!(plt; xlims=(-0.5sec1h, 9.5sec1h), ylims=(-0.15, 0.25),
                   )
 
 # save
-Plots.savefig(plt, "fig/waveform_gauge_chile.svg")
+Plots.savefig(plt, "fig/chile2010_aveform_gauge.svg")
 # -----------------------------

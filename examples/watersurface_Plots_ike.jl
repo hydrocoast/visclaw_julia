@@ -38,7 +38,7 @@ plts = [Claw.PlotsGaugeLocation!(plts[i], gauges; color=:white,
 
 # tiles
 plts = Claw.GridNumber!.(plts, amrall.amr; font=Plots.font(12, :white, :center))
-plts = Claw.DrawBound!.(plts, amrall.amr)
+#plts = Claw.DrawBound!.(plts, amrall.amr)
 
 # save
 Claw.PlotsPrint(plts, output_prefix*".svg")

@@ -5,16 +5,16 @@ using Plots
 gr()
 
 # -----------------------------
-# chile 2010
+# ike
 # -----------------------------
 # load
-simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
+simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 topofile, ntopo = Claw.topodata(simdir)
 topo = Claw.LoadTopo(topofile)
 
-# plot
-plt = Claw.PlotsTopo(topo; linetype=:contourf,
+# Plot
+plt = Claw.PlotsTopo(topo; linetype=:heatmap,
                      color=:delta, clims=(-6000,6000))
 # save
-Plots.savefig(plt, "fig/topoplots_chile.svg")
+Plots.savefig(plt, "fig/ike_topo.svg")
 # -----------------------------

@@ -43,6 +43,6 @@ function GMTps2gif(prefix_ps::String, filesequence::AbstractVector{Int64};
 
 end
 ###################################################
-GMTps2gif(prefix_ps::String, n::Int64; fps::Int64=4, dpi::Int64=300, remove_ps::Bool=true, remove_pdf::Bool=false, remove_png::Bool=false) =
+GMTps2gif(prefix_ps::String, n::Int64; fps::Int64=4, dpi::Int64=300, remove_ps::Bool=true, remove_pdf::Bool=true, remove_png::Bool=false) =
 GMTps2gif(prefix_ps, 1:n; fps=fps, dpi=dpi, remove_ps=remove_ps, remove_pdf=remove_pdf, remove_png=remove_png)
 ###################################################
