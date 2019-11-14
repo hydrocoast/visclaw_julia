@@ -1,6 +1,5 @@
-tmp*
-*.swp
 *~
+*.swp
 *.png
 *.jpg
 *.svg
@@ -8,14 +7,11 @@ tmp*
 *.ps
 *.eps
 *.grd
-*.txt
 *.pdf
+*.nc
 *.sh
+*.txt
 gmt.*
-conf_*.jl
-main_*.jl
 my*
-!fig
-!samples/*.*
-!conf_*_chile.jl
-!conf_*_ike.jl
+tmp*
+!examples/*.*
