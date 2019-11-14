@@ -1,10 +1,6 @@
-# VisClaw with Julia
+# VisClaw for Julian
 This repository aims to become one of the Clawpack visualization tools (see http://www.clawpack.org).  
-This allows us to make animations with the Julia language like the following one:   
-<p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_eta_GMT.gif", width="500">
-</p>  
-
+This allows us to make animations using the Julia language.   
 Any bug report would be appreciated.   
 
 # Requirements
@@ -45,12 +41,12 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 
 - seafloor deformation (dtopo)
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_dtopo.png", width="500">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_dtopo.png", width="400">
 </p>  
 
 - storm
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_eta_GMT.gif", width="500">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_storm_GMT.gif", width="400">
 </p>  
 
 
@@ -64,7 +60,7 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 
 - current
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_current.gif", width="500">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_current.gif", width="400">
 </p>  
 
 - topography and bathymetry
@@ -73,10 +69,15 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_topo.svg", width="400">
 </p>  
 
-- wavegauges
+- wave gauge
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_waveform_gauge.svg", width="400">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_waveform_gauge.svg", width="400">
+</p>  
+
+- fixed grid monitoring (fgmax)
+<p align="center">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/fgmax4vars.svg", width="400">
 </p>  
 
 
