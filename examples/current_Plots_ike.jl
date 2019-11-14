@@ -29,6 +29,16 @@ time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
 plts = [plot!(plts[i], title=time_str[i]) for i = 1:amrall.nstep]
 
+# gauge locations (from gauges.data)
+gauges = Claw.GaugeData(simdir)
+# gauge location
+plts = [Claw.PlotsGaugeLocation!(plts[i], gauges; color=:orange,
+        offset=(0.25,-0.25), font=Plots.font(10, :white)) for i = 1:amrall.nstep]
+
+# tiles
+plts = Claw.GridNumber!.(plts, amrall.amr; font=Plots.font(12, :black, :center))
+plts = Claw.DrawBound!.(plts, amrall.amr)
+
 # save
 Claw.PlotsPrint(plts, output_prefix*".svg")
 # gif
