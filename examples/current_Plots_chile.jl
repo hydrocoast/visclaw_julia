@@ -13,11 +13,11 @@ output_prefix = "fig/chile2010_eta"
 amrall = Claw.LoadCurrent(simdir)
 
 # plot
-plts = Claw.PlotsTimeSeries(amrall; c=:isolum, clims=(0.0,0.1),
-                            xguide="Longitude", yguide="Latitude",
-                            guidefont=Plots.font("sans-serif",12),
-                            tickfont=Plots.font("sans-serif",10),
-                            )
+plts = Claw.PlotsAMR(amrall; c=:isolum, clims=(0.0,0.1),
+                     xguide="Longitude", yguide="Latitude",
+                     guidefont=Plots.font("sans-serif",12),
+                     tickfont=Plots.font("sans-serif",10),
+                     )
 
 # time in string
 time_str = map(x->@sprintf("%03d", x/60.0)*" min", amrall.timelap)

@@ -18,7 +18,7 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 amrall = Claw.LoadStorm(simdir)
 
 # plot
-plts = Claw.PlotsTimeSeries(amrall; c=:rainbow, clims=(0.0, 40.0),
+plts = Claw.PlotsAMR(amrall; c=:rainbow, clims=(0.0, 40.0),
                             xguide="Longitude", yguide="Latitude",
                             xlims=(-99.0,-80.0), ylims=(16.0,32.0),
                             guidefont=Plots.font("sans-serif",12),

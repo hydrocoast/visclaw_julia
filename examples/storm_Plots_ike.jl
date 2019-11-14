@@ -17,13 +17,13 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 amrall = Claw.LoadStorm(simdir)
 
 # plot
-plts = Claw.PlotsTimeSeries(amrall; c=:heat_r, clims=(960.0, 1010.0),
-                            xguide="Longitude", yguide="Latitude",
-                            xlims=(-99.0,-85.0), ylims=(22.0,32.0),
-                            guidefont=Plots.font("sans-serif",12),
-                            tickfont=Plots.font("sans-serif",10),
-                            colorbar_title="hPa",
-                            )
+plts = Claw.PlotsAMR(amrall; c=:heat_r, clims=(960.0, 1010.0),
+                     xguide="Longitude", yguide="Latitude",
+                     xlims=(-99.0,-85.0), ylims=(22.0,32.0),
+                     guidefont=Plots.font("sans-serif",12),
+                     tickfont=Plots.font("sans-serif",10),
+                     colorbar_title="hPa",
+                     )
 
 # time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)

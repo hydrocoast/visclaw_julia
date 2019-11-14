@@ -169,7 +169,7 @@ end
 """
 Function: plot time-series of AMR data
 """
-function PlotsTimeSeries(amrs::Claw.AMR; kwargs...)
+function PlotsAMR(amrs::Claw.AMR; kwargs...)
     ## plot time-series
     plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep

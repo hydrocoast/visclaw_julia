@@ -16,10 +16,10 @@ output_prefix = "fig/chile2010_eta"
 amrall = Claw.LoadSurface(simdir)
 
 # plot
-plts = Claw.PlotsTimeSeries(amrall; c=:coolwarm, clims=(-0.5,0.5),
-                            xguide="Longitude", yguide="Latitude",
-                            guidefont=Plots.font("sans-serif",12),
-                            tickfont=Plots.font("sans-serif",10),
+plts = Claw.PlotsAMR(amrall; c=:coolwarm, clims=(-0.5,0.5),
+                     xguide="Longitude", yguide="Latitude",
+                     guidefont=Plots.font("sans-serif",12),
+                     tickfont=Plots.font("sans-serif",10),
                             )
 
 # time in string
