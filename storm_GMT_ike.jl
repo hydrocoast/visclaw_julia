@@ -1,22 +1,21 @@
-include("./addpath.jl")
 using Claw
 
 using Printf
 using GMT: GMT
 
-using Dates: Dates
-timeorigin = Dates.DateTime(2008, 9, 13, 7)
-
 # arrow style
-arrow = "0.01/0.15/0.05" # -A (LineWidth,  HeadLength, HeadSize)
+arrow = "0.01/0.15/0.05" # -A LineWidth/HeadLength/HeadSize
 vscale = "e0.03/0.0/12"  # -Se <velscale> / <confidence> / <fontsize>
-arrow_color = "black"
-scalefile = Claw.txtwind_scale(-92.5, 30.0, 30.0, 0.0)
+arrow_color = "black" # -G
+scalefile = Claw.txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
 
 # -----------------------------
 # ike
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
+output_prefix = "fig/ike_storm"
+using Dates: Dates
+timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # makecpt
 #cpt = GMT.makecpt(C=:seis, T="950/1015", D=true)
@@ -24,19 +23,19 @@ cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
 
 # load
 amrall = Claw.LoadStorm(simdir)
-Claw.RemoveCoarseUV!.(amrall.amr)
+Claw.RemoveCoarseUV!.(amrall.amr) # to avoid overlapped arrows are plotted
 
 # projection and region GMT
 region = Claw.getR(amrall.amr[1])
 proj = Claw.getJ("X10d", Claw.axesratio(amrall.amr[1]))
 
+# time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
 
-
-
+# plot
 for i = 1:amrall.nstep
-    outps = "fig/storm_step"*@sprintf("%03d", i)*".ps"
+    outps = output_prefix*@sprintf("%03d", i)*".ps"
 
     # land-masked surface grids
     G = Claw.tilegrd.(amrall.amr[i]; spacing_unit="d")
@@ -59,3 +58,7 @@ for i = 1:amrall.nstep
 end
 
 rm(scalefile, force=true)
+
+# gif
+Claw.GMTps2gif(output_prefix, amrall.nstep)
+# -----------------------------

@@ -1,5 +1,4 @@
-
-
+############################################################
 """
 polygon data (rectangle) from a tile in AMR
 """
@@ -19,8 +18,10 @@ function polyrectangle(tile::Claw.Tiles)
 
     return poly
 end
+############################################################
 
 
+############################################################
 """
 get points which are not overlapped by any of other tiles
 """
@@ -93,9 +94,10 @@ function UniqueMeshVector(tiles::Vector{Claw.Tiles})
     ## return values
     return xall, yall, pall
 end
+############################################################
 
 
-
+############################################################
 """
 get points which are not overlapped by any of other tiles
 """
@@ -141,3 +143,4 @@ function RemoveCoarseUV!(tiles::Vector{Claw.Tiles})
     ## return values
     return
 end
+############################################################

@@ -77,7 +77,7 @@ function tilegrd(tile::Claw.Tiles; spacing_unit::String="", kwargs...)
     R = Claw.getR_tile(tile)
     Δ = tile.dx
     r = sqrt(2.0)Δ
-    #xvec, yvec, zdata = Claw.tilezcenter(tile, var)
+
     xvec, yvec, zdata = Claw.tilez(tile, var)
     xmat = repeat(xvec, inner=(length(yvec),1))
     ymat = repeat(yvec, outer=(length(xvec),1))
@@ -118,7 +118,7 @@ function tilegrd_mask(tile::Claw.Tiles, maskfile::String=""; spacing_unit::Strin
     R = Claw.getR_tile(tile)
     Δ = tile.dx
     r = sqrt(2.0)Δ
-    #xvec, yvec, zdata = Claw.tilezcenter(tile, var)
+
     xvec, yvec, zdata = Claw.tilez(tile, var)
     xmat = repeat(xvec, inner=(length(yvec),1))
     ymat = repeat(yvec, outer=(length(xvec),1))
@@ -164,8 +164,3 @@ function tilegrd_mask(tile::Claw.Tiles, maskfile::String=""; spacing_unit::Strin
     return G
 end
 ###################################################
-
-#if !any(.!isnan.(zdata)); return G=nothing; end;
-#G = GMT.xyz2grd([xmat[:] ymat[:] zdata[:]], R=R, I=Δ, kwargs...)
-#G = GMT.surface([xmat[:] ymat[:] zdata[:]]; R=R, I=Δ, kwargs...)
-#G = GMT.nearneighbor([xmat[:] ymat[:] zdata[:]]; R=R, I=Δ, kwargs...)

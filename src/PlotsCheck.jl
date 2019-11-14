@@ -58,7 +58,7 @@ function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
 
         # draw figure
         plt = Claw.PlotsAMR2D(amrs.amr[1]; kwargs...)
-        plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s", layout=(1,1))
+        plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s")
 
         # show
         #plt = Plots.plot!(plt, show=true)

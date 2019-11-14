@@ -1,4 +1,4 @@
-###################################################
+######################################
 function getlims(tiles::Vector{Claw.Tiles})
     x1 = minimum(getfield.(tiles, :xlow))
     y1 = minimum(getfield.(tiles, :ylow))
@@ -6,8 +6,6 @@ function getlims(tiles::Vector{Claw.Tiles})
     y2 = maximum(round.(getfield.(tiles, :ylow) .+ getfield.(tiles, :my).*getfield.(tiles, :dy), digits=4))
     return x1, x2, y1, y2
 end
-###################################################
-
 ######################################
 """
 generate meshgrid in 1-column
@@ -88,7 +86,7 @@ function tilezmargin(tile::Claw.Tiles, var::Symbol; digits=4)
     # return val
     return xvec, yvec, val
 end
-############################################################
+##########################################################
 
 ##########################################################
 """
@@ -108,27 +106,6 @@ function tilez(tile::Claw.Tiles, var::Symbol; digits=4)
     yvec = round.(yvec, digits=digits)
 
     val = itp(yvec,xvec);
-
-    # return val
-    return xvec, yvec, val
-end
-############################################################
-
-##########################################################
-"""
-Get Z values of cells at the center
-"""
-function tilezcenter(tile::Claw.Tiles, var::Symbol; digits=4)
-    ## set the boundary
-    x = [tile.xlow, round(tile.xlow+tile.dx*tile.mx, digits=digits)]
-    y = [tile.ylow, round(tile.ylow+tile.dy*tile.my, digits=digits)]
-
-    ## grid info
-    xvec = collect(LinRange(x[1]+0.5tile.dx, x[2]-0.5tile.dx, tile.mx));
-    yvec = collect(LinRange(y[1]+0.5tile.dy, y[2]-0.5tile.dy, tile.my));
-    xvec = round.(xvec, digits=digits)
-    yvec = round.(yvec, digits=digits)
-    val = getfield(tile, var)
 
     # return val
     return xvec, yvec, val

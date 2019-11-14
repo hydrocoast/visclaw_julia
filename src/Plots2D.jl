@@ -118,7 +118,7 @@ PlotsAMR2D!(Plots.plot(), tiles; kwargs...)
 """
 Function: add the grid numbers
 """
-function GridNumber!(plt, tiles; fs=10, fc=:black)
+function GridNumber!(plt, tiles; font::Plots.Font=Plots.font(12, :hcenter, :black))
     ## the number of tiles
     ntile = length(tiles)
     for i = 1:ntile
@@ -127,7 +127,7 @@ function GridNumber!(plt, tiles; fs=10, fc=:black)
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
         ann = @sprintf("%02d", tiles[i].gridnumber)
         ## annotations
-        plt = Plots.plot!(plt,annotations=(mean(x),mean(y),Plots.text(ann,fs,fc,:center)))
+        plt = Plots.plot!(plt, annotations=(mean(x),mean(y), Plots.text(ann, font)))
     end
     return plt
 end
@@ -137,7 +137,19 @@ end
 """
 Function: draw boundaries
 """
-function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
+function DrawBound!(plt, tiles; kwargs...)
+
+    # parse keyword args
+    kwdict = KWARG(kwargs)
+
+    # linestyle
+    linestyle, kwdict = Claw.parse_linestyle(kwdict)
+    if linestyle == nothing; linestyle=:solid; end
+    # linecolor
+    linecolor, kwdict = Claw.parse_linecolor(kwdict)
+    if linecolor == nothing; linecolor=:black; end
+
+
     ## the number of tiles
     ntile = length(tiles)
     for i = 1:ntile
@@ -147,7 +159,7 @@ function DrawBound!(plt, tiles; lc=:black, ls=:solid, lw=1.0)
         plt = Plots.plot!(plt,
               [x[1], x[1], x[2], x[2], x[1]],
               [y[1], y[2], y[2], y[1], y[1]],
-              c=lc, linestyle=ls, linewidth=lw, label="")
+              label="", linestyle=linestyle, linecolor=linecolor, kwdict...)
     end
     return plt
 end
@@ -157,31 +169,12 @@ end
 """
 Function: plot time-series of AMR data
 """
-function PlotsTimeSeries(amrs::Claw.AMR; showsec::Bool=true, bound=false::Bool, gridnumber=false::Bool,
-                         kwargs...)
-
+function PlotsTimeSeries(amrs::Claw.AMR; kwargs...)
     ## plot time-series
-    plt = Array{Plots.Plot}(undef,amrs.nstep)
+    plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep
-        ## pseudocolor
-        #plt[i] = DrawFunc(amrs.amr[i], clim=clim, cmap=cmap)
         plt[i] = Claw.PlotsAMR2D(amrs.amr[i]; kwargs...)
-
-        ## display time in title
-        if showsec
-            plt[i] = Plots.plot!(plt[i], title=@sprintf("%8.1f",amrs.timelap[i])*" s", layout=(1,1))
-        end
-        ## draw boundaries
-        if bound
-            plt[i] = Claw.DrawBound!(plt[i], amrs.amr[i])
-        end
-        ## annotations of grid number
-        if gridnumber
-            plt[i] = Claw.GridNumber!(plt[i], amrs.amr[i])
-        end
-
     end
-
     ## return plots
     return plt
 end

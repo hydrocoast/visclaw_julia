@@ -1,4 +1,3 @@
-include("./addpath.jl")
 using Claw
 
 using Plots
@@ -10,10 +9,12 @@ gr()
 # ike
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
+output_prefix = "fig/ike_pres"
+using Dates: Dates
+timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load
 amrall = Claw.LoadStorm(simdir)
-Claw.RemoveCoarseUV!.(amrall.amr)
 
 # plot
 plts = Claw.PlotsTimeSeries(amrall; c=:heat_r, clims=(960.0, 1010.0),
@@ -24,8 +25,14 @@ plts = Claw.PlotsTimeSeries(amrall; c=:heat_r, clims=(960.0, 1010.0),
                             colorbar_title="hPa",
                             )
 
-# save images
-Claw.PlotsPrint(plts, "fig/ike_storm.svg")
+# time in string
+time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
+time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
+plts = [plot!(plts[i], title=time_str[i]) for i = 1:amrall.nstep]
+
+
+# save
+Claw.PlotsPrint(plts, output_prefix*".svg")
 # gif
-Claw.Plotsgif(plts, "fig/ike_storm.gif", fps=4)
+Claw.Plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

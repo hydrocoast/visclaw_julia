@@ -1,4 +1,3 @@
-include("./addpath.jl")
 using Claw
 
 ### Seafloor deformation (for tsunami simulation)
@@ -16,5 +15,5 @@ dtopo = Claw.LoadDeform(dtopofile)
 # plot
 plt = Claw.PlotsTopo(dtopo; linetype=:contourf,
                      color=:coolwarm, clims=(-3.0,3.0))
-#Plots.savefig(plt, "fig/dtopo_chile.svg")
+Plots.savefig(plt, "fig/dtopo_chile.svg")
 # -----------------------------

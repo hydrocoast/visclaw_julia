@@ -26,7 +26,7 @@ const emptyF = Array{Float64}(undef, 0, 0)
 include("StructClaw.jl")
 include("LoadData.jl")
 include("LoadFGmaxGrid.jl")
-include("Utils.jl")
+include("AMRUtils.jl")
 # Load
 include("LoadTopo.jl")
 include("LoadFort.jl")
@@ -52,5 +52,6 @@ include("GMTtxtvelo.jl")
 # make figures with GMT
 include("GMTSurface.jl")
 include("GMTStorm.jl")
+include("GMTps2gif.jl")
 
 end

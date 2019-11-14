@@ -1,4 +1,3 @@
-include("./addpath.jl")
 using Claw
 
 using Plots

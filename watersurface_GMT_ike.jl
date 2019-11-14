@@ -1,17 +1,15 @@
-include("./addpath.jl")
 using Claw
 
 using Printf
 using GMT: GMT
 
-using Dates: Dates
-timeorigin = Dates.DateTime(2008, 9, 13, 7)
-
-
 # -----------------------------
 # ike
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
+output_prefix = "fig/ike_eta"
+using Dates: Dates
+timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load topo
 topofile, ntopo = Claw.topodata(simdir)
@@ -36,7 +34,7 @@ time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
 
 for i = 1:amrall.nstep
-    outps = "fig/surf_step"*@sprintf("%03d", i)*".ps"
+    outps = output_prefix*@sprintf("%03d", i)*".ps"
 
     # land-masked surface grids
     G = Claw.tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
@@ -53,4 +51,7 @@ for i = 1:amrall.nstep
 end
 
 rm(landmask_txt, force=true)
+
+# gif
+Claw.GMTps2gif(output_prefix, amrall.nstep)
 # -----------------------------

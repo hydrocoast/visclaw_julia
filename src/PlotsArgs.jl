@@ -44,3 +44,12 @@ parse_from_keys(d, [:ylims, :ylim, :ylimit, :ylimits])
 parse_colorbar_title(d::Dict) =
 parse_from_keys(d, [:colorbar_title])
 # -----------------------------
+parse_linewidth(d::Dict) =
+parse_from_keys(d, [:linewidth, :w, :width, :lw])
+# -----------------------------
+parse_linestyle(d::Dict) =
+parse_from_keys(d, [:linestyle, :style, :s, :ls])
+# -----------------------------
+parse_linecolor(d::Dict) =
+parse_from_keys(d, [:linecolor, :lc, :lcolor, :lcolour, :linecolour])
+# -----------------------------

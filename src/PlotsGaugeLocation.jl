@@ -1,11 +1,12 @@
 ms_default=8
-an_default = Plots.font(8,:left,:top,0.0,:black)
+an_default = Plots.font(10,:left,:top,0.0,:black)
 
 ###########################################
 """
 Function: plot a gauge location using Plots
 """
-function PlotsGaugeLocation!(plt, gauge::Claw.gauge; kwargs...)
+function PlotsGaugeLocation!(plt, gauge::Claw.gauge;
+                             offset=(0,0), font::Plots.Font=an_default, kwargs...)
     # keyword args
     d = KWARG(kwargs)
     # annotation
@@ -13,7 +14,7 @@ function PlotsGaugeLocation!(plt, gauge::Claw.gauge; kwargs...)
 
     # plot
     plt = Plots.scatter!(plt, [gauge.loc[1]], [gauge.loc[2]]; d...,
-                         ann=(gauge.loc[1], gauge.loc[2], Plots.text(annotation_str, an_default)),
+                         ann=(gauge.loc[1]+offset[1], gauge.loc[2]+offset[2], Plots.text(annotation_str, font)),
                          label="")
 
     # return
@@ -21,10 +22,10 @@ function PlotsGaugeLocation!(plt, gauge::Claw.gauge; kwargs...)
 
 end
 ###########################################
-PlotsGaugeLocation(gauge::Claw.gauge; kwargs...) =
-PlotsGaugeLocation!(Plots.plot(), gauge; kwargs...)
+PlotsGaugeLocation(gauge::Claw.gauge; offset=(0,0), font::Plots.Font=an_default, kwargs...) =
+PlotsGaugeLocation!(Plots.plot(), gauge; offset=(0,0), font=font, kwargs...)
 ###########################################
-function PlotsGaugeLocation!(plt, gauges::Vector{Claw.gauge}; kwargs...)
+function PlotsGaugeLocation!(plt, gauges::Vector{Claw.gauge}; offset=(0,0), font::Plots.Font=an_default, kwargs...)
     # keyword args
     d = KWARG(kwargs)
     # get values in all gauges
@@ -39,7 +40,8 @@ function PlotsGaugeLocation!(plt, gauges::Vector{Claw.gauge}; kwargs...)
 
     annotation_arg = Vector{Tuple}(undef,ngauges)
     for i=1:ngauges
-        annotation_arg[i] = (loc_all[i][1], loc_all[i][2], Plots.text(annotation_str[i], an_default))
+        annotation_arg[i] = (loc_all[i][1]+offset[1], loc_all[i][2]+offset[2],
+                             Plots.text(annotation_str[i], font))
     end
 
     # plot
