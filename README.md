@@ -21,22 +21,22 @@ In preparation, set a variable `CLAW` in `src/CLAWPATH.jl`
 CLAW="path/to/your/clawpack"
 ```
 
-Execute the Julia scripts in `examples/` after the simulations of chile2010 and ike in the GeoClaw examples.  
+Execute the Julia scripts in `examples/` after the simulations of chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and ike `geoclaw/examples/storm-surge/ike` in the GeoClaw examples.  
 GMT.jl and Plots.jl are available for visualization of the numerical results.  
 
 ## GMT.jl
 
 - sea surface elevation
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_eta_GMT.gif", width="400">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_eta_GMT.gif", width="400">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_eta_GMT.gif", width="350">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_eta_GMT.gif", width="450">
 </p>  
 
 
 - topography and bathymetry
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_topo.png", width="400">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_topo.png", width="400">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_topo.png", width="350">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_topo.png", width="450">
 </p>  
 
 - seafloor deformation (dtopo)
@@ -77,7 +77,7 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 
 - fixed grid monitoring (fgmax)
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/fgmax4vars.svg", width="400">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/fgmax4vars.svg", width="700">
 </p>  
 
 
