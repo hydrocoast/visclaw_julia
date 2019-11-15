@@ -1,6 +1,8 @@
 using Claw
 
-using Plots:Plots
+using Plots
+gr()
+#plotlyjs()
 
 # easy checker
 # -----------------------------
@@ -9,7 +11,6 @@ using Plots:Plots
 simdir = joinpath(Claw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 
 # sea surface height
-Plots.gr()
 plt = Claw.PlotsCheck(simdir; color=:balance, clims=(-0.5,0.5))
 
 # velocity
