@@ -39,7 +39,12 @@ function GMTps2gif(prefix_ps::String, filesequence::AbstractVector{Int64};
     run(`ffmpeg -y -r $fps -start_number $sn -i $(prefix_ps)%03d.png -i palette.png -filter_complex paletteuse -vframes $vf $(prefix_ps).gif  -loglevel error`)
     rm("palette.png", force=true)
 
-    if remove_pdf; rm(prefix_ps*step*".png", force=true); end
+    if remove_png
+        for i in filesequence
+            step = @sprintf("%03d",i)
+            rm(prefix_ps*step*".png", force=true)
+        end
+    end
 
 end
 ###################################################

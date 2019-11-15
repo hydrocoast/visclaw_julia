@@ -10,6 +10,7 @@ Any bug report would be appreciated.
 - [GR.jl](https://github.com/jheinen/GR.jl)
 - [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl)
 - [GMT.jl](https://github.com/GenericMappingTools/GMT.jl)
+- [Interpolations](https://github.com/JuliaMath/Interpolations.jl)
 - [GeometricalPredicates.jl](https://github.com/JuliaGeometry/GeometricalPredicates.jl)
 
 ## Other Softwares  
@@ -34,7 +35,7 @@ push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 
 - Add the required packages in the Julia REPL.
 ```julia
-]add Plots GMT GR PyPlot GeometricalPredicates
+]add Plots GMT GR PyPlot Interpolations GeometricalPredicates
 ```
 
 - Run the Julia scripts in `examples/` .  
