@@ -2,7 +2,7 @@
 """
 Get x and y ranges of a tile in String
 """
-function getR_tile(tile::Claw.AMRGrid)
+function getR_tile(tile::VisClaw.AMRGrid)
     xs = tile.xlow
     ys = tile.ylow
     xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
@@ -15,15 +15,15 @@ end
 """
 Get x and y ranges in String for -R
 """
-function getR(tiles::Vector{Claw.AMRGrid})
-    xs, xe, ys, ye = Claw.getlims(tiles)
+function getR(tiles::Vector{VisClaw.AMRGrid})
+    xs, xe, ys, ye = VisClaw.getlims(tiles)
     return "$xs/$xe/$ys/$ye"
 end
 ###################################################
 """
 Get x and y ranges in String for -R
 """
-function getR(topo::Claw.AbstractTopo)
+function getR(topo::VisClaw.AbstractTopo)
     xs=topo.x[1]
     xe=topo.x[end]
     ys=topo.y[1]
@@ -35,8 +35,8 @@ end
 """
 Get height/width ratio
 """
-function axesratio(tiles::Vector{Claw.AMRGrid})
-    xs, xe, ys, ye = Claw.getlims(tiles)
+function axesratio(tiles::Vector{VisClaw.AMRGrid})
+    xs, xe, ys, ye = VisClaw.getlims(tiles)
     hwratio = (ye-ys)/(xe-xs)
     # return value
     return hwratio
@@ -45,7 +45,7 @@ end
 """
 Get height/width ratio
 """
-function axesratio(topo::Claw.AbstractTopo)
+function axesratio(topo::VisClaw.AbstractTopo)
     xs=topo.x[1]
     xe=topo.x[end]
     ys=topo.y[1]
@@ -58,12 +58,12 @@ end
 
 ###################################################
 """
-Generate grd data, Claw.Topo
+Generate grd data, VisClaw.Topo
 """
-function geogrd(geo::Claw.Topo; kwargs...)
+function geogrd(geo::VisClaw.Topo; kwargs...)
 
     Δ = geo.dx
-    R = Claw.getR(geo)
+    R = VisClaw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.nrows,1))
     yvec = repeat(geo.y, outer=(geo.ncols,1))
 
@@ -73,12 +73,12 @@ function geogrd(geo::Claw.Topo; kwargs...)
 end
 ###################################################
 """
-Generate grd data, Claw.DTopo
+Generate grd data, VisClaw.DTopo
 """
-function geogrd(geo::Claw.DTopo; kwargs...)
+function geogrd(geo::VisClaw.DTopo; kwargs...)
 
     Δ = geo.dx
-    R = Claw.getR(geo)
+    R = VisClaw.getR(geo)
     xvec = repeat(geo.x, inner=(geo.my,1))
     yvec = repeat(geo.y, outer=(geo.mx,1))
 

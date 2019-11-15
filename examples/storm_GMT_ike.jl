@@ -1,4 +1,4 @@
-using Claw
+using VisClaw
 
 using Printf
 using GMT: GMT
@@ -7,7 +7,7 @@ using GMT: GMT
 arrow = "0.01/0.15/0.05" # -A LineWidth/HeadLength/HeadSize
 vscale = "e0.03/0.0/12"  # -Se <velscale> / <confidence> / <fontsize>
 arrow_color = "black" # -G
-scalefile = Claw.txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
+scalefile = VisClaw.txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
 
 # -----------------------------
 # ike
@@ -22,12 +22,12 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
 
 # load
-amrall = Claw.LoadStorm(simdir)
-Claw.RemoveCoarseUV!.(amrall.amr) # to avoid overlapped arrows are plotted
+amrall = VisClaw.LoadStorm(simdir)
+VisClaw.RemoveCoarseUV!.(amrall.amr) # to avoid overlapped arrows are plotted
 
 # projection and region GMT
-region = Claw.getR(amrall.amr[1])
-proj = Claw.getJ("X10d", Claw.axesratio(amrall.amr[1]))
+region = VisClaw.getR(amrall.amr[1])
+proj = VisClaw.getJ("X10d", VisClaw.axesratio(amrall.amr[1]))
 
 # time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
@@ -38,7 +38,7 @@ for i = 1:amrall.nstep
     outps = output_prefix*@sprintf("%03d", i)*".ps"
 
     # land-masked surface grids
-    G = Claw.tilegrd.(amrall.amr[i]; spacing_unit="d")
+    G = VisClaw.tilegrd.(amrall.amr[i]; spacing_unit="d")
 
     # surface grids without
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
@@ -48,7 +48,7 @@ for i = 1:amrall.nstep
 
     # wind field
     psfile = GMT.fname_out(Dict())[1]
-    velofile = Claw.txtwind(amrall.amr[i], skip=3)
+    velofile = VisClaw.txtwind(amrall.amr[i], skip=3)
     GMT.gmt("psvelo $velofile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -P -K -O >> $psfile ")
     rm(velofile, force=true)
     GMT.gmt("psvelo $scalefile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -Y1.2d -P -O >> $psfile ")
@@ -60,5 +60,5 @@ end
 rm(scalefile, force=true)
 
 # gif
-Claw.GMTps2gif(output_prefix, amrall.nstep)
+VisClaw.GMTps2gif(output_prefix, amrall.nstep)
 # -----------------------------

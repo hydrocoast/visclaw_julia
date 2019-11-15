@@ -21,7 +21,7 @@ function GeoData(dirname::String)
     n = parse(Float64,split(txt[occursin.("manning_coefficient",txt)][1],r"\s+")[1])
     dmin = parse(Float64,split(txt[occursin.("dry_tolerance",txt)][1],r"\s+")[1])
     # instance
-    params = Claw.GeoParam(cs,p0,R,eta0,n,dmin)
+    params = VisClaw.GeoParam(cs,p0,R,eta0,n,dmin)
     # return values
     return params
 end
@@ -46,7 +46,7 @@ function SurgeData(dirname::String)
     stormtype = parse(Int64,split(txt[occursin.("storm_type",txt)][1],r"\s+")[1])
     landfall = parse(Float64,split(txt[occursin.(" landfall ",txt)][1],r"\s+")[1])
     # instance
-    surgedata = Claw.SurgeParam(windindex,slpindex,stormtype,landfall)
+    surgedata = VisClaw.SurgeParam(windindex,slpindex,stormtype,landfall)
     # return values
     return surgedata
 end
@@ -68,7 +68,7 @@ function GaugeData(dirname::String)
     # parse parameters
     ngauges = parse(Int64, split(txt[occursin.("ngauges",txt)][1],r"\s+")[1])
     # preallocate
-    gaugedata = Vector{Claw.gauge}(undef,ngauges)
+    gaugedata = Vector{VisClaw.gauge}(undef,ngauges)
 
     # read gauge info
     baseline = findfirst(x->occursin("ngauges", x), txt)
@@ -80,7 +80,7 @@ function GaugeData(dirname::String)
         loc = [parse(Float64,txtline[2]), parse(Float64,txtline[3])]
         time = [parse(Float64,txtline[4]), parse(Float64,txtline[5])]
         # instance
-        gaugedata[i] = Claw.gauge(label,id,0,loc,[],time,[])
+        gaugedata[i] = VisClaw.gauge(label,id,0,loc,[],time,[])
     end
 
     # return values
@@ -108,7 +108,7 @@ function FGmaxData(dirname::String)
 
     # preallocate
     #fgmax_files = Vector{String}(undef, num_fgmax_grids)
-    fgmaxgrids = Vector{Claw.fgmaxgrid}(undef, num_fgmax_grids)
+    fgmaxgrids = Vector{VisClaw.fgmaxgrid}(undef, num_fgmax_grids)
 
     if num_fgmax_grids==0
         println("fgmax grid is not specified")
@@ -121,7 +121,7 @@ function FGmaxData(dirname::String)
 
     for i = 1:num_fgmax_grids
         filename = strip(txt[baseline+2i+1])[2:end-1] # remove quotes \'
-        fgmaxgrids[i] = Claw.fgmaxgrid(i, filename, num_fgmax_val)
+        fgmaxgrids[i] = VisClaw.fgmaxgrid(i, filename, num_fgmax_val)
     end
 
     # return

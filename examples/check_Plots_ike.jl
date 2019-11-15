@@ -1,5 +1,6 @@
-using Claw
+using VisClaw
 
+using Printf
 using Plots
 gr()
 #plotlyjs()
@@ -8,11 +9,11 @@ gr()
 # -----------------------------
 # ike
 # -----------------------------
-simdir = joinpath(Claw.CLAW, "geoclaw/examples/storm-surge/ike/_output")
+simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/storm-surge/ike/_output")
 
 # sea surface height
-#plt = Claw.PlotsCheck(simdir; color=:darkrainbow, clims=(-0.5,2.0))
+#plt = VisClaw.PlotsCheck(simdir; color=:darkrainbow, clims=(-0.5,2.0))
 
 # pressure
-plt = Claw.PlotsCheck(simdir; vartype="storm", color=:heat_r, clims=(960,1010))
+plt = VisClaw.PlotsCheck(simdir; vartype="storm", color=:heat_r, clims=(960,1010))
 # -----------------------------

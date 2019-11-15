@@ -1,5 +1,5 @@
 ######################################
-function getlims(tiles::Vector{Claw.AMRGrid})
+function getlims(tiles::Vector{VisClaw.AMRGrid})
     x1 = minimum(getfield.(tiles, :xlow))
     y1 = minimum(getfield.(tiles, :ylow))
     x2 = maximum(round.(getfield.(tiles, :xlow) .+ getfield.(tiles, :mx).*getfield.(tiles, :dx), digits=4))
@@ -10,7 +10,7 @@ end
 """
 generate meshgrid in 1-column
 """
-function meshline(tile::Claw.AMRGrid)
+function meshline(tile::VisClaw.AMRGrid)
     ## set the boundary
     x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
     y = [tile.ylow, tile.ylow+tile.dy*tile.my]
@@ -27,7 +27,7 @@ end
 """
 generate meshgrid
 """
-function meshtile(tile::Claw.AMRGrid)
+function meshtile(tile::VisClaw.AMRGrid)
     ## set the boundary
     x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
     y = [tile.ylow, tile.ylow+tile.dy*tile.my]
@@ -43,18 +43,18 @@ end
 ######################################
 
 """
-Get the main property name from Claw.AMRGrid
+Get the main property name from VisClaw.AMRGrid
 """
-function keytile(tile::Claw.AMRGrid)
+function keytile(tile::VisClaw.AMRGrid)
     # type check
-    if isa(tile, Claw.SurfaceHeight)
+    if isa(tile, VisClaw.SurfaceHeight)
         var = :eta
-    elseif isa(tile, Claw.Velocity)
+    elseif isa(tile, VisClaw.Velocity)
         var = :vel
-    elseif isa(tile, Claw.Storm)
+    elseif isa(tile, VisClaw.Storm)
         var = :slp
     else
-        error("Invalid input argument, type of Claw.AMRGrid")
+        error("Invalid input argument, type of VisClaw.AMRGrid")
     end
     # return value
     return var
@@ -65,7 +65,7 @@ end
 """
 Get Z values of cells including their margins
 """
-function tilezmargin(tile::Claw.AMRGrid, var::Symbol; digits=4)
+function tilezmargin(tile::VisClaw.AMRGrid, var::Symbol; digits=4)
     ## set the boundary
     x = [tile.xlow, round(tile.xlow+tile.dx*tile.mx, digits=digits)]
     y = [tile.ylow, round(tile.ylow+tile.dy*tile.my, digits=digits)]
@@ -92,8 +92,8 @@ end
 """
 Get Z values of cells at the grid lines
 """
-function tilez(tile::Claw.AMRGrid, var::Symbol; digits=4)
-    xvec, yvec, val = Claw.tilezmargin(tile, var, digits=digits)
+function tilez(tile::VisClaw.AMRGrid, var::Symbol; digits=4)
+    xvec, yvec, val = VisClaw.tilezmargin(tile, var, digits=digits)
     itp = interpolate((yvec, xvec), val, Gridded(Linear()))
 
     ## set the boundary

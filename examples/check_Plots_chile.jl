@@ -1,5 +1,6 @@
-using Claw
+using VisClaw
 
+using Printf
 using Plots
 gr()
 #plotlyjs()
@@ -8,11 +9,11 @@ gr()
 # -----------------------------
 # chile 2010
 # -----------------------------
-simdir = joinpath(Claw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
+simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 
 # sea surface height
-plt = Claw.PlotsCheck(simdir; color=:balance, clims=(-0.5,0.5))
+plt = VisClaw.PlotsCheck(simdir; color=:balance, clims=(-0.5,0.5))
 
 # velocity
-#plt = Claw.PlotsCheck(simdir; vartype="current", color=:isolum, clims=(0.0,0.1))
+#plt = VisClaw.PlotsCheck(simdir; vartype="current", color=:isolum, clims=(0.0,0.1))
 # -----------------------------

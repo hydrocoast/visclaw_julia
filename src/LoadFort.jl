@@ -8,7 +8,7 @@
 """
 Function: fort.qxxxx reader
 """
-function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::Claw.GeoParam=Claw.GeoParam())
+function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::VisClaw.GeoParam=VisClaw.GeoParam())
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -20,11 +20,11 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
     ngrid = length(txtorg[idx])
 
     if vartype=="surface"
-        amr = Array{Claw.SurfaceHeight}(undef,ngrid) ## preallocate
+        amr = Array{VisClaw.SurfaceHeight}(undef,ngrid) ## preallocate
 	elseif vartype=="current"
-        amr = Array{Claw.Velocity}(undef,ngrid)
+        amr = Array{VisClaw.Velocity}(undef,ngrid)
     elseif vartype=="storm"
-        amr = Array{Claw.Storm}(undef,ngrid)
+        amr = Array{VisClaw.Storm}(undef,ngrid)
     else
         error("kwarg vartype is invalid")
     end
@@ -53,7 +53,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             vars[bath.<=0.0] .= NaN
             vars = vars.-params.eta0
             ## array
-            amr[i] = Claw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+            amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
 
 		elseif vartype=="current"
 			ucol = ncol
@@ -72,7 +72,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
 			v = v./bath
 			vel = sqrt.(u.^2 .+ v.^2)
             ## array
-            amr[i] = Claw.Velocity(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
+            amr[i] = VisClaw.Velocity(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
 
         elseif vartype=="storm"
             ucol = ncol
@@ -87,7 +87,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             # v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
 
             ## array
-            amr[i] = Claw.Storm(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
+            amr[i] = VisClaw.Storm(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
         end
 
         ## print
@@ -158,7 +158,7 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     flist = flist[idx]
 
 	# load geoclaw.data
-	params = Claw.GeoData(loaddir)
+	params = VisClaw.GeoData(loaddir)
 
     ## the number of files
     nfile = length(flist)
@@ -174,11 +174,11 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
 
     ## preallocate
     if vartype=="surface"
-        amr = Vector{AbstractVector{Claw.SurfaceHeight}}(undef,nfile)
+        amr = Vector{AbstractVector{VisClaw.SurfaceHeight}}(undef,nfile)
 	elseif vartype=="current"
-        amr = Vector{AbstractVector{Claw.Velocity}}(undef,nfile)
+        amr = Vector{AbstractVector{VisClaw.Velocity}}(undef,nfile)
     elseif vartype=="storm"
-        amr = Vector{AbstractVector{Claw.Storm}}(undef,nfile)
+        amr = Vector{AbstractVector{VisClaw.Storm}}(undef,nfile)
     end
 
     ## load all files
@@ -187,17 +187,17 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     for it = filesequence
 		cnt += 1
         if vartype=="surface"
-            amr[cnt] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
+            amr[cnt] = VisClaw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
 		elseif vartype=="current"
-            amr[cnt] = Claw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
+            amr[cnt] = VisClaw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
         elseif vartype=="storm"
-            amr[cnt] = Claw.LoadForta(joinpath(loaddir,flist[it]), col)
+            amr[cnt] = VisClaw.LoadForta(joinpath(loaddir,flist[it]), col)
         end
-        tlap[cnt] = Claw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
+        tlap[cnt] = VisClaw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
     end
 
     ## AMR Array
-    amrs = Claw.AMR(nfile,tlap,amr)
+    amrs = VisClaw.AMR(nfile,tlap,amr)
 
     ## return value
     return amrs

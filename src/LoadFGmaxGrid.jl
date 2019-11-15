@@ -29,7 +29,7 @@ function LoadFGmaxGrid(fname::String; FGid=0::Int64, nval=0::Int64)
     end
 
     # Constructor
-    fgmaxgrid = Claw.fgmaxgrid(FGid, fname, nval, nx, ny, (x1,x2), (y1,y2))
+    fgmaxgrid = VisClaw.fgmaxgrid(FGid, fname, nval, nx, ny, (x1,x2), (y1,y2))
 
     # return
     return fgmaxgrid
@@ -39,7 +39,7 @@ end
 """
 Function: read specification of a fixed grid
 """
-LoadFGmaxGrid(fg::Claw.fgmaxgrid) = LoadFGmaxGrid(fg.file; FGid=fg.FGid, nval=fg.nval)
+LoadFGmaxGrid(fg::VisClaw.fgmaxgrid) = LoadFGmaxGrid(fg.file; FGid=fg.FGid, nval=fg.nval)
 ###################################
 
 #################################
@@ -111,11 +111,11 @@ function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int
     if nval_save > nval; nval_save = nval; end
 
     if nval_save == 1
-        fgmaxval = Claw.fgmaxval(bath,h,th)
+        fgmaxval = VisClaw.fgmaxval(bath,h,th)
     elseif nval_save == 2
-        fgmaxval = Claw.fgmaxval(bath,h,v,th,tv)
+        fgmaxval = VisClaw.fgmaxval(bath,h,v,th,tv)
     elseif nval_save == 5
-        fgmaxval = Claw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+        fgmaxval = VisClaw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
     else
         error("nval_save $nval_save must be either 1, 2 or 5.")
     end
@@ -128,13 +128,13 @@ end
 """
 Function: fort.FGx.valuemax reader
 """
-LoadFGmax(loaddir::String, fg::Claw.fgmaxgrid; nval_save::Int64=fg.nval) =
+LoadFGmax(loaddir::String, fg::VisClaw.fgmaxgrid; nval_save::Int64=fg.nval) =
 LoadFGmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
 #################################
 
 
 #################################
-function FGtMinute!(fgmax::Claw.fgmaxval)
+function FGtMinute!(fgmax::VisClaw.fgmaxval)
     fgmax.th = fgmax.th./6.0e1
     if !isempty(fgmax.tv)
         fgmax.tv = fgmax.tv./6.0e1
@@ -147,7 +147,7 @@ function FGtMinute!(fgmax::Claw.fgmaxval)
     return
 end
 #################################
-function FGtHour!(fgmax::Claw.fgmaxval)
+function FGtHour!(fgmax::VisClaw.fgmaxval)
     fgmax.th = fgmax.th./3.6e3
     if !isempty(fgmax.tv)
         fgmax.tv = fgmax.tv./3.6e3

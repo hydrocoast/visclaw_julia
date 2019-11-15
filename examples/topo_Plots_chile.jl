@@ -1,4 +1,5 @@
-using Claw
+using VisClaw
+using Printf
 
 ### Topography and bathymetry
 using Plots
@@ -9,13 +10,13 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-topofile, ntopo = Claw.topodata(simdir)
-topo = Claw.LoadTopo(topofile)
+topofile, ntopo = VisClaw.topodata(simdir)
+topo = VisClaw.LoadTopo(topofile)
 
 # plot
-plt = Claw.PlotsTopo(topo; linetype=:heatmap,
+plt = VisClaw.PlotsTopo(topo; linetype=:heatmap,
                      color=:delta, clims=(-5000,5000))
-plt = Claw.PlotsTopo!(plt, topo; linetype=:contour, fill=false, lc=:black, levels=[0])
+plt = VisClaw.PlotsTopo!(plt, topo; linetype=:contour, fill=false, lc=:black, levels=[0])
 
 # save
 Plots.savefig(plt, "chile2010_topo.svg")

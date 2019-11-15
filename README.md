@@ -77,7 +77,8 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 
 ### flow velocity
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_current.gif", width="400">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_velo.gif", width="400">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_velo.gif", width="400">
 </p>  
 
 ### topography and bathymetry

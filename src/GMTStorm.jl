@@ -1,6 +1,6 @@
 
 ###################################################
-function txtwind(tiles::Vector{Claw.AMRGrid}; skip=3::Int64,
+function txtwind(tiles::Vector{VisClaw.AMRGrid}; skip=3::Int64,
                  offset1::Int64=0, offset2::Int64=offset1)
 
     # number of tile
@@ -13,7 +13,7 @@ function txtwind(tiles::Vector{Claw.AMRGrid}; skip=3::Int64,
     v = Vector{AbstractVector{Float64}}(undef,ntile)
 
     for k=1:ntile
-        X, Y = Claw.meshtile(tiles[k])
+        X, Y = VisClaw.meshtile(tiles[k])
 
         st = 1+offset1
         Δ = skip*tiles[k].AMRlevel

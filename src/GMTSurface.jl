@@ -5,7 +5,7 @@ default_maskgrd = "topomask.grd"
 """
 output [x y z] data in txt for masking
 """
-function landmask_asc(topo::Claw.Topo, filename::String=default_masktxt)
+function landmask_asc(topo::VisClaw.Topo, filename::String=default_masktxt)
     xv = vec(repeat(topo.x, inner=(topo.nrows,1)));
     yv = vec(repeat(topo.y, outer=(topo.ncols,1)));
     topov = vec(topo.elevation);
@@ -68,17 +68,17 @@ end
 
 ###################################################
 """
-make a grid file of Claw.AMRGrid with landmask
+make a grid file of VisClaw.AMRGrid with landmask
 """
-function tilegrd(tile::Claw.AMRGrid; spacing_unit::String="", kwargs...)
+function tilegrd(tile::VisClaw.AMRGrid; spacing_unit::String="", kwargs...)
     # var
-    var = Claw.keytile(tile)
+    var = VisClaw.keytile(tile)
     # prameters & options
-    R = Claw.getR_tile(tile)
+    R = VisClaw.getR_tile(tile)
     Δ = tile.dx
     r = sqrt(2.0)Δ
 
-    xvec, yvec, zdata = Claw.tilez(tile, var)
+    xvec, yvec, zdata = VisClaw.tilez(tile, var)
     xmat = repeat(xvec, inner=(length(yvec),1))
     ymat = repeat(yvec, outer=(length(xvec),1))
 
@@ -109,17 +109,17 @@ end
 
 ###################################################
 """
-make a grid file of Claw.AMRGrid with landmask
+make a grid file of VisClaw.AMRGrid with landmask
 """
-function tilegrd_mask(tile::Claw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)
+function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)
     # var
-    var = Claw.keytile(tile)
+    var = VisClaw.keytile(tile)
     # prameters & options
-    R = Claw.getR_tile(tile)
+    R = VisClaw.getR_tile(tile)
     Δ = tile.dx
     r = sqrt(2.0)Δ
 
-    xvec, yvec, zdata = Claw.tilez(tile, var)
+    xvec, yvec, zdata = VisClaw.tilez(tile, var)
     xmat = repeat(xvec, inner=(length(yvec),1))
     ymat = repeat(yvec, outer=(length(xvec),1))
 
@@ -134,7 +134,7 @@ function tilegrd_mask(tile::Claw.AMRGrid, maskfile::String=""; spacing_unit::Str
 
     # makegrd
     # land mask grid
-    Claw.landmask_grd(maskfile; grdfile=tmp_mask, R=R, I=Δ, S=r, N="0/0/NaN", kwargs...)
+    VisClaw.landmask_grd(maskfile; grdfile=tmp_mask, R=R, I=Δ, S=r, N="0/0/NaN", kwargs...)
 
 
     # if NaN in all

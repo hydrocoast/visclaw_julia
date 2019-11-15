@@ -2,14 +2,14 @@
 """
 Function: plot values of AMR grids in two-dimension
 """
-function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.AMRGrid}; wind::Bool=false, kwargs...)
+function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=false, kwargs...)
 
     # check arg
-    if isa(tiles[1], Claw.SurfaceHeight)
+    if isa(tiles[1], VisClaw.SurfaceHeight)
         var = :eta
-    elseif isa(tiles[1], Claw.Velocity)
+    elseif isa(tiles[1], VisClaw.Velocity)
         var = :vel
-    elseif isa(tiles[1], Claw.Storm)
+    elseif isa(tiles[1], VisClaw.Storm)
         if wind
             var = :u
         else
@@ -23,15 +23,15 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.AMRGrid}; wind::Bool=false,
     kwdict = KWARG(kwargs)
     # -----------------------------
     # linetype
-    seriestype, kwdict = Claw.parse_seriestype(kwdict)
+    seriestype, kwdict = VisClaw.parse_seriestype(kwdict)
     if seriestype == nothing; seriestype=:contourf; end
     # -----------------------------
     # color
-    seriescolor, kwdict = Claw.parse_seriescolor(kwdict)
+    seriescolor, kwdict = VisClaw.parse_seriescolor(kwdict)
     if seriescolor == nothing; seriescolor=:auto; end
     # -----------------------------
     # color axis
-    clims, kwdict = Claw.parse_clims(kwdict)
+    clims, kwdict = VisClaw.parse_clims(kwdict)
     if clims == nothing
         vals = getfield.(tiles, var)
         clims = (
@@ -43,11 +43,11 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.AMRGrid}; wind::Bool=false,
     end
     # -----------------------------
     # background_color_inside
-    bginside, kwdict = Claw.parse_bgcolor_inside(kwdict)
+    bginside, kwdict = VisClaw.parse_bgcolor_inside(kwdict)
     if bginside == nothing; bginside = Plots.RGB(.7,.7,.7); end
     # -----------------------------
     # colorbar_title
-    cbtitle, kwdict = Claw.parse_colorbar_title(kwdict)
+    cbtitle, kwdict = VisClaw.parse_colorbar_title(kwdict)
     if cbtitle==nothing; cbtitle=""; end
     # -----------------------------
 
@@ -83,9 +83,9 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.AMRGrid}; wind::Bool=false,
     end
 
     ## xlims, ylims
-    xlims, kwdict = Claw.parse_xlims(kwdict)
-    ylims, kwdict = Claw.parse_ylims(kwdict)
-    x1, x2, y1, y2 = Claw.getlims(tiles)
+    xlims, kwdict = VisClaw.parse_xlims(kwdict)
+    ylims, kwdict = VisClaw.parse_ylims(kwdict)
+    x1, x2, y1, y2 = VisClaw.getlims(tiles)
     xrange = (x1, x2)
     yrange = (y1, y2)
     xlims = xlims==nothing ? xrange : xlims
@@ -143,10 +143,10 @@ function DrawBound!(plt, tiles; kwargs...)
     kwdict = KWARG(kwargs)
 
     # linestyle
-    linestyle, kwdict = Claw.parse_linestyle(kwdict)
+    linestyle, kwdict = VisClaw.parse_linestyle(kwdict)
     if linestyle == nothing; linestyle=:solid; end
     # linecolor
-    linecolor, kwdict = Claw.parse_linecolor(kwdict)
+    linecolor, kwdict = VisClaw.parse_linecolor(kwdict)
     if linecolor == nothing; linecolor=:black; end
 
 
@@ -169,11 +169,11 @@ end
 """
 Function: plot time-series of AMR data
 """
-function PlotsAMR(amrs::Claw.AMR; kwargs...)
+function PlotsAMR(amrs::VisClaw.AMR; kwargs...)
     ## plot time-series
     plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep
-        plt[i] = Claw.PlotsAMR2D(amrs.amr[i]; kwargs...)
+        plt[i] = VisClaw.PlotsAMR2D(amrs.amr[i]; kwargs...)
     end
     ## return plots
     return plt

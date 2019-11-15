@@ -1,5 +1,6 @@
-using Claw
+using VisClaw
 
+using Printf
 using Plots
 gr()
 #pyplot()
@@ -14,10 +15,10 @@ using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load
-amrall = Claw.LoadStorm(simdir)
+amrall = VisClaw.LoadStorm(simdir)
 
 # plot
-plts = Claw.PlotsAMR(amrall; c=:heat_r, clims=(960.0, 1010.0),
+plts = VisClaw.PlotsAMR(amrall; c=:heat_r, clims=(960.0, 1010.0),
                      xguide="Longitude", yguide="Latitude",
                      xlims=(-99.0,-85.0), ylims=(22.0,32.0),
                      guidefont=Plots.font("sans-serif",12),
@@ -32,7 +33,7 @@ plts = [plot!(plts[i], title=time_str[i]) for i = 1:amrall.nstep]
 
 
 # save
-Claw.PlotsPrint(plts, output_prefix*".svg")
+VisClaw.PlotsPrint(plts, output_prefix*".svg")
 # gif
-Claw.Plotsgif(plts, output_prefix*".gif", fps=4)
+VisClaw.Plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

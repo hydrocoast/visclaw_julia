@@ -1,4 +1,4 @@
-using Claw
+using VisClaw
 
 using Printf
 using GMT: GMT
@@ -12,22 +12,22 @@ using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load topo
-topofile, ntopo = Claw.topodata(simdir)
-topo = Claw.LoadTopo(topofile)
+topofile, ntopo = VisClaw.topodata(simdir)
+topo = VisClaw.LoadTopo(topofile)
 
 # makecpt
 cpt = GMT.makecpt(C=:jet, T="0.0/2.0", D=true, V=true)
 
 # load water surface
-amrall = Claw.LoadSurface(simdir)
+amrall = VisClaw.LoadSurface(simdir)
 
 # projection and region GMT
-region = Claw.getR(amrall.amr[1])
-proj = Claw.getJ("X10d", Claw.axesratio(amrall.amr[1]))
+region = VisClaw.getR(amrall.amr[1])
+proj = VisClaw.getJ("X10d", VisClaw.axesratio(amrall.amr[1]))
 
 # masking
-landmask_txt = Claw.landmask_asc(topo)
-#Gland = Claw.landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d")
+landmask_txt = VisClaw.landmask_asc(topo)
+#Gland = VisClaw.landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d")
 
 # time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
@@ -37,7 +37,7 @@ for i = 1:amrall.nstep
     outps = output_prefix*@sprintf("%03d", i)*".ps"
 
     # land-masked surface grids
-    G = Claw.tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
+    G = VisClaw.tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
 
     # plot
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
@@ -53,5 +53,5 @@ end
 rm(landmask_txt, force=true)
 
 # gif
-Claw.GMTps2gif(output_prefix, amrall.nstep)
+VisClaw.GMTps2gif(output_prefix, amrall.nstep)
 # -----------------------------

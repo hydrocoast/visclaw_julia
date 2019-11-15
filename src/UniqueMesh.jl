@@ -2,7 +2,7 @@
 """
 polygon data (rectangle) from a tile in AMR
 """
-function polyrectangle(tile::Claw.AMRGrid)
+function polyrectangle(tile::VisClaw.AMRGrid)
     ## set the boundary
     x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
     y = [tile.ylow, tile.ylow+tile.dy*tile.my]
@@ -25,11 +25,11 @@ end
 """
 get points which are not overlapped by any of other tiles
 """
-function UniqueMeshVector(tiles::Vector{Claw.AMRGrid})
+function UniqueMeshVector(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
     # var
-    var = Claw.keytile(tiles[1])
+    var = VisClaw.keytile(tiles[1])
 
     ## deepest level
     levels = getfield.(tiles, :AMRlevel);
@@ -63,7 +63,7 @@ function UniqueMeshVector(tiles::Vector{Claw.AMRGrid})
             for j = 1:ntile
                 if i==j; continue; end
                 if tiles[i].AMRlevel >= tiles[j].AMRlevel; continue; end
-                rect = Claw.polyrectangle(tiles[j])
+                rect = VisClaw.polyrectangle(tiles[j])
                 existfiner[:,j] = [GeometricalPredicates.inpolygon(rect, allp[k]) for k=1:mp]
             end
 
@@ -101,7 +101,7 @@ end
 """
 get points which are not overlapped by any of other tiles
 """
-function RemoveCoarseUV!(tiles::Vector{Claw.AMRGrid})
+function RemoveCoarseUV!(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
 
@@ -113,7 +113,7 @@ function RemoveCoarseUV!(tiles::Vector{Claw.AMRGrid})
     #i = 1
     for i=1:ntile
         # all points in 1-column
-        xmesh, ymesh = Claw.meshtile(tiles[i])
+        xmesh, ymesh = VisClaw.meshtile(tiles[i])
         # convert type
         allp = GeometricalPredicates.Point.(xmesh,ymesh)
 
@@ -124,7 +124,7 @@ function RemoveCoarseUV!(tiles::Vector{Claw.AMRGrid})
         for j = 1:ntile
             if i==j; continue; end
             if tiles[i].AMRlevel >= tiles[j].AMRlevel; continue; end
-            rect = Claw.polyrectangle(tiles[j])
+            rect = VisClaw.polyrectangle(tiles[j])
 
             for x = 1:tiles[i].mx
                 for y = 1:tiles[i].my

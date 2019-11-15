@@ -1,13 +1,13 @@
 ### Define Structs
 abstract type AbstractAMR end
-abstract type AMRGrid <: Claw.AbstractAMR end
+abstract type AMRGrid <: VisClaw.AbstractAMR end
 
 ###################################
 """
 Struct:
  storm data
 """
-struct Storm <: Claw.AMRGrid
+struct Storm <: VisClaw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -20,7 +20,7 @@ struct Storm <: Claw.AMRGrid
     v :: AbstractArray{Float64,2}
     slp :: AbstractArray{Float64,2}
     # Constructor
-    Claw.Storm(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
+    VisClaw.Storm(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp)
 end
 ###################################
@@ -29,7 +29,7 @@ end
 """
 Struct: Water veloccity
 """
-struct Velocity <: Claw.AMRGrid
+struct Velocity <: VisClaw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -42,7 +42,7 @@ struct Velocity <: Claw.AMRGrid
     v :: AbstractArray{Float64,2}
     vel :: AbstractArray{Float64,2}
     # Constructor
-    Claw.Velocity(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel) =
+    VisClaw.Velocity(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel)
 end
 ###################################
@@ -51,7 +51,7 @@ end
 """
 Struct: Sea Surface Height
 """
-struct SurfaceHeight <: Claw.AMRGrid
+struct SurfaceHeight <: VisClaw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -62,7 +62,7 @@ struct SurfaceHeight <: Claw.AMRGrid
     dy::Float64
     eta::AbstractArray{Float64,2}
     # Constructor
-    Claw.SurfaceHeight(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
+    VisClaw.SurfaceHeight(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
 end
 ###################################
@@ -72,12 +72,12 @@ end
 Struct:
  time-seies of AMR data
 """
-struct AMR <: Claw.AbstractAMR
+struct AMR <: VisClaw.AbstractAMR
     nstep::Int64
     timelap::AbstractVector{Float64}
-    amr :: AbstractVector{Vector{Claw.AMRGrid}}
+    amr :: AbstractVector{Vector{VisClaw.AMRGrid}}
     # Constructor
-    Claw.AMR(nstep, timelap, amr) = new(nstep, timelap, amr)
+    VisClaw.AMR(nstep, timelap, amr) = new(nstep, timelap, amr)
 end
 ###################################
 
@@ -96,7 +96,7 @@ struct Topo <: AbstractTopo
     dy :: Float64
     elevation :: AbstractArray{Float64,2}
     # Constructor
-    Claw.Topo(ncols, nrows, x, y, dx, dy, elevation) =
+    VisClaw.Topo(ncols, nrows, x, y, dx, dy, elevation) =
           new(ncols, nrows, x, y, dx, dy, elevation)
 end
 ###################################
@@ -118,7 +118,7 @@ struct DTopo <: AbstractTopo
     dt :: Float64
     deform :: AbstractArray{Float64,2}
     # Constructor
-    Claw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform) = new(mx,my,x,y,dx,dy,mt,t0,dt,deform)
+    VisClaw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform) = new(mx,my,x,y,dx,dy,mt,t0,dt,deform)
 end
 ##########################################################
 
@@ -134,8 +134,8 @@ struct GeoParam
     n ::Float64 # manning coafficient
     dmin :: Float64 # dry tolerance
     # Constructor
-    Claw.GeoParam() = new(2,101300.0,6367500.0,0.0,0.025,0.001)
-    Claw.GeoParam(cs,p0,R,eta0,n,dmin) = new(cs,p0,R,eta0,n,dmin)
+    VisClaw.GeoParam() = new(2,101300.0,6367500.0,0.0,0.025,0.001)
+    VisClaw.GeoParam(cs,p0,R,eta0,n,dmin) = new(cs,p0,R,eta0,n,dmin)
 end
 ########################################
 
@@ -149,8 +149,8 @@ struct SurgeParam
     stormtype::Int64
     landfall::Float64
     # Constructor
-    Claw.SurgeParam() = new(5,7,1,0.0)
-    Claw.SurgeParam(windindex,slpindex,stormtype,landfall) = new(windindex,slpindex,stormtype,landfall)
+    VisClaw.SurgeParam() = new(5,7,1,0.0)
+    VisClaw.SurgeParam(windindex,slpindex,stormtype,landfall) = new(windindex,slpindex,stormtype,landfall)
 end
 ########################################
 
@@ -167,7 +167,7 @@ mutable struct gauge
     time :: AbstractVector{Float64} # time
     eta :: AbstractVector{Float64} # surface
     # Constructor
-    Claw.gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta)
+    VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta)
 end
 ########################################
 
@@ -185,8 +185,8 @@ struct fgmaxgrid
     ylims :: Tuple{Float64,Float64}
 
     # Constructor
-    Claw.fgmaxgrid(FGid,file,nval) = new(FGid,file,nval,0,0,(0.0,0.0),(0.0,0.0))
-    Claw.fgmaxgrid(FGid,file,nval,nx,ny,xlims,ylims) = new(FGid,file,nval,nx,ny,xlims,ylims)
+    VisClaw.fgmaxgrid(FGid,file,nval) = new(FGid,file,nval,0,0,(0.0,0.0),(0.0,0.0))
+    VisClaw.fgmaxgrid(FGid,file,nval,nx,ny,xlims,ylims) = new(FGid,file,nval,nx,ny,xlims,ylims)
 end
 ########################################
 
@@ -208,11 +208,11 @@ mutable struct fgmaxval
     thmin :: AbstractArray{Float64,2}
 
     # Constructor
-    Claw.fgmaxval(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
+    VisClaw.fgmaxval(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
                                    th, emptyF, emptyF, emptyF, emptyF)
-    Claw.fgmaxval(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
+    VisClaw.fgmaxval(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
                                         th, tv, emptyF, emptyF, emptyF)
-    Claw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
+    VisClaw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
               new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
 end
 ########################################

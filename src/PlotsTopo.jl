@@ -1,11 +1,11 @@
 """
 Function: plot topography and bathymetry in 2D
 """
-function PlotsTopo!(plt, geo::Claw.AbstractTopo; kwargs...)
+function PlotsTopo!(plt, geo::VisClaw.AbstractTopo; kwargs...)
 
-    if isa(geo, Claw.Topo)
+    if isa(geo, VisClaw.Topo)
 		z = geo.elevation
-	elseif isa(geo, Claw.DTopo)
+	elseif isa(geo, VisClaw.DTopo)
 		z = geo.deform
 	end
 
@@ -21,5 +21,5 @@ end
 """
 Function: plot topography and bathymetry in 2D
 """
-PlotsTopo(geo::Claw.AbstractTopo; kwargs...) = PlotsTopo!(Plots.plot(), geo; kwargs...)
+PlotsTopo(geo::VisClaw.AbstractTopo; kwargs...) = PlotsTopo!(Plots.plot(), geo; kwargs...)
 ####################################################
