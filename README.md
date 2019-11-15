@@ -33,21 +33,21 @@ Note that GMT.jl does NOT install GMT.
 push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ```
 
-- Set an appropriate path to `CLAW` in `src/CLAWPATH.jl`  
+- Set an appropriate path to `CLAW` in `src/CLAWPATH.jl`.
 You can skip it when the OS is Linux.  
 ```julia
 # On Linux OS, "CLAW = ENV["CLAW"]" is automatically executed
 CLAW = "path/to/your/clawpack"
 ```
 
-- This package uses either GMT.jl or Plots.jl to plot numerical results.  
+- This package uses either GMT.jl or Plots.jl to plot numerical results.
 Plots.jl is convenient for a quick check.
-For example, a spatial distribution of the water surface height is generated when you input as follows:
+For example, a spatial distribution of the water surface height is plotted when you input as follows:
 ```julia
 julia> using VisClaw
 julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output");
 julia> VisClaw.PlotsCheck(simdir; c=:balance, clims=(-0.5,0.5))
-input the number (1 to 19) =
+input a number (1 to 19) =
 ```
 
 

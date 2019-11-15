@@ -37,7 +37,7 @@ function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
     cnt=0
     while ex==0
         # accept input the step number of interest
-        @printf("input the number (1 to %d) = ", nfile)
+        @printf("input a number (1 to %d) = ", nfile)
         i = readline(stdin)
         # check whether the input is integer
         if isempty(i); ex=1; continue; end;
