@@ -1,10 +1,10 @@
 # VisClaw for Julian
 This repository aims to become one of the Clawpack visualization tools (see http://www.clawpack.org).  
-This allows us to make animations using the Julia language.   
+This allows us to make figures and animations using the Julia language.   
 Any bug report would be appreciated.   
 
 # Requirements
-## Julia Packages
+## Julia packages
 - [Julia](https://github.com/JuliaLang/julia) v1.0.0 or later
 - [Plots.jl](https://github.com/JuliaPlots/Plots.jl)
 - [GR.jl](https://github.com/jheinen/GR.jl)
@@ -12,34 +12,49 @@ Any bug report would be appreciated.
 - [Interpolations](https://github.com/JuliaMath/Interpolations.jl)
 - [GeometricalPredicates.jl](https://github.com/JuliaGeometry/GeometricalPredicates.jl)
 
-## Other Softwares  
+## Other softwares  
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
 # Usage
-- In preparation, run the simulations of chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and ike `$CLAW/geoclaw/examples/storm-surge/ike` in the GeoClaw examples.  
+- In preparation, run Clawpack numerical simulations
+(e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and
+ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
 - Add the required packages in the Julia REPL.
 ```julia
 ]add Plots GMT GR Interpolations GeometricalPredicates
 ```
+The [GMT](https://github.com/GenericMappingTools/gmt) program also needs to be installed if you want to plot using
+[GMT.jl](https://github.com/GenericMappingTools/GMT.jl).
+Note that GMT.jl does NOT install GMT.
 
 - Clone this repository and add `src/` to `LOAD_PATH` in Julia.
 ```julia
 push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ```
 
-- Input an appropriate path to variable `CLAW` in `src/CLAWPATH.jl`  
+- Set an appropriate path to `CLAW` in `src/CLAWPATH.jl`  
 You can skip it when the OS is Linux.  
 ```julia
-# In Linux OS, "CLAW=ENV["CLAW"]" is automatically executed
+# On Linux OS, "CLAW = ENV["CLAW"]" is automatically executed
 CLAW = "path/to/your/clawpack"
 ```
 
-- Run the Julia scripts in `examples/` .  
-GMT.jl and Plots.jl are available for visualization of the numerical results.  
+- This package uses either GMT.jl or Plots.jl to plot numerical results.  
+Plots.jl is convenient for a quick check.
+For example, a spatial distribution of the water surface height is generated when you input as follows:
+```julia
+julia> using VisClaw
+julia> simdir = joinpath(CLAW, "geoclaw/examples/tsunami/chile2010/_output");
+julia> VisClaw.PlotsCheck(simdir; c=:balance, clims=(-0.5,0.5))
+input the number (1 to 19) =
+```
+
 
 # Examples
-## GMT.jl
+The following figures are generated with the Julia scripts in `examples/` .  
+
+## using GMT.jl
 
 ### sea surface elevation
 <p align="center">
@@ -59,13 +74,13 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_dtopo.png", width="400">
 </p>  
 
-### wind and pressure fiedlds
+### wind and pressure fields
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_storm_GMT.gif", width="400">
 </p>  
 
 
-## Plots.jl
+## using Plots.jl
 
 ### sea surface elevation
 <p align="center">
