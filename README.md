@@ -20,10 +20,11 @@ Any bug report would be appreciated.
 
 
 - Input an appropriate path to variable `CLAW` in `src/CLAWPATH.jl`  
+You can skip it when the OS is Linux.  
 ```julia
+# In Linux OS, "CLAW=ENV["CLAW"]" is automatically executed
 CLAW = "path/to/your/clawpack"
 ```
-You can skip it when your OS is Linux.  
 
 
 - Clone this repository and add `src/` to `LOAD_PATH` in Julia.
@@ -36,7 +37,7 @@ push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ]add Plots GMT GR PyPlot GeometricalPredicates
 ```
 
-- Run the scripts in `examples/` .  
+- Run the Julia scripts in `examples/` .  
 GMT.jl and Plots.jl are available for visualization of the numerical results.  
 
 # Examples
@@ -60,7 +61,7 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/chile2010_dtopo.png", width="400">
 </p>  
 
-### storm
+### wind and pressure fiedlds
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_storm_GMT.gif", width="400">
 </p>  
@@ -74,7 +75,7 @@ GMT.jl and Plots.jl are available for visualization of the numerical results.
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_eta.gif", width="400">
 </p>  
 
-### current
+### flow velocity
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/ike_current.gif", width="400">
 </p>  
