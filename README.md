@@ -18,23 +18,21 @@ Any bug report would be appreciated.
 # Usage
 - In preparation, run the simulations of chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and ike `$CLAW/geoclaw/examples/storm-surge/ike` in the GeoClaw examples.  
 
-
-- Input an appropriate path to variable `CLAW` in `src/CLAWPATH.jl`  
-You can skip it when the OS is Linux.  
+- Add the required packages in the Julia REPL.
 ```julia
-# In Linux OS, "CLAW=ENV["CLAW"]" is automatically executed
-CLAW = "path/to/your/clawpack"
+]add Plots GMT GR Interpolations GeometricalPredicates
 ```
-
 
 - Clone this repository and add `src/` to `LOAD_PATH` in Julia.
 ```julia
 push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ```
 
-- Add the required packages in the Julia REPL.
+- Input an appropriate path to variable `CLAW` in `src/CLAWPATH.jl`  
+You can skip it when the OS is Linux.  
 ```julia
-]add Plots GMT GR Interpolations GeometricalPredicates
+# In Linux OS, "CLAW=ENV["CLAW"]" is automatically executed
+CLAW = "path/to/your/clawpack"
 ```
 
 - Run the Julia scripts in `examples/` .  
