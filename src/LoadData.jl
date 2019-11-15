@@ -21,7 +21,7 @@ function GeoData(dirname::String)
     n = parse(Float64,split(txt[occursin.("manning_coefficient",txt)][1],r"\s+")[1])
     dmin = parse(Float64,split(txt[occursin.("dry_tolerance",txt)][1],r"\s+")[1])
     # instance
-    params = Claw.param(cs,p0,R,eta0,n,dmin)
+    params = Claw.GeoParam(cs,p0,R,eta0,n,dmin)
     # return values
     return params
 end
@@ -46,7 +46,7 @@ function SurgeData(dirname::String)
     stormtype = parse(Int64,split(txt[occursin.("storm_type",txt)][1],r"\s+")[1])
     landfall = parse(Float64,split(txt[occursin.(" landfall ",txt)][1],r"\s+")[1])
     # instance
-    surgedata = Claw.surge(windindex,slpindex,stormtype,landfall)
+    surgedata = Claw.SurgeParam(windindex,slpindex,stormtype,landfall)
     # return values
     return surgedata
 end

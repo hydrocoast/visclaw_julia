@@ -1,6 +1,6 @@
 
 ###################################################
-function txtwind(tiles::Vector{Claw.Tiles}; skip=3::Int64,
+function txtwind(tiles::Vector{Claw.AMRGrid}; skip=3::Int64,
                  offset1::Int64=0, offset2::Int64=offset1)
 
     # number of tile

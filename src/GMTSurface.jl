@@ -68,9 +68,9 @@ end
 
 ###################################################
 """
-make a grid file of Claw.Tiles with landmask
+make a grid file of Claw.AMRGrid with landmask
 """
-function tilegrd(tile::Claw.Tiles; spacing_unit::String="", kwargs...)
+function tilegrd(tile::Claw.AMRGrid; spacing_unit::String="", kwargs...)
     # var
     var = Claw.keytile(tile)
     # prameters & options
@@ -109,9 +109,9 @@ end
 
 ###################################################
 """
-make a grid file of Claw.Tiles with landmask
+make a grid file of Claw.AMRGrid with landmask
 """
-function tilegrd_mask(tile::Claw.Tiles, maskfile::String=""; spacing_unit::String="", kwargs...)
+function tilegrd_mask(tile::Claw.AMRGrid, maskfile::String=""; spacing_unit::String="", kwargs...)
     # var
     var = Claw.keytile(tile)
     # prameters & options

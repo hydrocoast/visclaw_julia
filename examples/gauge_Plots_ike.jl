@@ -2,7 +2,8 @@ using Claw
 using Printf
 ### Waveform plots from gauges
 using Plots
-pyplot()
+gr()
+#pyplot()
 
 sec1h = 3.6e3
 sec1d = 24sec1h

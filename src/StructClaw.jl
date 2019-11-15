@@ -1,12 +1,13 @@
 ### Define Structs
-abstract type Tiles end
+abstract type AbstractAMR end
+abstract type AMRGrid <: Claw.AbstractAMR end
 
 ###################################
 """
 Struct:
  storm data
 """
-struct stormgrid <: Claw.Tiles
+struct Storm <: Claw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -19,17 +20,16 @@ struct stormgrid <: Claw.Tiles
     v :: AbstractArray{Float64,2}
     slp :: AbstractArray{Float64,2}
     # Constructor
-    Claw.stormgrid(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
+    Claw.Storm(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, slp)
 end
 ###################################
 
 ###################################
 """
-Struct:
- current u, v with patches
+Struct: Water veloccity
 """
-struct uv <: Claw.Tiles
+struct Velocity <: Claw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -42,17 +42,16 @@ struct uv <: Claw.Tiles
     v :: AbstractArray{Float64,2}
     vel :: AbstractArray{Float64,2}
     # Constructor
-    Claw.uv(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel) =
+    Claw.Velocity(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, u, v, vel)
 end
 ###################################
 
 ###################################
 """
-Struct:
- eta with patches
+Struct: Sea Surface Height
 """
-struct patch <: Claw.Tiles
+struct SurfaceHeight <: Claw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -63,7 +62,7 @@ struct patch <: Claw.Tiles
     dy::Float64
     eta::AbstractArray{Float64,2}
     # Constructor
-    Claw.patch(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
+    Claw.SurfaceHeight(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta) =
     new(gridnumber, AMRlevel, mx, my, xlow, ylow, dx, dy, eta)
 end
 ###################################
@@ -73,10 +72,10 @@ end
 Struct:
  time-seies of AMR data
 """
-struct AMR
+struct AMR <: Claw.AbstractAMR
     nstep::Int64
     timelap::AbstractVector{Float64}
-    amr :: AbstractVector{Vector{Claw.Tiles}}
+    amr :: AbstractVector{Vector{Claw.AMRGrid}}
     # Constructor
     Claw.AMR(nstep, timelap, amr) = new(nstep, timelap, amr)
 end
@@ -127,7 +126,7 @@ end
 """
 Struct: parameters in geoclaw.data
 """
-struct param
+struct GeoParam
     cs :: Int64 # coordinate system
     p0:: Float64 # ambient pressure
     R :: Float64 # earth radious
@@ -135,8 +134,8 @@ struct param
     n ::Float64 # manning coafficient
     dmin :: Float64 # dry tolerance
     # Constructor
-    Claw.param() = new(2,101300.0,6367500.0,0.0,0.025,0.001)
-    Claw.param(cs,p0,R,eta0,n,dmin) = new(cs,p0,R,eta0,n,dmin)
+    Claw.GeoParam() = new(2,101300.0,6367500.0,0.0,0.025,0.001)
+    Claw.GeoParam(cs,p0,R,eta0,n,dmin) = new(cs,p0,R,eta0,n,dmin)
 end
 ########################################
 
@@ -144,14 +143,14 @@ end
 """
 Struct: parameters in surge.data
 """
-struct surge
+struct SurgeParam
     windindex::Int64
     slpindex::Int64
     stormtype::Int64
     landfall::Float64
     # Constructor
-    Claw.surge() = new(5,7,1,0.0)
-    Claw.surge(windindex,slpindex,stormtype,landfall) = new(windindex,slpindex,stormtype,landfall)
+    Claw.SurgeParam() = new(5,7,1,0.0)
+    Claw.SurgeParam(windindex,slpindex,stormtype,landfall) = new(windindex,slpindex,stormtype,landfall)
 end
 ########################################
 

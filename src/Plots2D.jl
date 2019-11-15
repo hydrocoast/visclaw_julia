@@ -2,14 +2,14 @@
 """
 Function: plot values of AMR grids in two-dimension
 """
-function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.Tiles}; wind::Bool=false, kwargs...)
+function PlotsAMR2D!(plt, tiles::AbstractVector{Claw.AMRGrid}; wind::Bool=false, kwargs...)
 
     # check arg
-    if isa(tiles[1], Claw.patch)
+    if isa(tiles[1], Claw.SurfaceHeight)
         var = :eta
-    elseif isa(tiles[1], Claw.uv)
+    elseif isa(tiles[1], Claw.Velocity)
         var = :vel
-    elseif isa(tiles[1], Claw.stormgrid)
+    elseif isa(tiles[1], Claw.Storm)
         if wind
             var = :u
         else

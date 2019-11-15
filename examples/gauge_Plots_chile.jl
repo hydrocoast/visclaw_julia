@@ -2,7 +2,8 @@ using Claw
 using Printf
 ### Waveform plots from gauges
 using Plots
-pyplot()
+gr()
+#pyplot()
 
 sec1h = 3.6e3
 sec1d = 24sec1h
@@ -42,5 +43,5 @@ plt = Plots.plot!(plt; xlims=(-0.5sec1h, 9.5sec1h), ylims=(-0.15, 0.25),
                   )
 
 # save
-Plots.savefig(plt, "chile2010_aveform_gauge.svg")
+Plots.savefig(plt, "chile2010_waveform_gauge.svg")
 # -----------------------------

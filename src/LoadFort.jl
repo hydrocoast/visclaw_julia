@@ -8,7 +8,7 @@
 """
 Function: fort.qxxxx reader
 """
-function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::Claw.param=Claw.param())
+function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::Claw.GeoParam=Claw.GeoParam())
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -20,11 +20,11 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
     ngrid = length(txtorg[idx])
 
     if vartype=="surface"
-        amr = Array{Claw.patch}(undef,ngrid) ## preallocate
+        amr = Array{Claw.SurfaceHeight}(undef,ngrid) ## preallocate
 	elseif vartype=="current"
-        amr = Array{Claw.uv}(undef,ngrid)
+        amr = Array{Claw.Velocity}(undef,ngrid)
     elseif vartype=="storm"
-        amr = Array{Claw.stormgrid}(undef,ngrid)
+        amr = Array{Claw.Storm}(undef,ngrid)
     else
         error("kwarg vartype is invalid")
     end
@@ -53,7 +53,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             vars[bath.<=0.0] .= NaN
             vars = vars.-params.eta0
             ## array
-            amr[i] = Claw.patch(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+            amr[i] = Claw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
 
 		elseif vartype=="current"
 			ucol = ncol
@@ -72,7 +72,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
 			v = v./bath
 			vel = sqrt.(u.^2 .+ v.^2)
             ## array
-            amr[i] = Claw.uv(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
+            amr[i] = Claw.Velocity(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
 
         elseif vartype=="storm"
             ucol = ncol
@@ -87,7 +87,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             # v[(abs.(u).<=1e-2) .& (abs.(v).<=1e-2)] .= NaN
 
             ## array
-            amr[i] = Claw.stormgrid(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
+            amr[i] = Claw.Storm(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,p)
         end
 
         ## print
@@ -174,11 +174,11 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
 
     ## preallocate
     if vartype=="surface"
-        amr = Vector{AbstractVector{Claw.patch}}(undef,nfile)
+        amr = Vector{AbstractVector{Claw.SurfaceHeight}}(undef,nfile)
 	elseif vartype=="current"
-        amr = Vector{AbstractVector{Claw.uv}}(undef,nfile)
+        amr = Vector{AbstractVector{Claw.Velocity}}(undef,nfile)
     elseif vartype=="storm"
-        amr = Vector{AbstractVector{Claw.stormgrid}}(undef,nfile)
+        amr = Vector{AbstractVector{Claw.Storm}}(undef,nfile)
     end
 
     ## load all files

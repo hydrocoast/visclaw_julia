@@ -2,7 +2,7 @@
 """
 Get x and y ranges of a tile in String
 """
-function getR_tile(tile::Claw.Tiles)
+function getR_tile(tile::Claw.AMRGrid)
     xs = tile.xlow
     ys = tile.ylow
     xe = round(tile.xlow + tile.mx*tile.dx, digits=4)
@@ -15,7 +15,7 @@ end
 """
 Get x and y ranges in String for -R
 """
-function getR(tiles::Vector{Claw.Tiles})
+function getR(tiles::Vector{Claw.AMRGrid})
     xs, xe, ys, ye = Claw.getlims(tiles)
     return "$xs/$xe/$ys/$ye"
 end
@@ -35,7 +35,7 @@ end
 """
 Get height/width ratio
 """
-function axesratio(tiles::Vector{Claw.Tiles})
+function axesratio(tiles::Vector{Claw.AMRGrid})
     xs, xe, ys, ye = Claw.getlims(tiles)
     hwratio = (ye-ys)/(xe-xs)
     # return value

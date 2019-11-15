@@ -9,9 +9,36 @@ function run_examples(directory="examples"; kw_exclude=["check", "fgmax"], kw_in
 
     nf = length(filelist)
     println(@sprintf("%d", nf)*" files are found")
+
+    global num_failed = 0
+    global errorfile = []
+
     for i = 1:nf
         println("$i/$nf   run "*filelist[i]*" ...")
-        @time include(joinpath(directory, filelist[i]))
-        println()
+        try
+            @time include(joinpath(directory, filelist[i]))
+            println()
+        catch e
+            println("Failed "*filelist[i])
+
+            num_failed = num_failed + 1
+            push!(errorfile, filelist[i])
+
+            bt = backtrace()
+            msg = sprint(showerror, e, bt)
+            println(msg)
+
+            println()
+            continue
+        end
     end
+
+    if num_failed == 0
+        println("pass")
+        return nothing
+    else
+        println("$num_failed files failed")
+        return errorfile
+    end
+
 end

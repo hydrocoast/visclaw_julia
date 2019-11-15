@@ -2,7 +2,7 @@
 """
 polygon data (rectangle) from a tile in AMR
 """
-function polyrectangle(tile::Claw.Tiles)
+function polyrectangle(tile::Claw.AMRGrid)
     ## set the boundary
     x = [tile.xlow, tile.xlow+tile.dx*tile.mx]
     y = [tile.ylow, tile.ylow+tile.dy*tile.my]
@@ -25,7 +25,7 @@ end
 """
 get points which are not overlapped by any of other tiles
 """
-function UniqueMeshVector(tiles::Vector{Claw.Tiles})
+function UniqueMeshVector(tiles::Vector{Claw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
     # var
@@ -101,7 +101,7 @@ end
 """
 get points which are not overlapped by any of other tiles
 """
-function RemoveCoarseUV!(tiles::Vector{Claw.Tiles})
+function RemoveCoarseUV!(tiles::Vector{Claw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
 
