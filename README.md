@@ -9,7 +9,7 @@ Any bug report would be appreciated.
 - [Plots.jl](https://github.com/JuliaPlots/Plots.jl)
 - [GR.jl](https://github.com/jheinen/GR.jl)
 - [GMT.jl](https://github.com/GenericMappingTools/GMT.jl)
-- [Interpolations](https://github.com/JuliaMath/Interpolations.jl)
+- [Interpolations.jl](https://github.com/JuliaMath/Interpolations.jl)
 - [GeometricalPredicates.jl](https://github.com/JuliaGeometry/GeometricalPredicates.jl)
 
 ## Other softwares  
