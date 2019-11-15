@@ -22,5 +22,5 @@ GMT.colorbar!(J=proj, R=region, B="xa2000f1000 y+l\"(m)\"", D="jBR+w5.5/0.2+o-1.
 GMT.coast!(J=proj, R=region, D=:i, W=:thinnest, V=true)
 
 # save
-cp(GMT.fname_out(Dict())[1], "fig/ike_topo.ps", force=true)
+cp(GMT.fname_out(Dict())[1], "ike_topo.ps", force=true)
 # -----------------------------

@@ -26,5 +26,5 @@ GMT.coast!(J=proj, R=region, D=:i, W="thinnest,gray20", V=true)
 GMT.grdcontour!(G, J=proj, R=region, C=1, A=2, W=:black)
 
 # save
-cp(GMT.fname_out(Dict())[1], "fig/chile2010_dtopo.ps", force=true)
+cp(GMT.fname_out(Dict())[1], "chile2010_dtopo.ps", force=true)
 # -----------------------------

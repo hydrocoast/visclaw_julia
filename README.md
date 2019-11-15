@@ -10,28 +10,33 @@ Any bug report would be appreciated.
 - [GR.jl](https://github.com/jheinen/GR.jl)
 - [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl)
 - [GMT.jl](https://github.com/GenericMappingTools/GMT.jl)
+- [GeometricalPredicates.jl](https://github.com/JuliaGeometry/GeometricalPredicates.jl)
 
 ## Other Softwares  
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
 # Usage
-- In preparation, set a variable `CLAW` in `src/CLAWPATH.jl`  
+- In preparation, run the simulations of chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and ike `$CLAW/geoclaw/examples/storm-surge/ike` in the GeoClaw examples.  
+
+
+- Input an appropriate path to variable `CLAW` in `src/CLAWPATH.jl`  
 ```julia
 CLAW = "path/to/your/clawpack"
 ```
 You can skip it when your OS is Linux.  
 
 
-- Run the simulations of chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and ike `$CLAW/geoclaw/examples/storm-surge/ike` in the GeoClaw examples.  
-
-
-- Add `src/` of this package to `LOAD_PATH` in Julia.
+- Clone this repository and add `src/` to `LOAD_PATH` in Julia.
 ```julia
-push!(LOAD_PATH, "path/to/this/repo/src") # in /.julia/config/startup.jl
+push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ```
 
+- Add the required packages in the Julia REPL.
+```julia
+]add Plots GMT GR PyPlot GeometricalPredicates
+```
 
-- Run the Julia scripts in `examples/` .  
+- Run the scripts in `examples/` .  
 GMT.jl and Plots.jl are available for visualization of the numerical results.  
 
 # Examples

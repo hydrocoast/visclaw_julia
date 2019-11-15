@@ -8,12 +8,9 @@ using Statistics: mean
 using DelimitedFiles: readdlm
 using Printf
 using Dates
-using Interpolations
-
 
 using GeometricalPredicates: GeometricalPredicates
-
-using Plots:Plots
+using Plots: Plots
 
 # define CLAW path from shell
 include("CLAWPATH.jl")

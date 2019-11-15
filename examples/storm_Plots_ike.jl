@@ -9,7 +9,7 @@ gr()
 # ike
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-output_prefix = "fig/ike_pres"
+output_prefix = "ike_pres"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 

@@ -7,7 +7,7 @@ gr()
 # chile 2010
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-output_prefix = "fig/chile2010_eta"
+output_prefix = "chile2010_eta"
 
 # load water current
 amrall = Claw.LoadCurrent(simdir)

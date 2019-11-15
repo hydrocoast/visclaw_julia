@@ -29,5 +29,5 @@ plt = Plots.plot!(plt;
                   legend=:topleft,
                   )
 # save
-Plots.savefig(plt, "fig/ike_waveform_gauge.svg")
+Plots.savefig(plt, "ike_waveform_gauge.svg")
 # -----------------------------

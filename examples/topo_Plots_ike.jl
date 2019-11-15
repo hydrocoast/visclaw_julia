@@ -18,5 +18,5 @@ plt = Claw.PlotsTopo(topo; linetype=:heatmap,
 plt = Claw.PlotsTopo!(plt, topo; linetype=:contour, fill=false, lc=:black, levels=[0])
 
 # save
-Plots.savefig(plt, "fig/ike_topo.svg")
+Plots.savefig(plt, "ike_topo.svg")
 # -----------------------------

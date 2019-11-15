@@ -13,7 +13,7 @@ scalefile = Claw.txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
 # ike
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-output_prefix = "fig/ike_storm_GMT"
+output_prefix = "ike_storm_GMT"
 using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
