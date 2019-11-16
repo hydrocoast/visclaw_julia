@@ -16,7 +16,7 @@ Any bug report would be appreciated.
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
 # Usage
-- In preparation, run Clawpack numerical simulations
+- In preparation, run some of the Clawpack numerical simulations
 (e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
@@ -34,7 +34,7 @@ push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ```
 
 - Set an appropriate path to `CLAW` in `src/CLAWPATH.jl`.
-You can skip it when the OS is Linux.  
+You can skip this when using Linux.  
 ```julia
 # On Linux OS, "CLAW = ENV["CLAW"]" is automatically executed
 CLAW = "path/to/your/clawpack"
