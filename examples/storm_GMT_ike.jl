@@ -37,16 +37,16 @@ time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
 for i = 1:amrall.nstep
     outps = output_prefix*@sprintf("%03d", i)*".ps"
 
-    # land-masked surface grids
+    # surface grids
     G = VisClaw.tilegrd.(amrall.amr[i]; spacing_unit="d")
 
-    # surface grids without
+    # plot pressure field
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
     GMT.grdimage!.(G, C=cpt, J=proj, R=region, B="", Q=true)
     GMT.colorbar!(J=proj, R=region, B="xa10f10 y+lhPa", D="jBR+w8.0/0.3+o-1.5/0.0")
     GMT.coast!(J=proj, R=region, B="a10f10 neSW", D=:i, W="thinnest,gray80")
 
-    # wind field
+    # plot wind field
     psfile = GMT.fname_out(Dict())[1]
     velofile = VisClaw.txtwind(amrall.amr[i], skip=3)
     GMT.gmt("psvelo $velofile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -P -K -O >> $psfile ")
