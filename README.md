@@ -4,7 +4,7 @@ This allows us to make figures and animations using the Julia language.
 Any bug report would be appreciated.   
 
 <p align="center">
-<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/bowl-radial_eta.gif", width="375">
+<img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/bowl-radial_eta.gif", width="450">
 </p>  
 
 
