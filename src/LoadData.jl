@@ -14,12 +14,18 @@ function GeoData(dirname::String)
         global txt = readlines(f)
     end
     # parse parameters
+    # parameters (mandatory?)
     cs = parse(Float64,split(txt[occursin.("coordinate",txt)][1],r"\s+")[1])
     p0 = parse(Float64,split(txt[occursin.("ambient_pressure",txt)][1],r"\s+")[1])
     R = parse(Float64,split(txt[occursin.("earth_radius",txt)][1],r"\s+")[1])
     eta0 = parse(Float64,split(txt[occursin.("sea_level",txt)][1],r"\s+")[1])
-    n = parse(Float64,split(txt[occursin.("manning_coefficient",txt)][1],r"\s+")[1])
     dmin = parse(Float64,split(txt[occursin.("dry_tolerance",txt)][1],r"\s+")[1])
+    # parameters (optional?)
+    if any(occursin.("manning_coefficient",txt))
+        n = parse(Float64,split(txt[occursin.("manning_coefficient",txt)][1],r"\s+")[1])
+    else
+        n = 0.0
+    end
     # instance
     params = VisClaw.GeoParam(cs,p0,R,eta0,n,dmin)
     # return values
