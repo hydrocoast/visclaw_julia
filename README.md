@@ -54,7 +54,7 @@ See also [Example1_Plots.ipynb](https://github.com/hydrocoast/visclaw_julia/blob
 and [Example2_GMT.ipynb](https://github.com/hydrocoast/visclaw_julia/blob/master/Example2_GMT.ipynb) for more information.
 
 
-# Examples
+# Plot gallery
 The following figures are generated with the Julia scripts in `examples/` .  
 
 ## using GMT.jl
