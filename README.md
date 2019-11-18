@@ -40,7 +40,8 @@ You can skip this when using Linux.
 CLAW = "path/to/your/clawpack"
 ```
 
-- This package uses either GMT.jl or Plots.jl to plot numerical results.
+- Once you have completed this procedure, you will be ready to use this package.
+This package uses either GMT.jl or Plots.jl to plot numerical results.
 Plots.jl is suitable for a quick check.
 For example, a spatial distribution of the water surface height is plotted when you input as follows:
 ```julia
