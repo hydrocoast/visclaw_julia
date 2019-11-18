@@ -92,7 +92,7 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     ylims = ylims==nothing ? yrange : ylims
     plt = Plots.plot!(plt, xlims=xlims, ylims=ylims)
 
-    if isempty(kwdict); plt = Plots.plot!(plt; kwdict...); end
+    if !isempty(kwdict); plt = Plots.plot!(plt; kwdict...); end
 
     ## color range
     #if !isempty(clim); plt = Plots.plot!(plt, clims=clim); end
