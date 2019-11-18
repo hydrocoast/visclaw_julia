@@ -16,8 +16,8 @@ Any bug report would be appreciated.
 - [GMT](https://github.com/GenericMappingTools/gmt) (Generic Mapping Tools)  
 
 # Usage
-- In preparation, run some of the Clawpack numerical simulations
-(e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and
+- In preparation, run some of the Clawpack numerical simulations  
+(e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and  
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
 - Add the required packages in the Julia REPL.
@@ -26,7 +26,7 @@ ike `$CLAW/geoclaw/examples/storm-surge/ike`).
 ```
 The [GMT](https://github.com/GenericMappingTools/gmt) program also needs to be installed if you want to plot using
 [GMT.jl](https://github.com/GenericMappingTools/GMT.jl).
-Note that GMT.jl does NOT install GMT.
+Note that GMT.jl does NOT install the GMT program.
 
 - Clone this repository and add `src/` to `LOAD_PATH` in Julia.
 ```julia
@@ -36,7 +36,7 @@ push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 - Set an appropriate path to `CLAW` in `src/CLAWPATH.jl`.
 You can skip this when using Linux.  
 ```julia
-# On Linux OS, "CLAW = ENV["CLAW"]" is automatically executed
+# On Linux OS, "CLAW = ENV["CLAW"]" works automatically
 CLAW = "path/to/your/clawpack"
 ```
 
