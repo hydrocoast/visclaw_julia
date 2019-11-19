@@ -37,6 +37,15 @@ Note that GMT.jl does NOT install the GMT program.
 ```julia
 push!(LOAD_PATH, "path/to/this/repo/src") # in ~/.julia/config/startup.jl
 ```
+After that, `LOAD_PATH` should return values like the following in the Julia REPL:
+```julia
+julia> LOAD_PATH
+4-element Array{String,1}:
+ "@"
+ "@v#.#"
+ "@stdlib"
+ "path/to/this/repo/src"
+```
 
 - Set an appropriate path to `CLAW` in `src/CLAWPATH.jl`.
 You can skip this when using Linux.  
