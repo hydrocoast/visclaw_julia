@@ -9,13 +9,22 @@ function topodata(dirname::String)
     if !isdir(dirname); error("A directory $dirname is not found."); end;
 
     ## read topodata
-    filename= joinpath(dirname,"topo.data")
+    filename = joinpath(dirname,"topo.data")
     f = open(filename,"r")
     topodata = readlines(f)
     close(f)
-    ntopo = parse(Int64, topodata[8][1:2]) # line 8, =: ntopofiles
-    topofile = replace(topodata[10],r"[\'\s]" => "") # line 10, topofile 1
 
+    baseline = findfirst(x->occursin("ntopofiles", x), topodata)
+    ntopo = parse(Int64, split(topodata[baseline], r"\s+", keepempty=false)[1])
+
+    # preallocate
+    topofile = Vector{String}(undef, ntopo)
+    # filename
+    for i = 1:ntopo
+        topofile[i] = replace(topodata[baseline-1+3i], r"[\'\s]" => "")
+    end
+
+    # return
     return topofile, ntopo
 end
 #################################
@@ -36,9 +45,18 @@ function dtopodata(dirname::String)
     f = open(filename,"r")
     dtopodata = readlines(f)
     close(f)
-    ndtopo = parse(Int64, dtopodata[7][1:2]) # line 8, =: ntopofiles
-    dtopofile = replace(dtopodata[10],r"[\'\s]" => "") # line 10, topofile 1
 
+    baseline = findfirst(x->occursin("mdtopofiles", x), dtopodata)
+    ndtopo = parse(Int64, split(dtopodata[baseline], r"\s+", keepempty=false)[1])
+
+    # preallocate
+    dtopofile = Vector{String}(undef, ndtopo)
+    # filename
+    for i = 1:ndtopo
+        dtopofile[i] = replace(dtopodata[baseline+3i], r"[\'\s]" => "")
+    end
+
+    # return
     return dtopofile, ndtopo
 end
 #################################
