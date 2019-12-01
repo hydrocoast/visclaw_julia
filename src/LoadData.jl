@@ -79,8 +79,7 @@ function GaugeData(dirname::String)
     # read gauge info
     baseline = findfirst(x->occursin("ngauges", x), txt)
     for i = 1:ngauges
-        txtline = split(strip(txt[baseline+i]),r"\s+")
-        #if isempty(txtline[1]); txtline = txtline[2:end]; end
+        txtline = split(strip(txt[baseline+i]), r"\s+", keepempty=false)
         label = txtline[1]
         id = parse(Int64,txtline[1])
         loc = [parse(Float64,txtline[2]), parse(Float64,txtline[3])]

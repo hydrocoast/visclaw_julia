@@ -68,7 +68,7 @@ end
 """
 Function: load topography
 """
-function LoadTopo(filename::String; topotype=3::Int)
+function LoadTopo(filename::String; topotype=3::Int64)
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;
     if (topotype!=2) & (topotype!=3); error("Invalid topotype"); end
@@ -124,6 +124,9 @@ function LoadTopo(filename::String; topotype=3::Int)
     return geo
 end
 #################################
+LoadTopo(filename::Vector{String}; topotype=3::Int64) = map(f -> LoadTopo(f; topotype=topotype), filename)
+#################################
+
 
 #########################################
 ## Function: load seafloor deformation
@@ -131,7 +134,7 @@ end
 """
 Function: load seafloor deformation (dtopo)
 """
-function LoadDeform(filename::String, topotype=3::Int)
+function LoadDeform(filename::String; topotype=3::Int64)
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;
     if (topotype!=2) & (topotype!=3); error("Invalid topotype"); end
@@ -162,7 +165,7 @@ function LoadDeform(filename::String, topotype=3::Int)
     # check topotype
     tmp = replace(dataorg[1], r"^\s+|,?\s+$" => "") # equivalent to strip?
     tmp = replace(tmp, "," => " ") # for csv data
-    tmp = split(tmp, r"\s+",keepempty=false)
+    tmp = split(tmp, r"\s+", keepempty=false)
     tmp = parse.(Float64, tmp)
     if length(tmp) == 1
         println("topotype is assumed as 2.")
@@ -189,4 +192,6 @@ function LoadDeform(filename::String, topotype=3::Int)
 
     return dtopodata
 end
+#########################################
+LoadDeform(filename::Vector{String}; topotype=3::Int64) = map(f -> LoadDeform(f; topotype=topotype), filename)
 #########################################
