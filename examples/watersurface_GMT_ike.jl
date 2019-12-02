@@ -12,8 +12,7 @@ using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load topo
-topofile, topotype, ntopo = VisClaw.topodata(simdir)
-topo = VisClaw.LoadTopo(topofile, topotype)
+topo = VisClaw.LoadTopo(simdir)
 
 # makecpt
 cpt = GMT.makecpt(C=:jet, T="0.0/2.0", D=true, V=true)

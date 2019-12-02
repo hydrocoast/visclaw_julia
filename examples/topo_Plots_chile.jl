@@ -10,8 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-topofile, topotype, ntopo = VisClaw.topodata(simdir)
-topo = VisClaw.LoadTopo(topofile, topotype)
+topo = VisClaw.LoadTopo(simdir)
 
 # plot
 plt = VisClaw.PlotsTopo(topo; linetype=:heatmap, color=:delta, clims=(-5000,5000))

@@ -10,8 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
-dtopofile, topotype, ntopo = VisClaw.dtopodata(simdir)
-dtopo = VisClaw.LoadDeform(dtopofile, topotype)
+dtopo = VisClaw.LoadDeform(simdir)
 
 # plot
 plt = VisClaw.PlotsTopo(dtopo; linetype=:contourf,

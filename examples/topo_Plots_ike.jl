@@ -10,8 +10,7 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-topofile, topotype, ntopo = VisClaw.topodata(simdir)
-topo = VisClaw.LoadTopo(topofile, topotype)
+topo = VisClaw.LoadTopo(simdir)
 
 # Plot
 plt = VisClaw.PlotsTopo(topo; linetype=:heatmap,
