@@ -7,8 +7,8 @@ using GMT: GMT
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
-topofile, ntopo = VisClaw.topodata(simdir)
-topo = VisClaw.LoadTopo(topofile)
+topofile, topotype, ntopo = VisClaw.topodata(simdir)
+topo = VisClaw.LoadTopo(topofile, topotype)
 
 # makegrd
 G = VisClaw.geogrd(topo; V=true)

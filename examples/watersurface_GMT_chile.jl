@@ -10,8 +10,8 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_eta_GMT"
 
 # load topo
-topofile, ntopo = VisClaw.topodata(simdir)
-topo = VisClaw.LoadTopo(topofile)
+topofile, topotype, ntopo = VisClaw.topodata(simdir)
+topo = VisClaw.LoadTopo(topofile, topotype)
 
 # makecpt
 cpt = GMT.makecpt(C=:polar, T="-1.0/1.0", D=true, V=true)

@@ -8,24 +8,31 @@ function topodata(dirname::String)
     ## check args
     if !isdir(dirname); error("A directory $dirname is not found."); end;
 
-    ## read topodata
+    ## read ascdata
     filename = joinpath(dirname,"topo.data")
     f = open(filename,"r")
-    topodata = readlines(f)
+    ascdata = readlines(f)
     close(f)
 
-    baseline = findfirst(x->occursin("ntopofiles", x), topodata)
-    ntopo = parse(Int64, split(topodata[baseline], r"\s+", keepempty=false)[1])
+    baseline = findfirst(x->occursin("ntopofiles", x), ascdata)
+    ntopo = parse(Int64, split(ascdata[baseline], r"\s+", keepempty=false)[1])
 
-    # preallocate
-    topofile = Vector{String}(undef, ntopo)
-    # filename
-    for i = 1:ntopo
-        topofile[i] = replace(topodata[baseline-1+3i], r"[\'\s]" => "")
+    if ntopo == 1
+        topofile = replace(ascdata[baseline+2], r"[\'\s]" => "")
+        topotype = parse(Int64, split(ascdata[baseline+3], r"\s+", keepempty=false)[1])
+    else
+        # preallocate
+        topofile = Vector{String}(undef, ntopo)
+        topotype = Vector{Int64}(undef, ntopo)
+        # filename
+        for i = 1:ntopo
+            topofile[i] = replace(ascdata[baseline-1+3i], r"[\'\s]" => "")
+            topotype[i] = parse(Int64, split(ascdata[baseline+3i], r"\s+", keepempty=false)[1])
+        end
     end
 
     # return
-    return topofile, ntopo
+    return topofile, topotype, ntopo
 end
 #################################
 
@@ -39,25 +46,37 @@ function dtopodata(dirname::String)
     ## check args
     if !isdir(dirname); error("A directory $dirname is not found."); end;
 
-    ## read topodata
+    ## read ascdata
     filename= joinpath(dirname,"dtopo.data")
     if !isfile(filename); error("File $filename is not found."); end
     f = open(filename,"r")
-    dtopodata = readlines(f)
+    ascdata = readlines(f)
     close(f)
 
-    baseline = findfirst(x->occursin("mdtopofiles", x), dtopodata)
-    ndtopo = parse(Int64, split(dtopodata[baseline], r"\s+", keepempty=false)[1])
+    baseline = findfirst(x->occursin("mdtopofiles", x), ascdata)
+    ndtopo = parse(Int64, split(ascdata[baseline], r"\s+", keepempty=false)[1])
 
-    # preallocate
-    dtopofile = Vector{String}(undef, ndtopo)
-    # filename
-    for i = 1:ndtopo
-        dtopofile[i] = replace(dtopodata[baseline+3i], r"[\'\s]" => "")
+    if ndtopo == 0
+        println("No mdtopofile")
+        return nothing, nothing, ndtopo
+
+    elseif ndtopo == 1
+        dtopofile = replace(ascdata[baseline+3], r"[\'\s]" => "")
+        dtopotype = parse(Int64, split(ascdata[baseline+4], r"\s+", keepempty=false)[1])
+
+    else
+        # preallocate
+        dtopofile = Vector{String}(undef, ndtopo)
+        dtopotype = Vector{Int64}(undef, ndtopo)
+        # filename
+        for i = 1:ndtopo
+            dtopofile[i] = replace(ascdata[baseline+3i], r"[\'\s]" => "")
+            dtopotype[i] = parse(Int64, split(ascdata[baseline+3i+1], r"\s+", keepempty=false)[1])
+        end
     end
 
     # return
-    return dtopofile, ndtopo
+    return dtopofile, dtopotype, ndtopo
 end
 #################################
 
@@ -68,10 +87,10 @@ end
 """
 Function: load topography
 """
-function LoadTopo(filename::String; topotype=3::Int64)
+function LoadTopo(filename::String, topotype=3::Int64)
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;
-    if (topotype!=2) & (topotype!=3); error("Invalid topotype"); end
+    if (topotype!=2) & (topotype!=3); error("unsupported topotype"); end
 
     ## separator in regular expression
     regex = r"([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)"
@@ -84,7 +103,7 @@ function LoadTopo(filename::String; topotype=3::Int64)
         yll = parse(Float64, match(regex, readline(f)).captures[1])
         cellsize = parse(Float64, match(regex, readline(f)).captures[1])
         nodata = match(regex, readline(f)).captures[1]
-        ## read topodata
+        ## read topography in asc
         dataorg = readlines(f)
     ## close topofile
     close(f)
@@ -98,9 +117,19 @@ function LoadTopo(filename::String; topotype=3::Int64)
     tmp = replace(tmp, "," => " ") # for csv data
     tmp = split(tmp, r"\s+",keepempty=false)
     tmp = parse.(Float64, tmp)
+    # topotype 2?
     if length(tmp) == 1
-        println("topotype is assumed as 2.")
-        topotype = 2;
+        if topotype == 3
+            println("topotype 2?")
+        end
+        topotype = 2
+    end
+    # topotype 3?
+    if length(tmp) > 1
+        if topotype == 2
+            println("topotype 3?")
+        end
+        topotype = 3
     end
 
     ## assign topography
@@ -124,8 +153,6 @@ function LoadTopo(filename::String; topotype=3::Int64)
     return geo
 end
 #################################
-LoadTopo(filename::Vector{String}; topotype=3::Int64) = map(f -> LoadTopo(f; topotype=topotype), filename)
-#################################
 
 
 #########################################
@@ -134,7 +161,7 @@ LoadTopo(filename::Vector{String}; topotype=3::Int64) = map(f -> LoadTopo(f; top
 """
 Function: load seafloor deformation (dtopo)
 """
-function LoadDeform(filename::String; topotype=3::Int64)
+function LoadDeform(filename::String, topotype=3::Int64)
     ## check args
     if !isfile(filename); error("file $filename is not found."); end;
     if (topotype!=2) & (topotype!=3); error("Invalid topotype"); end
@@ -153,7 +180,7 @@ function LoadDeform(filename::String; topotype=3::Int64)
         dx = parse(Float64, match(regex, readline(f)).captures[1])
         dy = parse(Float64, match(regex, readline(f)).captures[1])
         dt = parse(Float64, match(regex, readline(f)).captures[1])
-        ## read topodata
+        ## read topography in asc
         dataorg = readlines(f)
     ## close topofile
     close(f)
@@ -167,9 +194,19 @@ function LoadDeform(filename::String; topotype=3::Int64)
     tmp = replace(tmp, "," => " ") # for csv data
     tmp = split(tmp, r"\s+", keepempty=false)
     tmp = parse.(Float64, tmp)
+    # topotype 2?
     if length(tmp) == 1
-        println("topotype is assumed as 2.")
-        topotype = 2;
+        if topotype == 3
+            println("topotype 2?")
+        end
+        topotype = 2
+    end
+    # topotype 3?
+    if length(tmp) > 1
+        if topotype == 2
+            println("topotype 3?")
+        end
+        topotype = 3
     end
 
     ## assign topography
@@ -188,10 +225,8 @@ function LoadDeform(filename::String; topotype=3::Int64)
     end
     deform = reverse(deform, dims=1) ## flip
     #deform[abs.(deform).<1e-2] .= NaN
-    dtopodata = VisClaw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform)
+    dtopo = VisClaw.DTopo(mx,my,x,y,dx,dy,mt,t0,dt,deform)
 
-    return dtopodata
+    return dtopo
 end
-#########################################
-LoadDeform(filename::Vector{String}; topotype=3::Int64) = map(f -> LoadDeform(f; topotype=topotype), filename)
 #########################################

@@ -23,9 +23,3 @@ Function: plot topography and bathymetry in 2D
 """
 PlotsTopo(geo::VisClaw.AbstractTopo; kwargs...) = PlotsTopo!(Plots.plot(), geo; kwargs...)
 ####################################################
-
-####################################################
-PlotsTopo!(plt, geo::Vector, num::Int64=1; kwargs...) = PlotsTopo!(plt, geo[num]; kwargs...)
-####################################################
-PlotsTopo(geo::Vector, num::Int64=1; kwargs...) = PlotsTopo!(Plots.plot(), geo[num]; kwargs...)
-####################################################

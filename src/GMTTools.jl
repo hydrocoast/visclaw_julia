@@ -32,9 +32,6 @@ function getR(topo::VisClaw.AbstractTopo)
     return xyrange
 end
 ###################################################
-getR(topo::Vector{VisClaw.Topo}, num::Int64=1) = getR(topo[num])
-getR(topo::Vector{VisClaw.DTopo}, num::Int64=1) = getR(topo[num])
-###################################################
 """
 Get height/width ratio
 """
@@ -89,8 +86,6 @@ function geogrd(geo::VisClaw.DTopo; kwargs...)
 
     return G
 end
-###################################################
-geogrd(geo::Vector, num::Int64=1; kwargs...) = geogrd(geo[num]; kwargs...)
 ###################################################
 
 ###################################################
