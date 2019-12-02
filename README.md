@@ -1,6 +1,6 @@
 # VisClaw for Julian
 This repository aims to become one of the Clawpack visualization tools (see http://www.clawpack.org).  
-This allows us to make figures and animations using the Julia language.   
+VisClaw.jl allows us to make figures and animations using the Julia language.   
 Any bug report would be appreciated.   
 
 <p align="center">
