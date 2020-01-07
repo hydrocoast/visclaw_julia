@@ -227,7 +227,7 @@ function LoadDeform(filename::String, topotype=3::Int64)
         deform = reshape(topo, (mx, my))
         deform = permutedims(topo,[2 1])
     elseif topotype == 3
-        deform = zeros(mx, my)
+        deform = zeros(my, mx)
         for k = 1:my
             line = replace(dataorg[k], r"^\s+|,?\s+$" => "")
             line = replace(line, "," => " ") # for csv data
