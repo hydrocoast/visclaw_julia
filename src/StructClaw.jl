@@ -166,8 +166,11 @@ mutable struct gauge
     AMRlevel :: AbstractVector{Int64}
     time :: AbstractVector{Float64} # time
     eta :: AbstractVector{Float64} # surface
+    u :: AbstractVector{Float64} # u
+    v :: AbstractVector{Float64} # v
     # Constructor
-    VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta)
+    VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta,empty([0.0]),empty([0.0]))
+    VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta, u, v) = new(label,id,nt,loc,AMRlevel,time,eta,u,v)
 end
 ########################################
 

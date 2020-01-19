@@ -4,7 +4,7 @@
 """
 Function: gauge*.txt reader
 """
-function LoadGauge(dirname::String; eta0=0.0::Float64, labelhead="Gauge "::String)
+function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ", vel::Bool=false)
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
     ind = map(x->occursin(r"gauge\d+\.txt",x),files)
@@ -30,13 +30,21 @@ function LoadGauge(dirname::String; eta0=0.0::Float64, labelhead="Gauge "::Strin
         time = convert.(Float64,dataorg[:,2])
         nt = length(time)
         eta = convert.(Float64,dataorg[:,6])
+        if vel
+            u = convert.(Float64,dataorg[:,4])
+            v = convert.(Float64,dataorg[:,5])
+        end
         eta = eta.-eta0
 
         # label
         label = labelhead*@sprintf("%d",id)
 
         # instance
-        gauges[k] = VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta)
+        if vel
+            gauges[k] = VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta,u,v)
+        else
+            gauges[k] = VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta)
+        end
     end
 
     return gauges

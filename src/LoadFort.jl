@@ -21,7 +21,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
 
     if vartype=="surface"
         amr = Array{VisClaw.SurfaceHeight}(undef,ngrid) ## preallocate
-	elseif vartype=="current"
+    elseif vartype=="current"
         amr = Array{VisClaw.Velocity}(undef,ngrid)
     elseif vartype=="storm"
         amr = Array{VisClaw.Storm}(undef,ngrid)
@@ -55,22 +55,22 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
             ## array
             amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
 
-		elseif vartype=="current"
-			ucol = ncol
+        elseif vartype=="current"
+            ucol = ncol
             vcol = ncol+1
-			# read
-			bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
-			u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
+            # read
+            bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+            u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
             v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
-			# replace to NaN
-			mask = bath.<=0.0
-			bath[mask] .= NaN
+            # replace to NaN
+            mask = bath.<=0.0
+            bath[mask] .= NaN
             u[mask] .= NaN
-			v[mask] .= NaN
-			# calc
+            v[mask] .= NaN
+            # calc
             u = u./bath
-			v = v./bath
-			vel = sqrt.(u.^2 .+ v.^2)
+            v = v./bath
+            vel = sqrt.(u.^2 .+ v.^2)
             ## array
             amr[i] = VisClaw.Velocity(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
 
@@ -94,7 +94,7 @@ function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, param
         #@printf("%d, ",gridnumber)
 
         ## counter; go to the next grid
-		i += 1
+        i += 1
         l = l+9+(mx+1)*my
     end
     ## return
@@ -134,20 +134,20 @@ Function: LoadFortq and LoadFortt
           time-series of water surface
 """
 function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
-	                 vartype="surface"::String)
+                     vartype="surface"::String)
 
     ## define the filepath & filename
     if vartype=="surface"
         fnamekw = "fort.q0"
         col=4
-	elseif vartype=="current"
+    elseif vartype=="current"
         fnamekw = "fort.q0"
         col=2
     elseif vartype=="storm"
         fnamekw = "fort.a0"
         col=5
-	else
-		error("Invalid input argument vartype: $vartype")
+    else
+        error("Invalid input argument vartype: $vartype")
     end
 
     ## make a list
@@ -157,25 +157,25 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     if sum(idx)==0; error("File named $fnamekw was not found"); end
     flist = flist[idx]
 
-	# load geoclaw.data
-	params = VisClaw.GeoData(loaddir)
+    # load geoclaw.data
+    params = VisClaw.GeoData(loaddir)
 
     ## the number of files
     nfile = length(flist)
 
-	# file sequence to be loaded
+    # file sequence to be loaded
     if filesequence==0:0; filesequence = 1:nfile; end
-	if any(filesequence .< 1) || any(filesequence .> nfile)
-		error("Incorrect file sequence was specified. (This must be from 1 to $nfile)")
-	end
+    if any(filesequence .< 1) || any(filesequence .> nfile)
+        error("Incorrect file sequence was specified. (This must be from 1 to $nfile)")
+    end
 
-	## the number of files (to be loaded)
-	nfile = length(filesequence)
+    ## the number of files (to be loaded)
+    nfile = length(filesequence)
 
     ## preallocate
     if vartype=="surface"
         amr = Vector{AbstractVector{VisClaw.SurfaceHeight}}(undef,nfile)
-	elseif vartype=="current"
+    elseif vartype=="current"
         amr = Vector{AbstractVector{VisClaw.Velocity}}(undef,nfile)
     elseif vartype=="storm"
         amr = Vector{AbstractVector{VisClaw.Storm}}(undef,nfile)
@@ -183,12 +183,12 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
 
     ## load all files
     tlap = vec(zeros(nfile,1))
-	cnt = 0
+    cnt = 0
     for it = filesequence
-		cnt += 1
+        cnt += 1
         if vartype=="surface"
             amr[cnt] = VisClaw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
-		elseif vartype=="current"
+        elseif vartype=="current"
             amr[cnt] = VisClaw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
         elseif vartype=="storm"
             amr[cnt] = VisClaw.LoadForta(joinpath(loaddir,flist[it]), col)
