@@ -45,6 +45,7 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     # background_color_inside
     bginside, kwdict = VisClaw.parse_bgcolor_inside(kwdict)
     if bginside == nothing; bginside = Plots.RGB(.7,.7,.7); end
+    if seriestype == :surface; bginside = Plots.RGBA(0.0,0.0,0.0,0.0); end
     # -----------------------------
     # colorbar_title
     cbtitle, kwdict = VisClaw.parse_colorbar_title(kwdict)
@@ -114,14 +115,9 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
 
     if !isempty(kwdict); plt = Plots.plot!(plt; kwdict...); end
 
-    ## color range
-    #if !isempty(clim); plt = Plots.plot!(plt, clims=clim); end
-
     ## colorbar
     for i = nplot_org+1:plt.n; plt.series_list[i].plotattributes[:colorbar_entry] = false; end
     plt.series_list[nplot_org+1].plotattributes[:colorbar_entry] = true
-    #for i = 2:ntile; plt.series_list[i].plotattributes[:colorbar_entry] = false; end
-    #plt.series_list[1].plotattributes[:colorbar_entry] = true
 
     ## Appearance
     plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=true, colorbar_title=cbtitle)
