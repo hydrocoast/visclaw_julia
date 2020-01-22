@@ -24,7 +24,7 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     # -----------------------------
     # linetype
     seriestype, kwdict = VisClaw.parse_seriestype(kwdict)
-    if seriestype == nothing; seriestype=:contourf; end
+    if seriestype == nothing; seriestype=:heatmap; end
     # -----------------------------
     # color
     seriescolor, kwdict = VisClaw.parse_seriescolor(kwdict)
