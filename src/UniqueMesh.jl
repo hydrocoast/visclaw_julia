@@ -44,7 +44,7 @@ function UniqueMeshVector(tiles::Vector{VisClaw.AMRGrid})
     # plt = Plots.plot()
     # i=1
 
-    ## search points which are overlapped by the finer grids
+    ## search points overlapped by finer ones
     for i=1:ntile
         # numver of points in single tile
         mp = tiles[i].mx*tiles[i].my
@@ -57,18 +57,18 @@ function UniqueMeshVector(tiles::Vector{VisClaw.AMRGrid})
 
         if tiles[i].AMRlevel != maxlevel
             # preallocate
-            existfiner = fill(false, (mp,ntile))
+            existfine = fill(false, (mp,ntile))
 
             # compare the location of the target tile to that of other tiles
             for j = 1:ntile
                 if i==j; continue; end
                 if tiles[i].AMRlevel >= tiles[j].AMRlevel; continue; end
                 rect = VisClaw.polyrectangle(tiles[j])
-                existfiner[:,j] = [GeometricalPredicates.inpolygon(rect, allp[k]) for k=1:mp]
+                existfine[:,j] = [GeometricalPredicates.inpolygon(rect, allp[k]) for k=1:mp]
             end
 
-            ## delete points which the finer grids include
-            delindex = any(existfiner, dims=2) |> vec
+            ## delete grids that finer ones can cover
+            delindex = any(existfine, dims=2) |> vec
             deleteat!(xvec,delindex)
             deleteat!(yvec,delindex)
             deleteat!(puniq,delindex)

@@ -50,7 +50,10 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     cbtitle, kwdict = VisClaw.parse_colorbar_title(kwdict)
     if cbtitle==nothing; cbtitle=""; end
     # -----------------------------
-
+    # xlims, ylims
+    xlims, kwdict = VisClaw.parse_xlims(kwdict)
+    ylims, kwdict = VisClaw.parse_ylims(kwdict)
+    # -----------------------------
 
 
     ## the number of tiles
@@ -83,8 +86,6 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     end
 
     ## xlims, ylims
-    xlims, kwdict = VisClaw.parse_xlims(kwdict)
-    ylims, kwdict = VisClaw.parse_ylims(kwdict)
     x1, x2, y1, y2 = VisClaw.getlims(tiles)
     xrange = (x1, x2)
     yrange = (y1, y2)
@@ -101,7 +102,7 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     for i = 2:ntile; plt.series_list[i].plotattributes[:colorbar_entry] = false; end
     plt.series_list[1].plotattributes[:colorbar_entry] = true
 
-    ## Appearances
+    ## Appearance
     plt = Plots.plot!(plt, axis_ratio=:equal, grid=false, bginside=bginside, colorbar=true, colorbar_title=cbtitle)
 
     ## return value
