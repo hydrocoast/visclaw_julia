@@ -41,3 +41,16 @@ end
 ####################################################
 PlotsTopoRange(geo::VisClaw.AbstractTopo; kwargs...) = PlotsTopoRange!(Plots.plot(), geo; kwargs...)
 ####################################################
+
+####################################################
+"""
+Function: plot a range of topo/bath
+"""
+function PlotsCoastline!(plt, geo::VisClaw.Topo; kwargs...)
+	# plot
+	plt = Plots.contour!(plt, geo.x, geo.y, geo.elevation; levels=[0], kwargs...)
+	return plt
+end
+####################################################
+PlotsCoastline(geo::VisClaw.Topo; kwargs...) = PlotsCoastline!(Plots.plot(), geo; kwargs...)
+####################################################
