@@ -1,8 +1,10 @@
+empI = empty([], Int64)
 ######################################
 """
 Function: plot values of AMR grids in two-dimension
 """
-function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=false, kwargs...)
+function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=empI;
+                     wind::Bool=false, kwargs...)
 
     # check arg
     if isa(tiles[1], VisClaw.SurfaceHeight)
@@ -56,6 +58,10 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     ylims, kwdict = VisClaw.parse_ylims(kwdict)
     # -----------------------------
 
+    # Too fine grids are not plotted
+    if isempty(AMRlevel) && xlims==nothing && ylims==nothing
+        AMRlevel = 1:3
+    end
 
     ## the number of tiles
     ntile = length(tiles)
@@ -64,6 +70,12 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
 
     ## display each tile
     for i = 1:ntile
+
+        ## skip when the AMR level of this tile doesn't match any designated level
+        if !isempty(AMRlevel)
+            if isempty(findall(tiles[i].AMRlevel .== AMRlevel)); continue; end
+        end
+
         ## set the boundary
         x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
@@ -126,8 +138,8 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}; wind::Bool=fal
     return plt
 end
 ######################################
-PlotsAMR2D(tiles; kwargs...) =
-PlotsAMR2D!(Plots.plot(), tiles; kwargs...)
+PlotsAMR2D(tiles, AMRlevel::AbstractVector{Int64}=empI; kwargs...) =
+PlotsAMR2D!(Plots.plot(), tiles, AMRlevel; kwargs...)
 ######################################
 
 
@@ -136,13 +148,25 @@ PlotsAMR2D!(Plots.plot(), tiles; kwargs...)
 """
 Function: add the grid numbers
 """
-function GridNumber!(plt, tiles; font::Plots.Font=Plots.font(12, :hcenter, :black),
+function GridNumber!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI,
+                     font::Plots.Font=Plots.font(12, :hcenter, :black),
                      xlims::Tuple=(),
                      ylims::Tuple=())
+
+    # Too fine grids are not plotted
+    if isempty(AMRlevel) && isempty(xlims) && isempty(ylims)
+        AMRlevel = 1:3
+    end
 
     ## the number of tiles
     ntile = length(tiles)
     for i = 1:ntile
+
+        ## skip when the AMR level of this tile doesn't match any designated level
+        if !isempty(AMRlevel)
+            if isempty(findall(tiles[i].AMRlevel .== AMRlevel)); continue; end
+        end
+
         ## set the boundary
         x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
@@ -167,7 +191,7 @@ end
 """
 Function: draw boundaries
 """
-function DrawBound!(plt, tiles; kwargs...)
+function DrawBound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
 
     # parse keyword args
     kwdict = KWARG(kwargs)
@@ -186,9 +210,20 @@ function DrawBound!(plt, tiles; kwargs...)
     ylims, kwdict = VisClaw.parse_ylims(kwdict)
     # -----------------------------
 
+    # Too fine grids are not plotted
+    if isempty(AMRlevel) && xlims==nothing && ylims==nothing
+        AMRlevel = 1:3
+    end
+
     ## the number of tiles
     ntile = length(tiles)
     for i = 1:ntile
+
+        ## skip when the AMR level of this tile doesn't match any designated level
+        if !isempty(AMRlevel)
+            if isempty(findall(tiles[i].AMRlevel .== AMRlevel)); continue; end
+        end
+
         ## set the boundary
         x = [tiles[i].xlow, tiles[i].xlow+tiles[i].dx*tiles[i].mx]
         y = [tiles[i].ylow, tiles[i].ylow+tiles[i].dy*tiles[i].my]
@@ -203,7 +238,7 @@ function DrawBound!(plt, tiles; kwargs...)
 
         plt = Plots.plot!(plt,
               [x[1], x[1], x[2], x[2], x[1]],
-              [y[1], y[2], y[2], y[1], y[1]],
+              [y[1], y[2], y[2], y[1], y[1]];
               label="", linestyle=linestyle, linecolor=linecolor, kwdict...)
     end
     return plt
@@ -214,11 +249,11 @@ end
 """
 Function: plot time-series of AMR data
 """
-function PlotsAMR(amrs::VisClaw.AMR; kwargs...)
+function PlotsAMR(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwargs...)
     ## plot time-series
     plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep
-        plt[i] = VisClaw.PlotsAMR2D(amrs.amr[i]; kwargs...)
+        plt[i] = VisClaw.PlotsAMR2D(amrs.amr[i], AMRlevel; kwargs...)
     end
     ## return plots
     return plt
