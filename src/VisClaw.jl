@@ -50,7 +50,6 @@ include("GMTtxtvelo.jl")
 # make figures with GMT
 include("GMTSurface.jl")
 include("GMTStorm.jl")
-include("GMTps2gif.jl")
 
 
 include("run_examples.jl")

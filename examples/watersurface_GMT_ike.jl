@@ -33,7 +33,7 @@ time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
 
 for i = 1:amrall.nstep
-    outps = output_prefix*@sprintf("%03d", i)*".ps"
+    outpdf = output_prefix*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
     G = VisClaw.tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
@@ -43,14 +43,8 @@ for i = 1:amrall.nstep
     #GMT.grdimage!(Gland, R=region, J=proj, C="white,gray80", Q=true)
     GMT.grdimage!.(G, C=cpt, J=proj, R=region, B="", Q=true)
     GMT.colorbar!(J=proj, R=region, B="xa0.5f0.25 y+l(m)", D="jBR+w8.0/0.3+o-1.5/0.0", V=true)
-    GMT.coast!(J=proj, R=region, B="a10f10 neSW", D=:i, W=:thinnest, V=true)
-
-    # save
-    cp(GMT.fname_out(Dict())[1], outps, force=true)
+    GMT.coast!(J=proj, R=region, B="a10f10 neSW", D=:i, W=:thinnest, V=true, fmt="PDF", savefig=outpdf)
 end
 
 rm(landmask_txt, force=true)
-
-# gif
-VisClaw.GMTps2gif(output_prefix, amrall.nstep)
 # -----------------------------

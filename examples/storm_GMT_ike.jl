@@ -35,7 +35,7 @@ time_str = Dates.format.(time_dates,"yyyy/mm/dd_HH:MM")
 
 # plot
 for i = 1:amrall.nstep
-    outps = output_prefix*@sprintf("%03d", i)*".ps"
+    outpng = output_prefix*@sprintf("%03d", i)*".png"
 
     # surface grids
     G = VisClaw.tilegrd.(amrall.amr[i]; spacing_unit="d")
@@ -53,12 +53,10 @@ for i = 1:amrall.nstep
     rm(velofile, force=true)
     GMT.gmt("psvelo $scalefile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -Y1.2d -P -O >> $psfile ")
 
-    # save
-    cp(GMT.fname_out(Dict())[1], outps, force=true)
+    GMT.psconvert("-TG -A -F$outpng  $psfile")
 end
 
 rm(scalefile, force=true)
 
 # gif
-VisClaw.GMTps2gif(output_prefix, amrall.nstep)
 # -----------------------------
