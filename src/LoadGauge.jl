@@ -1,10 +1,10 @@
 #################################
-## Function: gauge*.txt reader
-#################################
 """
-Function: gauge*.txt reader
+gauge*.txt reader
 """
-function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ", loadeta::Bool=true, loadvel::Bool=false)
+function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ",
+                   loadeta::Bool=true, loadvel::Bool=false)
+    # check args
     if !isdir(dirname); error("$dirname is not found or directory"); end
     files = readdir(dirname)
     ind = map(x->occursin(r"gauge\d+\.txt",x),files)
@@ -28,10 +28,12 @@ function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge 
         dataorg = readdlm(filename, skipstart=2)
         AMRlevel = convert.(Int64,dataorg[:,1])
         time = convert.(Float64,dataorg[:,2])
+        D = convert.(Float64,dataorg[:,3])
+
         nt = length(time)
         if loadvel
-            u = convert.(Float64,dataorg[:,4])
-            v = convert.(Float64,dataorg[:,5])
+            u = convert.(Float64,dataorg[:,4])./D
+            v = convert.(Float64,dataorg[:,5])./D
         else
             u = v = empty([0.0])
         end
