@@ -47,6 +47,7 @@ include("plots2d.jl")
 include("plotscheck.jl")
 include("plotstopo.jl")
 include("plotsgaugewaveform.jl")
+include("plotsgaugevelocity.jl")
 include("plotsgaugelocation.jl")
 include("plotsfgmax.jl")
 
@@ -66,6 +67,7 @@ export geodata, surgedata, gaugedata, fgmaxdata
 export topodata, dtopodata
 export loadfgmax, loadfgmaxgrid
 export loadtopo, loaddeform
+export loadgauge
 export loadsurface, loadcurrent, loadstorm
 export rmcoarse!
 export axesratio
@@ -82,6 +84,7 @@ export plotstopo, plotstopo!
 export plotstoporange, plotstoporange!
 export plotsgaugelocation, plotsgaugelocation!
 export plotsgaugewaveform, plotsgaugewaveform!
+export plotsgaugevelocity, plotsgaugevelocity!
 export plotsgif, plotssavefig
 
 # functions with GMT.jl
