@@ -67,7 +67,8 @@ function geogrd(geo::VisClaw.Topo; kwargs...)
     xvec = repeat(geo.x, inner=(geo.nrows,1))
     yvec = repeat(geo.y, outer=(geo.ncols,1))
 
-    G = GMT.surface([xvec[:] yvec[:] geo.elevation[:]]; R=R, I=Δ, kwargs...)
+    #G = GMT.surface([xvec[:] yvec[:] geo.elevation[:]]; R=R, I=Δ, kwargs...)
+    G = GMT.surface([xvec[:] reverse(yvec[:]) geo.elevation[:]]; R=R, I=Δ, kwargs...)
 
     return G
 end
@@ -82,7 +83,8 @@ function geogrd(geo::VisClaw.DTopo; kwargs...)
     xvec = repeat(geo.x, inner=(geo.my,1))
     yvec = repeat(geo.y, outer=(geo.mx,1))
 
-    G = GMT.surface([xvec[:] yvec[:] geo.deform[:]]; R=R, I=Δ, kwargs...)
+    #G = GMT.surface([xvec[:] yvec[:] geo.deform[:]]; R=R, I=Δ, kwargs...)
+    G = GMT.surface([xvec[:] reverse(yvec[:]) geo.deform[:]]; R=R, I=Δ, kwargs...)
 
     return G
 end
