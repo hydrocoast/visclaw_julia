@@ -113,7 +113,7 @@ function FGmaxData(dirname::String)
 
     # preallocate
     #fgmax_files = Vector{String}(undef, num_fgmax_grids)
-    fgmaxgrids = Vector{VisClaw.fgmaxgrid}(undef, num_fgmax_grids)
+    fgmaxgrids = Vector{VisClaw.FGmaxGrid}(undef, num_fgmax_grids)
 
     if num_fgmax_grids==0
         println("fgmax grid is not specified")
@@ -126,7 +126,7 @@ function FGmaxData(dirname::String)
 
     for i = 1:num_fgmax_grids
         filename = strip(txt[baseline+2i+1])[2:end-1] # remove quotes \'
-        fgmaxgrids[i] = VisClaw.fgmaxgrid(i, filename, num_fgmax_val)
+        fgmaxgrids[i] = VisClaw.FGmaxGrid(i, filename, num_fgmax_val)
     end
 
     # return

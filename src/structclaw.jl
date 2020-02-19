@@ -175,9 +175,9 @@ end
 
 ########################################
 """
-Struct: fgmax grid
+Struct: FGmax grid
 """
-struct fgmaxgrid
+struct FGmaxGrid
     FGid :: Int64
     file :: String
     nval :: Int64
@@ -187,8 +187,8 @@ struct fgmaxgrid
     ylims :: Tuple{Float64,Float64}
 
     # Constructor
-    VisClaw.fgmaxgrid(FGid,file,nval) = new(FGid,file,nval,0,0,(0.0,0.0),(0.0,0.0))
-    VisClaw.fgmaxgrid(FGid,file,nval,nx,ny,xlims,ylims) = new(FGid,file,nval,nx,ny,xlims,ylims)
+    VisClaw.FGmaxGrid(FGid,file,nval) = new(FGid,file,nval,0,0,(0.0,0.0),(0.0,0.0))
+    VisClaw.FGmaxGrid(FGid,file,nval,nx,ny,xlims,ylims) = new(FGid,file,nval,nx,ny,xlims,ylims)
 end
 ########################################
 
@@ -196,7 +196,7 @@ end
 """
 Struct: fgmax values
 """
-mutable struct fgmaxval
+mutable struct FGmaxValue
     bath :: AbstractArray{Float64,2}
     h :: AbstractArray{Float64,2}
     v :: AbstractArray{Float64,2}
@@ -210,11 +210,11 @@ mutable struct fgmaxval
     thmin :: AbstractArray{Float64,2}
 
     # Constructor
-    VisClaw.fgmaxval(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
+    VisClaw.FGmaxValue(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
                                    th, emptyF, emptyF, emptyF, emptyF)
-    VisClaw.fgmaxval(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
+    VisClaw.FGmaxValue(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
                                         th, tv, emptyF, emptyF, emptyF)
-    VisClaw.fgmaxval(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
+    VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
               new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
 end
 ########################################
