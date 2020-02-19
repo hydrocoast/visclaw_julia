@@ -74,7 +74,7 @@ function GaugeData(dirname::String)
     # parse parameters
     ngauges = parse(Int64, split(txt[occursin.("ngauges",txt)][1],r"\s+")[1])
     # preallocate
-    gaugedata = Vector{VisClaw.gauge}(undef,ngauges)
+    gaugedata = Vector{VisClaw.Gauge}(undef,ngauges)
 
     # read gauge info
     baseline = findfirst(x->occursin("ngauges", x), txt)
@@ -85,7 +85,7 @@ function GaugeData(dirname::String)
         loc = [parse(Float64,txtline[2]), parse(Float64,txtline[3])]
         time = [parse(Float64,txtline[4]), parse(Float64,txtline[5])]
         # instance
-        gaugedata[i] = VisClaw.gauge(label,id,0,loc,[],time,[])
+        gaugedata[i] = VisClaw.Gauge(label,id,0,loc,[],time,[])
     end
 
     # return values

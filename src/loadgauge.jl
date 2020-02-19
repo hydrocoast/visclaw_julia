@@ -13,7 +13,7 @@ function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge 
     nf = length(files)
 
     # preallocate
-    gauges = Vector{VisClaw.gauge}(undef,nf)
+    gauges = Vector{VisClaw.Gauge}(undef,nf)
     for k = 1:nf
         filename=joinpath(dirname,files[k])
 
@@ -48,7 +48,7 @@ function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge 
         label = labelhead*@sprintf("%d",id)
 
         # instance
-        gauges[k] = VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta,u,v)
+        gauges[k] = VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta,u,v)
     end
 
     return gauges

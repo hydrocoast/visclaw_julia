@@ -158,7 +158,7 @@ end
 """
 Struct: gauge data
 """
-mutable struct gauge
+mutable struct Gauge
     label :: String # Name
     id :: Int64 # gauge id
     nt :: Int64 # number of time step
@@ -169,7 +169,7 @@ mutable struct gauge
     u :: AbstractVector{Float64} # u
     v :: AbstractVector{Float64} # v
     # Constructor
-    VisClaw.gauge(label,id,nt,loc,AMRlevel,time,eta,u,v) = new(label,id,nt,loc,AMRlevel,time,eta,u,v)
+    VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta,u,v) = new(label,id,nt,loc,AMRlevel,time,eta,u,v)
 end
 ########################################
 
