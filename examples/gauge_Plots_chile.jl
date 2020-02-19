@@ -13,12 +13,12 @@ sec1d = 24sec1h
 # -----------------------------
 ## Load observation ##
 using DelimitedFiles: readdlm
-gaugeobs = Vector{VisClaw.gauge}(undef,1)
+gaugeobs = Vector{VisClaw.Gauge}(undef,1)
 # gauge 32412
 obsfile=joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/32412_notide.txt")
 obs = readdlm(obsfile)
 # Constructor
-gaugeobs[1]=VisClaw.gauge("Gauge 32412 Obs.", 32412, size(obs,1), [], [], obs[:,1], obs[:,2])
+gaugeobs[1]=VisClaw.Gauge("Gauge 32412 Obs.", 32412, size(obs,1), [], [], obs[:,1], obs[:,2])
 ##
 
 ## Load simulation result ##

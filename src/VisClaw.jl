@@ -25,12 +25,14 @@ export CLAW
 # define structs and basic functions
 const KWARG = Dict{Symbol,Any}
 const emptyF = Array{Float64}(undef, 0, 0)
-
+const timedict = Dict(:second => 1.0, :minute => 60.0, :hour => 3600.0, :day => 24*3600.0)
 include("structclaw.jl")
-include("loaddata.jl")
-include("loadfgmaxgrid.jl")
+
 include("amrutils.jl")
+include("replaceunit.jl")
 # Load
+include("loaddata.jl")
+include("loadfgmax.jl")
 include("loadtopo.jl")
 include("loadfort.jl")
 include("loadgauge.jl")
@@ -56,6 +58,9 @@ include("gmttxtvelo.jl")
 include("gmtsurface.jl")
 include("gmtstorm.jl")
 
+# run exapmles
+include("run_examples.jl")
+
 # General functions
 export geodata, surgedata, gaugedata, fgmaxdata
 export topodata, dtopodata
@@ -64,6 +69,7 @@ export loadtopo, loaddeform
 export loadsurface, loadcurrent, loadstorm
 export rmcoarse!
 export axesratio
+export replaceunit!
 
 # functions with Plots.jl
 export plotsamr

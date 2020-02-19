@@ -76,8 +76,9 @@ struct AMR <: VisClaw.AbstractAMR
     nstep::Int64
     timelap::AbstractVector{Float64}
     amr :: AbstractVector{Vector{VisClaw.AMRGrid}}
+    unittime :: Symbol
     # Constructor
-    VisClaw.AMR(nstep, timelap, amr) = new(nstep, timelap, amr)
+    VisClaw.AMR(nstep, timelap, amr) = new(nstep, timelap, amr, :second)
 end
 ###################################
 
@@ -97,7 +98,7 @@ struct Topo <: AbstractTopo
     elevation :: AbstractArray{Float64,2}
     # Constructor
     VisClaw.Topo(ncols, nrows, x, y, dx, dy, elevation) =
-          new(ncols, nrows, x, y, dx, dy, elevation)
+             new(ncols, nrows, x, y, dx, dy, elevation)
 end
 ###################################
 
@@ -168,8 +169,10 @@ mutable struct Gauge
     eta :: AbstractVector{Float64} # surface
     u :: AbstractVector{Float64} # u
     v :: AbstractVector{Float64} # v
+    unittime :: Symbol
     # Constructor
-    VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta,u,v) = new(label,id,nt,loc,AMRlevel,time,eta,u,v)
+    VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta) = new(label,id,nt,loc,AMRlevel,time,eta,[],[], :second)
+    VisClaw.Gauge(label,id,nt,loc,AMRlevel,time,eta,u,v) = new(label,id,nt,loc,AMRlevel,time,eta,u,v, :second)
 end
 ########################################
 
@@ -208,13 +211,14 @@ mutable struct FGmaxValue
     tM :: AbstractArray{Float64,2}
     tMflux :: AbstractArray{Float64,2}
     thmin :: AbstractArray{Float64,2}
+    unittime :: Symbol
 
     # Constructor
     VisClaw.FGmaxValue(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
-                                        th, emptyF, emptyF, emptyF, emptyF)
+                                        th, emptyF, emptyF, emptyF, emptyF, :second)
     VisClaw.FGmaxValue(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
-                                             th, tv, emptyF, emptyF, emptyF)
+                                             th, tv, emptyF, emptyF, emptyF, :second)
     VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
-                   new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+                   new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin, :second)
 end
 ########################################

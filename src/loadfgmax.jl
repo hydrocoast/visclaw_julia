@@ -131,32 +131,3 @@ Function: fort.FGx.valuemax reader
 loadfgmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval) =
 loadfgmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
 #################################
-
-
-#################################
-function FGtMinute!(fgmax::VisClaw.FGmaxValue)
-    fgmax.th = fgmax.th./6.0e1
-    if !isempty(fgmax.tv)
-        fgmax.tv = fgmax.tv./6.0e1
-    end
-    if !isempty(fgmax.tM)
-        fgmax.tM = fgmax.tM./6.0e1
-        fgmax.tMflux = fgmax.tMflux./6.0e1
-        fgmax.thmin = fgmax.thmin./6.0e1
-    end
-    return
-end
-#################################
-function FGtHour!(fgmax::VisClaw.FGmaxValue)
-    fgmax.th = fgmax.th./3.6e3
-    if !isempty(fgmax.tv)
-        fgmax.tv = fgmax.tv./3.6e3
-    end
-    if !isempty(fgmax.tM)
-        fgmax.tM = fgmax.tM./3.6e3
-        fgmax.tMflux = fgmax.tMflux./3.6e3
-        fgmax.thmin = fgmax.thmin./3.6e3
-    end
-    return
-end
-#################################
