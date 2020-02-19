@@ -14,42 +14,42 @@ using GeometricalPredicates: GeometricalPredicates
 using Plots: Plots
 
 # define CLAW path from shell
-include("CLAWPATH.jl")
+include("clawpath.jl")
 export CLAW
 
 # define structs and basic functions
 const KWARG = Dict{Symbol,Any}
 const emptyF = Array{Float64}(undef, 0, 0)
 
-include("StructClaw.jl")
-include("LoadData.jl")
-include("LoadFGmaxGrid.jl")
-include("AMRUtils.jl")
+include("structclaw.jl")
+include("loaddata.jl")
+include("loadfgmaxgrid.jl")
+include("amrutils.jl")
 # Load
-include("LoadTopo.jl")
-include("LoadFort.jl")
-include("LoadGauge.jl")
+include("loadtopo.jl")
+include("loadfort.jl")
+include("loadgauge.jl")
 # Convert mesh data
-include("UniqueMesh.jl")
+include("uniquemesh.jl")
 
 # Setup
-include("PlotsArgs.jl")
-include("PlotsTools.jl")
+include("plotsargs.jl")
+include("plotstools.jl")
 # Plots
-include("Plots2D.jl")
-include("PlotsCheck.jl")
-include("PlotsTopo.jl")
-include("PlotsGaugeWaveform.jl")
-include("PlotsGaugeLocation.jl")
-include("PlotsFGmax.jl")
+include("plots2d.jl")
+include("plotscheck.jl")
+include("plotstopo.jl")
+include("plotsgaugewaveform.jl")
+include("plotsgaugelocation.jl")
+include("plotsfgmax.jl")
 
 using GMT:GMT
 # Setup
-include("GMTTools.jl")
-include("GMTtxtvelo.jl")
+include("gmttools.jl")
+include("gmttxtvelo.jl")
 # make figures with GMT
-include("GMTSurface.jl")
-include("GMTStorm.jl")
+include("gmtsurface.jl")
+include("gmtstorm.jl")
 
 
 include("run_examples.jl")
