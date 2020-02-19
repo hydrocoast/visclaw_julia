@@ -191,7 +191,7 @@ end
 """
 Function: draw boundaries
 """
-function drawbound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
+function tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
 
     # parse keyword args
     kwdict = KWARG(kwargs)

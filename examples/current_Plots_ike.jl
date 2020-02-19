@@ -37,7 +37,7 @@ plts = [VisClaw.plotsgaugelocation!(plts[i], gauges; color=:orange,
 
 # tiles
 plts = VisClaw.gridnumber!.(plts, amrall.amr; font=Plots.font(12, :black, :center))
-plts = VisClaw.drawbound!.(plts, amrall.amr)
+plts = VisClaw.tilebound!.(plts, amrall.amr)
 
 # save
 VisClaw.plotssavefig(plts, output_prefix*".svg")

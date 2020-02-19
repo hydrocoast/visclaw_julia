@@ -1,4 +1,4 @@
-function run_examples(directory="examples"; kw_exclude=["check", "fgmax"], kw_include=[""])
+function run_examples(directory; kw_exclude=["check", "fgmax"], kw_include=[""])
     if !isdir(directory); println("$directory is not found"); end
 
     filelist = readdir(directory)
