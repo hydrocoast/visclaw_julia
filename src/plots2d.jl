@@ -3,7 +3,7 @@ empI = empty([], Int64)
 """
 Function: plot values of AMR grids in two-dimension
 """
-function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=empI;
+function plotsamr2d!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::AbstractVector{Int64}=empI;
                      wind::Bool=false, kwargs...)
 
     # check arg
@@ -138,8 +138,8 @@ function PlotsAMR2D!(plt, tiles::AbstractVector{VisClaw.AMRGrid}, AMRlevel::Abst
     return plt
 end
 ######################################
-PlotsAMR2D(tiles, AMRlevel::AbstractVector{Int64}=empI; kwargs...) =
-PlotsAMR2D!(Plots.plot(), tiles, AMRlevel; kwargs...)
+plotsamr2d(tiles, AMRlevel::AbstractVector{Int64}=empI; kwargs...) =
+plotsamr2d!(Plots.plot(), tiles, AMRlevel; kwargs...)
 ######################################
 
 
@@ -148,7 +148,7 @@ PlotsAMR2D!(Plots.plot(), tiles, AMRlevel; kwargs...)
 """
 Function: add the grid numbers
 """
-function GridNumber!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI,
+function gridnumber!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI,
                      font::Plots.Font=Plots.font(12, :hcenter, :black),
                      xlims::Tuple=(),
                      ylims::Tuple=())
@@ -191,7 +191,7 @@ end
 """
 Function: draw boundaries
 """
-function DrawBound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
+function drawbound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
 
     # parse keyword args
     kwdict = KWARG(kwargs)
@@ -249,11 +249,11 @@ end
 """
 Function: plot time-series of AMR data
 """
-function PlotsAMR(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwargs...)
+function plotsamr(amrs::VisClaw.AMR, AMRlevel::AbstractVector{Int64}=empI; kwargs...)
     ## plot time-series
     plt = Array{Plots.Plot}(undef, amrs.nstep)
     for i = 1:amrs.nstep
-        plt[i] = VisClaw.PlotsAMR2D(amrs.amr[i], AMRlevel; kwargs...)
+        plt[i] = VisClaw.plotsamr2d(amrs.amr[i], AMRlevel; kwargs...)
     end
     ## return plots
     return plt

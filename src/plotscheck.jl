@@ -2,18 +2,18 @@
 """
 Quick checker of the spatial distribution
 """
-function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
+function plotscheck(simdir::String; vartype="surface"::String, kwargs...)
 
      ## define the filepath & filename
      if vartype=="surface"
          fnamekw = "fort.q0"
-         LoadFunction = VisClaw.LoadSurface
+         loadfunction = VisClaw.loadsurface
      elseif vartype=="current"
          fnamekw = "fort.q0"
-         LoadFunction = VisClaw.LoadCurrent
+         loadfunction = VisClaw.loadcurrent
      elseif vartype=="storm"
          fnamekw = "fort.a0"
-         LoadFunction = VisClaw.LoadStorm
+         loadfunction = VisClaw.loadstorm
      else
          error("Invalid input argument vartype: $vartype")
      end
@@ -26,7 +26,7 @@ function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
      flist = flist[idx]
 
      # load geoclaw.data
-     params = VisClaw.GeoData(simdir)
+     params = VisClaw.geodata(simdir)
 
     ## the number of files
     nfile = length(flist)
@@ -54,10 +54,10 @@ function PlotsCheck(simdir::String; vartype="surface"::String, kwargs...)
             continue
         end
 
-        amrs = LoadFunction(simdir, i)
+        amrs = loadfunction(simdir, i)
 
         # draw figure
-        plt = VisClaw.PlotsAMR2D(amrs.amr[1]; kwargs...)
+        plt = VisClaw.plotsamr2d(amrs.amr[1]; kwargs...)
         plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s")
 
         # show

@@ -12,13 +12,13 @@ using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load topo
-topo = VisClaw.LoadTopo(simdir)
+topo = VisClaw.loadtopo(simdir)
 
 # makecpt
 cpt = GMT.makecpt(C=:jet, T="0.0/2.0", D=true, V=true)
 
 # load water surface
-amrall = VisClaw.LoadSurface(simdir)
+amrall = VisClaw.loadsurface(simdir)
 
 # projection and region GMT
 region = VisClaw.getR(amrall.amr[1])

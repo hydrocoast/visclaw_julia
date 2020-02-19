@@ -25,7 +25,7 @@ end
 """
 get points which are not overlapped by any of other tiles
 """
-function UniqueMeshVector(tiles::Vector{VisClaw.AMRGrid})
+function uniquemeshvector(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
     # var
@@ -101,7 +101,7 @@ end
 """
 get points which are not overlapped by any of other tiles
 """
-function RemoveCoarseUV!(tiles::Vector{VisClaw.AMRGrid})
+function rmcoarse!(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
 

@@ -5,7 +5,7 @@ an_default = Plots.font(10,:left,:top,0.0,:black)
 """
 Function: plot a gauge location using Plots
 """
-function PlotsGaugeLocation!(plt, gauge::VisClaw.Gauge;
+function plotsgaugelocation!(plt, gauge::VisClaw.Gauge;
                              offset=(0,0), font::Plots.Font=an_default, kwargs...)
     # keyword args
     d = KWARG(kwargs)
@@ -22,10 +22,10 @@ function PlotsGaugeLocation!(plt, gauge::VisClaw.Gauge;
 
 end
 ###########################################
-PlotsGaugeLocation(gauge::VisClaw.Gauge; offset=(0,0), font::Plots.Font=an_default, kwargs...) =
-PlotsGaugeLocation!(Plots.plot(), gauge; offset=(0,0), font=font, kwargs...)
+plotsgaugelocation(gauge::VisClaw.Gauge; offset=(0,0), font::Plots.Font=an_default, kwargs...) =
+plotsgaugelocation!(Plots.plot(), gauge; offset=(0,0), font=font, kwargs...)
 ###########################################
-function PlotsGaugeLocation!(plt, gauges::Vector{VisClaw.Gauge}; offset=(0,0), font::Plots.Font=an_default, kwargs...)
+function plotsgaugelocation!(plt, gauges::Vector{VisClaw.Gauge}; offset=(0,0), font::Plots.Font=an_default, kwargs...)
     # keyword args
     d = KWARG(kwargs)
     # get values in all gauges

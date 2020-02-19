@@ -8,7 +8,7 @@
 """
 Function: fort.qxxxx reader
 """
-function LoadFortq(filename::String, ncol::Int; vartype="surface"::String, params::VisClaw.GeoParam=VisClaw.GeoParam())
+function loadfortq(filename::String, ncol::Int; vartype="surface"::String, params::VisClaw.GeoParam=VisClaw.GeoParam())
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -104,7 +104,7 @@ end
 """
 Function: fort.axxxx reader
 """
-LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, vartype="storm")
+loadforta(filename::String, ncol::Int) = loadfortq(filename, ncol, vartype="storm")
 #################################
 
 #################################
@@ -113,7 +113,7 @@ LoadForta(filename::String, ncol::Int) = LoadFortq(filename, ncol, vartype="stor
 """
 Function: fort.txxxx reader
 """
-function LoadFortt(filename::String)
+function loadfortt(filename::String)
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -126,14 +126,14 @@ end
 #################################
 
 #######################################
-## Function: LoadFortq and LoadFortt
+## Function: loadfortq and loadfortt
 ##      time-series of water surface
 #######################################
 """
-Function: LoadFortq and LoadFortt
+Function: loadfortq and loadfortt
           time-series of water surface
 """
-function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
+function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
                      vartype="surface"::String)
 
     ## define the filepath & filename
@@ -158,7 +158,7 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     flist = flist[idx]
 
     # load geoclaw.data
-    params = VisClaw.GeoData(loaddir)
+    params = VisClaw.geodata(loaddir)
 
     ## the number of files
     nfile = length(flist)
@@ -187,13 +187,13 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     for it = filesequence
         cnt += 1
         if vartype=="surface"
-            amr[cnt] = VisClaw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
+            amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
         elseif vartype=="current"
-            amr[cnt] = VisClaw.LoadFortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
+            amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
         elseif vartype=="storm"
-            amr[cnt] = VisClaw.LoadForta(joinpath(loaddir,flist[it]), col)
+            amr[cnt] = VisClaw.loadforta(joinpath(loaddir,flist[it]), col)
         end
-        tlap[cnt] = VisClaw.LoadFortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
+        tlap[cnt] = VisClaw.loadfortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
     end
 
     ## AMR Array
@@ -203,40 +203,40 @@ function LoadSurface(loaddir::String, filesequence::AbstractVector{Int64};
     return amrs
 end
 #######################################
-LoadSurface(loaddir::String, filestart::Int64, filend::Int64) =
-LoadSurface(loaddir, filestart:filend, vartype="surface")
+loadsurface(loaddir::String, filestart::Int64, filend::Int64) =
+loadsurface(loaddir, filestart:filend, vartype="surface")
 #######################################
-LoadSurface(loaddir::String, fileid::Int64) =
-LoadSurface(loaddir, fileid:fileid, vartype="surface")
+loadsurface(loaddir::String, fileid::Int64) =
+loadsurface(loaddir, fileid:fileid, vartype="surface")
 #######################################
-LoadSurface(loaddir::String) =
-LoadSurface(loaddir, 0:0, vartype="surface")
+loadsurface(loaddir::String) =
+loadsurface(loaddir, 0:0, vartype="surface")
 ######################################
 
 ######################################
-LoadStorm(loaddir::String, filesequence::AbstractVector{Int64}) =
-LoadSurface(loaddir, filesequence, vartype="storm")
+loadstorm(loaddir::String, filesequence::AbstractVector{Int64}) =
+loadsurface(loaddir, filesequence, vartype="storm")
 #######################################
-LoadStorm(loaddir::String, filestart::Int64, filend::Int64) =
-LoadSurface(loaddir, filestart:filend, vartype="storm")
+loadstorm(loaddir::String, filestart::Int64, filend::Int64) =
+loadsurface(loaddir, filestart:filend, vartype="storm")
 #######################################
-LoadStorm(loaddir::String, fileid::Int64) =
-LoadSurface(loaddir, fileid:fileid, vartype="storm")
+loadstorm(loaddir::String, fileid::Int64) =
+loadsurface(loaddir, fileid:fileid, vartype="storm")
 #######################################
-LoadStorm(loaddir::String) =
-LoadSurface(loaddir, 0:0, vartype="storm")
+loadstorm(loaddir::String) =
+loadsurface(loaddir, 0:0, vartype="storm")
 ######################################
 
 #######################################
-LoadCurrent(loaddir::String, filesequence::AbstractVector{Int64}) =
-LoadSurface(loaddir, filesequence, vartype="current")
+loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}) =
+loadsurface(loaddir, filesequence, vartype="current")
 #######################################
-LoadCurrent(loaddir::String, filestart::Int64, filend::Int64) =
-LoadSurface(loaddir, filestart:filend, vartype="current")
+loadcurrent(loaddir::String, filestart::Int64, filend::Int64) =
+loadsurface(loaddir, filestart:filend, vartype="current")
 #######################################
-LoadCurrent(loaddir::String, fileid::Int64) =
-LoadSurface(loaddir, fileid:fileid, vartype="current")
+loadcurrent(loaddir::String, fileid::Int64) =
+loadsurface(loaddir, fileid:fileid, vartype="current")
 #######################################
-LoadCurrent(loaddir::String) =
-LoadSurface(loaddir, 0:0, vartype="current")
+loadcurrent(loaddir::String) =
+loadsurface(loaddir, 0:0, vartype="current")
 #######################################

@@ -22,8 +22,8 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
 
 # load
-amrall = VisClaw.LoadStorm(simdir)
-VisClaw.RemoveCoarseUV!.(amrall.amr) # to avoid overlapped arrows are plotted
+amrall = VisClaw.loadstorm(simdir)
+VisClaw.rmcoarse!.(amrall.amr) # to avoid overlapped arrows are plotted
 
 # projection and region GMT
 region = VisClaw.getR(amrall.amr[1])

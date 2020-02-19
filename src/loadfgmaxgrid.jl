@@ -2,7 +2,7 @@
 """
 Function: read specification of a fixed grid
 """
-function LoadFGmaxGrid(fname::String; FGid=0::Int64, nval=0::Int64)
+function loadfgmaxgrid(fname::String; FGid=0::Int64, nval=0::Int64)
 
     if !isfile(fname); error("File $fname is not found."); end
     # read all lines
@@ -39,14 +39,14 @@ end
 """
 Function: read specification of a fixed grid
 """
-LoadFGmaxGrid(fg::VisClaw.FGmaxGrid) = LoadFGmaxGrid(fg.file; FGid=fg.FGid, nval=fg.nval)
+loadfgmaxgrid(fg::VisClaw.FGmaxGrid) = loadfgmaxgrid(fg.file; FGid=fg.FGid, nval=fg.nval)
 ###################################
 
 #################################
 """
 Function: fort.FGx.valuemax and fort.FGx.aux1 reader
 """
-function LoadFGmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
+function loadfgmax(loaddir::String, FGid::Int64, nval::Int64, nx::Int64, ny::Int64; nval_save::Int64=nval)
 
 
     # fort.FGx.aux1
@@ -128,8 +128,8 @@ end
 """
 Function: fort.FGx.valuemax reader
 """
-LoadFGmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval) =
-LoadFGmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
+loadfgmax(loaddir::String, fg::VisClaw.FGmaxGrid; nval_save::Int64=fg.nval) =
+loadfgmax(loaddir, fg.FGid, fg.nval, fg.nx, fg.ny::Int64; nval_save=nval_save)
 #################################
 
 

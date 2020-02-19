@@ -1,7 +1,7 @@
 """
 Function: plot topography and bathymetry in 2D
 """
-function PlotsTopo!(plt, geo::VisClaw.AbstractTopo; kwargs...)
+function plotstopo!(plt, geo::VisClaw.AbstractTopo; kwargs...)
 
     if isa(geo, VisClaw.Topo)
 		z = geo.elevation
@@ -21,14 +21,14 @@ end
 """
 Function: plot topography and bathymetry in 2D
 """
-PlotsTopo(geo::VisClaw.AbstractTopo; kwargs...) = PlotsTopo!(Plots.plot(), geo; kwargs...)
+plotstopo(geo::VisClaw.AbstractTopo; kwargs...) = plotstopo!(Plots.plot(), geo; kwargs...)
 ####################################################
 
 ####################################################
 """
 Function: plot a range of topo/bath
 """
-function PlotsTopoRange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
+function plotstoporange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
 
 	xp = [geo.x[1],  geo.x[1]  , geo.x[end], geo.x[end], geo.x[1]]
 	yp = [geo.y[1],  geo.y[end], geo.y[end], geo.y[1]  , geo.y[1]]
@@ -39,18 +39,18 @@ function PlotsTopoRange!(plt, geo::VisClaw.AbstractTopo; kwargs...)
 	return plt
 end
 ####################################################
-PlotsTopoRange(geo::VisClaw.AbstractTopo; kwargs...) = PlotsTopoRange!(Plots.plot(), geo; kwargs...)
+plotstoporange(geo::VisClaw.AbstractTopo; kwargs...) = plotstoporange!(Plots.plot(), geo; kwargs...)
 ####################################################
 
 ####################################################
 """
-Function: plot a range of topo/bath
+Function: plot coastlines from topo
 """
-function PlotsCoastline!(plt, geo::VisClaw.Topo; kwargs...)
+function plotscoastline!(plt, geo::VisClaw.Topo; kwargs...)
 	# plot
 	plt = Plots.contour!(plt, geo.x, geo.y, geo.elevation; levels=[0], kwargs...)
 	return plt
 end
 ####################################################
-PlotsCoastline(geo::VisClaw.Topo; kwargs...) = PlotsCoastline!(Plots.plot(), geo; kwargs...)
+plotscoastline(geo::VisClaw.Topo; kwargs...) = plotscoastline!(Plots.plot(), geo; kwargs...)
 ####################################################

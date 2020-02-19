@@ -2,7 +2,7 @@
 """
 gauge*.txt reader
 """
-function LoadGauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ",
+function loadgauge(dirname::String; eta0::Float64=0.0, labelhead::String="Gauge ",
                    loadeta::Bool=true, loadvel::Bool=false)
     # check args
     if !isdir(dirname); error("$dirname is not found or directory"); end

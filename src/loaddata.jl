@@ -4,7 +4,7 @@
 """
 Function: geoclaw.data reader
 """
-function GeoData(dirname::String)
+function geodata(dirname::String)
     # definition of filename
     fname = joinpath(dirname,"geoclaw.data")
     # check whether exist
@@ -37,7 +37,7 @@ end
 """
 Function: surge.data reader
 """
-function SurgeData(dirname::String)
+function surgedata(dirname::String)
     # definition of filename
     fname = joinpath(dirname,"surge.data")
     # check whether exist
@@ -62,7 +62,7 @@ end
 """
 Function: gauges.data reader
 """
-function GaugeData(dirname::String)
+function gaugedata(dirname::String)
     # definition of filename
     fname = joinpath(dirname,"gauges.data")
     # check whether exist
@@ -97,7 +97,7 @@ end
 """
 Function: fgmax.data reader
 """
-function FGmaxData(dirname::String)
+function fgmaxdata(dirname::String)
     # definition of filename
     fname = joinpath(dirname,"fgmax.data")
     # check whether exist

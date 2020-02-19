@@ -211,10 +211,10 @@ mutable struct FGmaxValue
 
     # Constructor
     VisClaw.FGmaxValue(bath,h,th) = new(bath,h, emptyF, emptyF, emptyF, emptyF,
-                                   th, emptyF, emptyF, emptyF, emptyF)
+                                        th, emptyF, emptyF, emptyF, emptyF)
     VisClaw.FGmaxValue(bath,h,v,th,tv) = new(bath, h, v, emptyF, emptyF, emptyF,
-                                        th, tv, emptyF, emptyF, emptyF)
+                                             th, tv, emptyF, emptyF, emptyF)
     VisClaw.FGmaxValue(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin) =
-              new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
+                   new(bath,h,v,M,Mflux,hmin,th,tv,tM,tMflux,thmin)
 end
 ########################################

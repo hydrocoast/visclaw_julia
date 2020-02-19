@@ -7,7 +7,7 @@ using GMT: GMT
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-topo = VisClaw.LoadTopo(simdir)
+topo = VisClaw.loadtopo(simdir)
 
 # makegrd
 G = VisClaw.geogrd(topo; V=true)

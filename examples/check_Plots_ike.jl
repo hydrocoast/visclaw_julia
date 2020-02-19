@@ -12,8 +12,8 @@ gr()
 simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/storm-surge/ike/_output")
 
 # sea surface height
-#plt = VisClaw.PlotsCheck(simdir; color=:darkrainbow, clims=(-0.5,2.0))
+#plt = VisClaw.plotscheck(simdir; color=:darkrainbow, clims=(-0.5,2.0))
 
 # pressure
-plt = VisClaw.PlotsCheck(simdir; vartype="storm", color=:heat_r, clims=(960,1010))
+plt = VisClaw.plotscheck(simdir; vartype="storm", color=:heat_r, clims=(960,1010))
 # -----------------------------

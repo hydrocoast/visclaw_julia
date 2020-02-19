@@ -1,4 +1,4 @@
-function PlotsPrint(plts, figname="visclaw.svg"; num_start::Int64=1,
+function plotssavefig(plts, figname="visclaw.svg"; num_start::Int64=1,
                     kwargs...)
     dn = dirname(figname)
     bn = basename(figname)
@@ -14,7 +14,7 @@ function PlotsPrint(plts, figname="visclaw.svg"; num_start::Int64=1,
 
 end
 
-function Plotsgif(plts, gifname::String="visclaw.gif"; kwargs...)
+function plotsgif(plts, gifname::String="visclaw.gif"; kwargs...)
     anim = Plots.Animation()
     map(p->Plots.frame(anim, p), plts);
     Plots.gif(anim, gifname; kwargs...)

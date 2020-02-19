@@ -9,7 +9,7 @@ using GMT: GMT
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-dtopo = VisClaw.LoadDeform(simdir)
+dtopo = VisClaw.loaddeform(simdir)
 
 # makegrd
 G = VisClaw.geogrd(dtopo; V=true)

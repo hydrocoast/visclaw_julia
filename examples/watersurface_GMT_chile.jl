@@ -10,13 +10,13 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_eta_GMT"
 
 # load topo
-topo = VisClaw.LoadTopo(simdir)
+topo = VisClaw.loadtopo(simdir)
 
 # makecpt
 cpt = GMT.makecpt(C=:polar, T="-1.0/1.0", D=true, V=true)
 
 # load water surface
-amrall = VisClaw.LoadSurface(simdir)
+amrall = VisClaw.loadsurface(simdir)
 
 # projection and region GMT
 region = VisClaw.getR(amrall.amr[1])

@@ -24,14 +24,14 @@ gaugeobs[1]=VisClaw.gauge("Gauge 32412 Obs.", 32412, size(obs,1), [], [], obs[:,
 ## Load simulation result ##
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 # read
-params = VisClaw.GeoData(simdir)
-gauges = VisClaw.LoadGauge(simdir, eta0=params.eta0)
+params = VisClaw.geodata(simdir)
+gauges = VisClaw.loadgauge(simdir, eta0=params.eta0)
 ##
 
 
 # plot
-plt = VisClaw.PlotsGaugeWaveform(gauges[1], lw=1.0)
-plt = VisClaw.PlotsGaugeWaveform!(plt, gaugeobs[1], lc=:black, lw=0.5, linestyle=:dash)
+plt = VisClaw.plotsgaugewaveform(gauges[1], lw=1.0)
+plt = VisClaw.plotsgaugewaveform!(plt, gaugeobs[1], lc=:black, lw=0.5, linestyle=:dash)
 plt = Plots.plot!(plt; xlims=(-0.5sec1h, 9.5sec1h), ylims=(-0.15, 0.25),
                   xlabel="Time since earthquake (hour)",
                   ylabel="Amplitude (m)",

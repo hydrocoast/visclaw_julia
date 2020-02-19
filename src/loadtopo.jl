@@ -87,11 +87,11 @@ end
 """
 Function: load topography
 """
-function LoadTopo(filename::String, topotype=3::Int64)
+function loadtopo(filename::String, topotype=3::Int64)
     ## from _output directory
     if isdir(filename)
         topofile, topotype, ntopo = VisClaw.topodata(filename)
-        return VisClaw.LoadTopo.(topofile, topotype)
+        return VisClaw.loadtopo.(topofile, topotype)
     end
 
     ## check args
@@ -167,15 +167,15 @@ end
 """
 Function: load seafloor deformation (dtopo)
 """
-function LoadDeform(filename::String, topotype=3::Int64)
+function loaddeform(filename::String, topotype=3::Int64)
     ## from _output directory
     if isdir(filename)
         dtopofile, topotype, ntopo = VisClaw.dtopodata(filename)
-        return VisClaw.LoadDeform.(dtopofile, topotype)
+        return VisClaw.loaddeform.(dtopofile, topotype)
     end
 
     ## check args
-    if !isfile(filename); error("file $filename is not found."); end;
+    if !isfile(filename); error("file $filename is not found."); end
     if (topotype!=2) & (topotype!=3); error("Invalid topotype"); end
 
     ## separator in regular expression

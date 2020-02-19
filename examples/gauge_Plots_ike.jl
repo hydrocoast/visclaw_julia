@@ -13,11 +13,11 @@ sec1d = 24sec1h
 # -----------------------------
 simdir = joinpath(CLAW,"geoclaw/examples/storm-surge/ike/_output")
 # read
-params = VisClaw.GeoData(simdir)
-gauges = VisClaw.LoadGauge(simdir, eta0=params.eta0)
+params = VisClaw.geodata(simdir)
+gauges = VisClaw.loadgauge(simdir, eta0=params.eta0)
 
 # plot
-plt = VisClaw.PlotsGaugeWaveform(gauges, lw=1.0)
+plt = VisClaw.plotsgaugewaveform(gauges, lw=1.0)
 plt = Plots.plot!(plt;
                   xlims=(-3.0sec1d, 1.0sec1d),
                   ylims=(-0.5,4.0),
