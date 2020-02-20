@@ -2,7 +2,7 @@
 """
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::String; vartype="surface"::String, kwargs...)
+function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype="surface"::String, kwargs...)
 
      ## define the filepath & filename
      if vartype=="surface"
@@ -31,7 +31,6 @@ function plotscheck(simdir::String; vartype="surface"::String, kwargs...)
     ## the number of files
     nfile = length(flist)
 
-
     ### draw figures until nothing or invalid number is input
     ex=0 # initial value
     cnt=0
@@ -57,7 +56,7 @@ function plotscheck(simdir::String; vartype="surface"::String, kwargs...)
         amrs = loadfunction(simdir, i)
 
         # draw figure
-        plt = VisClaw.plotsamr2d(amrs.amr[1]; kwargs...)
+        plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; kwargs...)
         plt = Plots.plot!(plt, title=@sprintf("%8.1f",amrs.timelap[1])*" s")
 
         # show
