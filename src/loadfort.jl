@@ -1,10 +1,3 @@
-### Functions to read ascii file and assign variables.
-### Now available to read fort.qxxxx, fort.txxxx and fort.axxxx.
-### Dataset is assigned into the type of stcuct.
-
-#################################
-## Function: fort.qxxxx reader
-#################################
 """
 Function: fort.qxxxx reader
 """
@@ -48,28 +41,40 @@ function loadfortq(filename::String, ncol::Int; vartype="surface"::String, param
         body = txtorg[l+9:l+9+(mx+1)*my-1]
 
         if vartype=="surface"
-            vars = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
-            bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
-            vars[bath.<=0.0] .= NaN
-            vars = vars.-params.eta0
+            elev = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
+            depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+            # wet condition
+            land = (elev-depth) .>= params.dmin
+
+            # sea surface anomaly
+            if params.eta0 != 0.0
+                elev[.!land] = elev[.!land].-params.eta0
+            end
+
+            # inundation depth if wet
+            elev[land] = depth[land]
+
+            # NaN if dry
+            elev[depth.<=0.0] .= NaN
+
             ## array
-            amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,vars)
+            amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,elev)
 
         elseif vartype=="current"
             ucol = ncol
             vcol = ncol+1
             # read
-            bath = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
+            depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
             u = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ucol-1)+1:26*ucol]) for i=1:my, j=1:mx]
             v = [parse(Float64, body[(i-1)*(mx+1)+j][26*(vcol-1)+1:26*vcol]) for i=1:my, j=1:mx]
             # replace to NaN
-            mask = bath.<=0.0
-            bath[mask] .= NaN
+            mask = depth.<=0.0
+            depth[mask] .= NaN
             u[mask] .= NaN
             v[mask] .= NaN
             # calc
-            u = u./bath
-            v = v./bath
+            u = u./depth
+            v = v./depth
             vel = sqrt.(u.^2 .+ v.^2)
             ## array
             amr[i] = VisClaw.Velocity(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
