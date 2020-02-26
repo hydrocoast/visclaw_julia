@@ -88,10 +88,9 @@ export plotsgaugevelocity, plotsgaugevelocity!
 export plotsgif, plotssavefig
 
 # functions with GMT.jl
+export getR, getR_tile, getJ, geogrd
 export landmask_asc, landmask_grd
-export getR, getJ
 export tilegrd, tilegrd_mask
-export geogrd
 
 
 end
