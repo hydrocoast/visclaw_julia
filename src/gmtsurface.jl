@@ -7,8 +7,8 @@ output [x y z] data in txt for masking
 """
 function landmask_asc(topo::VisClaw.Topo, filename::String=default_masktxt)
     xv = vec(repeat(topo.x, inner=(topo.nrows,1)))
-    #yv = vec(repeat(topo.y, outer=(topo.ncols,1)))
-    yv = reverse(vec(repeat(topo.y, outer=(topo.ncols,1))))
+    yv = vec(repeat(topo.y, outer=(topo.ncols,1)))
+    #yv = reverse(vec(repeat(topo.y, outer=(topo.ncols,1))))
     topov = vec(topo.elevation);
 
     inds = topov .< 0.0 # ocean
@@ -123,8 +123,8 @@ function tilegrd_mask(tile::VisClaw.AMRGrid, maskfile::String=""; spacing_unit::
 
     xvec, yvec, zdata = VisClaw.tilez(tile, var)
     xmat = repeat(xvec', inner=(length(yvec),1))
-    #ymat = repeat(yvec, outer=(length(xvec),1))
-    ymat = reverse(repeat(yvec, outer=(1,length(xvec))), dims=1)
+    ymat = repeat(yvec, outer=(length(xvec),1))
+    #ymat = reverse(repeat(yvec, outer=(1,length(xvec))), dims=1)
 
     tmp_mask = "mask_tile.grd"
     tmp_eta = "eta_tile.grd"
