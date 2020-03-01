@@ -2,31 +2,34 @@
 """
 Quick checker of the spatial distribution
 """
-function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype="surface"::String, kwargs...)
+function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartype::Symbol=:surface, runup=true, kwargs...)
 
-     ## define the filepath & filename
-     if vartype=="surface"
-         fnamekw = "fort.q0"
-         loadfunction = VisClaw.loadsurface
-     elseif vartype=="current"
-         fnamekw = "fort.q0"
-         loadfunction = VisClaw.loadcurrent
-     elseif vartype=="storm"
-         fnamekw = "fort.a0"
-         loadfunction = VisClaw.loadstorm
-     else
-         error("Invalid input argument vartype: $vartype")
-     end
+    ## define the filepath & filename
+    if vartype==:surface
+        fnamekw = "fort.q0"
+        loadfunction = VisClaw.loadsurface
+        kwargs_load = Dict([(:runup, runup)])
+    elseif vartype==:current
+        fnamekw = "fort.q0"
+        loadfunction = VisClaw.loadcurrent
+        kwargs_load = Dict([])
+    elseif vartype==:storm
+        fnamekw = "fort.a0"
+        loadfunction = VisClaw.loadstorm
+        kwargs_load = Dict([])
+    else
+        error("Invalid input argument vartype: $vartype")
+    end
 
-     ## make a list
-     if !isdir(simdir); error("Directory $simdir doesn't exist"); end
-     flist = readdir(simdir)
-     idx = occursin.(fnamekw,flist)
-     if sum(idx)==0; error("File named $fnamekw was not found"); end
-     flist = flist[idx]
+    ## make a list
+    if !isdir(simdir); error("Directory $simdir doesn't exist"); end
+    flist = readdir(simdir)
+    idx = occursin.(fnamekw,flist)
+    if sum(idx)==0; error("File named $fnamekw was not found"); end
+    flist = flist[idx]
 
-     # load geoclaw.data
-     params = VisClaw.geodata(simdir)
+    # load geoclaw.data
+    params = VisClaw.geodata(simdir)
 
     ## the number of files
     nfile = length(flist)
@@ -53,7 +56,7 @@ function plotscheck(simdir::String, AMRlevel::AbstractVector{Int64}=empI; vartyp
             continue
         end
 
-        amrs = loadfunction(simdir, i)
+        amrs = loadfunction(simdir, i; kwargs_load...)
 
         # draw figure
         plt = VisClaw.plotsamr2d(amrs.amr[1], AMRlevel; kwargs...)

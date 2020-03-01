@@ -1,7 +1,8 @@
 """
 Function: fort.qxxxx reader
 """
-function loadfortq(filename::String, ncol::Int; vartype="surface"::String, params::VisClaw.GeoParam=VisClaw.GeoParam())
+function loadfortq(filename::String, ncol::Int; vartype::Symbol=:surface,
+                   params::VisClaw.GeoParam=VisClaw.GeoParam(), runup::Bool=true)
     ## file open
     f = open(filename,"r")
     txtorg = readlines(f)
@@ -12,11 +13,11 @@ function loadfortq(filename::String, ncol::Int; vartype="surface"::String, param
     idx = occursin.("grid_number",txtorg)
     ngrid = length(txtorg[idx])
 
-    if vartype=="surface"
+    if vartype==:surface
         amr = Array{VisClaw.SurfaceHeight}(undef,ngrid) ## preallocate
-    elseif vartype=="current"
+    elseif vartype==:current
         amr = Array{VisClaw.Velocity}(undef,ngrid)
-    elseif vartype=="storm"
+    elseif vartype==:storm
         amr = Array{VisClaw.Storm}(undef,ngrid)
     else
         error("kwarg vartype is invalid")
@@ -40,7 +41,7 @@ function loadfortq(filename::String, ncol::Int; vartype="surface"::String, param
         ## read variables
         body = txtorg[l+9:l+9+(mx+1)*my-1]
 
-        if vartype=="surface"
+        if vartype==:surface
             elev = [parse(Float64, body[(i-1)*(mx+1)+j][26*(ncol-1)+1:26*ncol]) for i=1:my, j=1:mx]
             depth = [parse(Float64, body[(i-1)*(mx+1)+j][1:26]) for i=1:my, j=1:mx]
             # wet condition
@@ -52,7 +53,9 @@ function loadfortq(filename::String, ncol::Int; vartype="surface"::String, param
             end
 
             # inundation depth if wet
-            elev[land] = depth[land]
+            if runup
+                elev[land] = depth[land]
+            end
 
             # NaN if dry
             elev[depth.<=0.0] .= NaN
@@ -60,7 +63,7 @@ function loadfortq(filename::String, ncol::Int; vartype="surface"::String, param
             ## array
             amr[i] = VisClaw.SurfaceHeight(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,elev)
 
-        elseif vartype=="current"
+        elseif vartype==:current
             ucol = ncol
             vcol = ncol+1
             # read
@@ -79,7 +82,7 @@ function loadfortq(filename::String, ncol::Int; vartype="surface"::String, param
             ## array
             amr[i] = VisClaw.Velocity(gridnumber,AMRlevel,mx,my,xlow,ylow,dx,dy,u,v,vel)
 
-        elseif vartype=="storm"
+        elseif vartype==:storm
             ucol = ncol
             vcol = ncol+1
             pcol = ncol+2
@@ -109,7 +112,7 @@ end
 """
 Function: fort.axxxx reader
 """
-loadforta(filename::String, ncol::Int) = loadfortq(filename, ncol, vartype="storm")
+loadforta(filename::String, ncol::Int) = loadfortq(filename, ncol, vartype=:storm)
 #################################
 
 #################################
@@ -139,16 +142,16 @@ Function: loadfortq and loadfortt
           time-series of water surface
 """
 function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
-                     vartype="surface"::String)
+                     vartype::Symbol=:surface, runup::Bool=true)
 
     ## define the filepath & filename
-    if vartype=="surface"
+    if vartype==:surface
         fnamekw = "fort.q0"
         col=4
-    elseif vartype=="current"
+    elseif vartype==:current
         fnamekw = "fort.q0"
         col=2
-    elseif vartype=="storm"
+    elseif vartype==:storm
         fnamekw = "fort.a0"
         col=5
     else
@@ -178,11 +181,11 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
     nfile = length(filesequence)
 
     ## preallocate
-    if vartype=="surface"
+    if vartype==:surface
         amr = Vector{AbstractVector{VisClaw.SurfaceHeight}}(undef,nfile)
-    elseif vartype=="current"
+    elseif vartype==:current
         amr = Vector{AbstractVector{VisClaw.Velocity}}(undef,nfile)
-    elseif vartype=="storm"
+    elseif vartype==:storm
         amr = Vector{AbstractVector{VisClaw.Storm}}(undef,nfile)
     end
 
@@ -191,11 +194,11 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
     cnt = 0
     for it = filesequence
         cnt += 1
-        if vartype=="surface"
-            amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params)
-        elseif vartype=="current"
+        if vartype==:surface
+            amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col, vartype=vartype, params=params, runup=runup)
+        elseif vartype==:current
             amr[cnt] = VisClaw.loadfortq(joinpath(loaddir,flist[it]), col, vartype=vartype)
-        elseif vartype=="storm"
+        elseif vartype==:storm
             amr[cnt] = VisClaw.loadforta(joinpath(loaddir,flist[it]), col)
         end
         tlap[cnt] = VisClaw.loadfortt(joinpath(loaddir,replace(flist[it],r"\.." => ".t")))
@@ -208,40 +211,40 @@ function loadsurface(loaddir::String, filesequence::AbstractVector{Int64};
     return amrs
 end
 #######################################
-loadsurface(loaddir::String, filestart::Int64, filend::Int64) =
-loadsurface(loaddir, filestart:filend, vartype="surface")
+loadsurface(loaddir::String, filestart::Int64, filend::Int64; runup::Bool=true) =
+loadsurface(loaddir, filestart:filend; runup=runup)
 #######################################
-loadsurface(loaddir::String, fileid::Int64) =
-loadsurface(loaddir, fileid:fileid, vartype="surface")
+loadsurface(loaddir::String, fileid::Int64; runup::Bool=true) =
+loadsurface(loaddir, fileid:fileid; runup=runup)
 #######################################
-loadsurface(loaddir::String) =
-loadsurface(loaddir, 0:0, vartype="surface")
+loadsurface(loaddir::String; runup::Bool=true) =
+loadsurface(loaddir, 0:0; runup=runup)
 ######################################
 
 ######################################
 loadstorm(loaddir::String, filesequence::AbstractVector{Int64}) =
-loadsurface(loaddir, filesequence, vartype="storm")
+loadsurface(loaddir, filesequence, vartype=:storm)
 #######################################
 loadstorm(loaddir::String, filestart::Int64, filend::Int64) =
-loadsurface(loaddir, filestart:filend, vartype="storm")
+loadsurface(loaddir, filestart:filend, vartype=:storm)
 #######################################
 loadstorm(loaddir::String, fileid::Int64) =
-loadsurface(loaddir, fileid:fileid, vartype="storm")
+loadsurface(loaddir, fileid:fileid, vartype=:storm)
 #######################################
 loadstorm(loaddir::String) =
-loadsurface(loaddir, 0:0, vartype="storm")
+loadsurface(loaddir, 0:0, vartype=:storm)
 ######################################
 
 #######################################
 loadcurrent(loaddir::String, filesequence::AbstractVector{Int64}) =
-loadsurface(loaddir, filesequence, vartype="current")
+loadsurface(loaddir, filesequence, vartype=:current)
 #######################################
 loadcurrent(loaddir::String, filestart::Int64, filend::Int64) =
-loadsurface(loaddir, filestart:filend, vartype="current")
+loadsurface(loaddir, filestart:filend, vartype=:current)
 #######################################
 loadcurrent(loaddir::String, fileid::Int64) =
-loadsurface(loaddir, fileid:fileid, vartype="current")
+loadsurface(loaddir, fileid:fileid, vartype=:current)
 #######################################
 loadcurrent(loaddir::String) =
-loadsurface(loaddir, 0:0, vartype="current")
+loadsurface(loaddir, 0:0, vartype=:current)
 #######################################
