@@ -242,3 +242,5 @@ function loaddeform(filename::String, topotype=3::Int64)
     return dtopo
 end
 #########################################
+const loaddtopo = loaddeform
+#########################################

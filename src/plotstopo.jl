@@ -23,6 +23,9 @@ Function: plot topography and bathymetry in 2D
 """
 plotstopo(geo::VisClaw.AbstractTopo; kwargs...) = plotstopo!(Plots.plot(), geo; kwargs...)
 ####################################################
+const plotsdtopo = plotstopo
+const plotsdtopo! = plotstopo!
+
 
 ####################################################
 """

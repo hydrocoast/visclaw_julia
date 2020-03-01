@@ -66,7 +66,7 @@ include("run_examples.jl")
 export geodata, surgedata, gaugedata, fgmaxdata
 export topodata, dtopodata
 export loadfgmax, loadfgmaxgrid
-export loadtopo, loaddeform
+export loadtopo, loaddeform, loaddtopo
 export loadgauge
 export loadsurface, loadcurrent, loadstorm
 export rmcoarse!
@@ -81,6 +81,7 @@ export plotscoastline, plotscoastline!
 export plotsfgmax, plotsfgmax!
 export plotsfgmaxsurf
 export plotstopo, plotstopo!
+export plotsdtopo, plotsdtopo!
 export plotstoporange, plotstoporange!
 export plotsgaugelocation, plotsgaugelocation!
 export plotsgaugewaveform, plotsgaugewaveform!
@@ -91,6 +92,7 @@ export plotsgif, plotssavefig
 export getR, getR_tile, getJ, geogrd
 export landmask_asc, landmask_grd
 export tilegrd, tilegrd_mask
+export txtwind, txtwind_scale
 
 
 end
