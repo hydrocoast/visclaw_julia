@@ -23,7 +23,7 @@ cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
 
 # load
 amrall = loadstorm(simdir)
-rmcoarse!.(amrall.amr) # to avoid overlapped arrows are plotted
+rmvalue_coarser!.(amrall.amr) # to avoid overlapped arrows are plotted
 
 # projection and region GMT
 region = getR(amrall.amr[1])

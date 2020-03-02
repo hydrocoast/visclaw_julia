@@ -99,9 +99,9 @@ end
 
 ############################################################
 """
-get points which are not overlapped by any of other tiles
+replace a value to NaN where it is overlapped by a finer grid
 """
-function rmcoarse!(tiles::Vector{VisClaw.AMRGrid})
+function rmvalue_coarser!(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
     ntile = length(tiles)
 

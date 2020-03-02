@@ -12,7 +12,7 @@ output_prefix = "chile2010_velo"
 
 # load water current
 amrall = loadcurrent(simdir)
-rmcoarse!.(amrall.amr)
+rmvalue_coarser!.(amrall.amr)
 
 # plot
 plts = plotsamr(amrall; c=:isolum, clims=(0.0,0.1),

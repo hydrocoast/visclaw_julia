@@ -69,7 +69,7 @@ export loadfgmax, loadfgmaxgrid
 export loadtopo, loaddeform, loaddtopo
 export loadgauge
 export loadsurface, loadcurrent, loadstorm
-export rmcoarse!
+export rmvalue_coarser!
 export axesratio
 export replaceunit!
 

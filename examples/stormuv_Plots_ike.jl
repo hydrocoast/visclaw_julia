@@ -17,7 +17,7 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load
 amrall = loadstorm(simdir)
-rmcoarse!.(amrall.amr)
+rmvalue_coarser!.(amrall.amr)
 
 topo = loadtopo(simdir)
 

@@ -14,7 +14,7 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load water current
 amrall = loadcurrent(simdir)
-rmcoarse!.(amrall.amr)
+rmvalue_coarser!.(amrall.amr)
 
 # plot
 plts = plotsamr(amrall; c=:isolum, clims=(0.0,2.0),
