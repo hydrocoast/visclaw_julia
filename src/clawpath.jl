@@ -5,6 +5,6 @@ else
     ## CLAW="/path/to/top/level/clawpack"
     disp("VisClaw.CLAW is not defined. set")
     disp("VisClaw.CLAW = \"/path/to/top/level/clawpack\" ")
-    const CLAW = "../clawpack"
+    const CLAW = ""
     #if !isdir(CLAW); error("CLAW=$CLAW is not correct."); end
 end
