@@ -3,10 +3,11 @@ This repository aims to become one of the Clawpack visualization tools (see http
 VisClaw.jl allows us to make figures and animations using the Julia language.   
 Any bug report would be appreciated.   
 
+<!--
 <p align="center">
 <img src="https://github.com/hydrocoast/visclaw_julia/blob/master/examples/bowl-radial_eta.gif", width="450">
 </p>  
-
+-->
 
 # Requirements
 ## Julia packages
@@ -25,6 +26,7 @@ Any bug report would be appreciated.
 (e.g., chile2010 `$CLAW/geoclaw/examples/tsunami/chile2010` and  
 ike `$CLAW/geoclaw/examples/storm-surge/ike`).  
 
+<!--
 - Add the required packages in the Julia REPL.
 ```julia
 ]add Plots GMT GR Interpolations GeometricalPredicates
@@ -53,9 +55,10 @@ You can skip this when using Linux.
 # On Linux OS, "CLAW = ENV["CLAW"]" works automatically
 CLAW = "path/to/your/clawpack"
 ```
+-->
 
-- Once you have completed this procedure, you will be ready to use this package.
-This package uses either GMT.jl or Plots.jl to plot numerical results.
+<!-- - Once you have completed this procedure, you will be ready to use this package. -->
+- This package uses either GMT.jl or Plots.jl to plot numerical results.
 Plots.jl is suitable for a quick check.
 For example, a spatial distribution of the water surface height is plotted when you input as follows:
 ```julia
