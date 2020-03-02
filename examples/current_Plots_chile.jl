@@ -11,22 +11,22 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_velo"
 
 # load water current
-amrall = VisClaw.loadcurrent(simdir)
+amrall = loadcurrent(simdir)
 
 # plot
-plts = VisClaw.plotsamr(amrall; c=:isolum, clims=(0.0,0.1),
-                     xguide="Longitude", yguide="Latitude",
-                     xlims=(-95,-65), ylims=(-50,-20),
-                     guidefont=Plots.font("sans-serif",12),
-                     tickfont=Plots.font("sans-serif",10),
-                     )
+plts = plotsamr(amrall; c=:isolum, clims=(0.0,0.1),
+                xguide="Longitude", yguide="Latitude",
+                xlims=(-95,-65), ylims=(-50,-20),
+                guidefont=Plots.font("sans-serif",12),
+                tickfont=Plots.font("sans-serif",10),
+                )
 
 # time in string
 time_str = map(x->@sprintf("%03d", x/60.0)*" min", amrall.timelap)
-plts = [plot!(plts[i], title=time_str[i]) for i = 1:amrall.nstep]
+plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
 # save
-VisClaw.plotssavefig(plts, output_prefix*".svg")
+plotssavefig(plts, output_prefix*".svg")
 # gif
-VisClaw.plotsgif(plts, output_prefix*".gif", fps=4)
+plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

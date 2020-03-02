@@ -10,21 +10,21 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_eta_GMT"
 
 # load topo
-topo = VisClaw.loadtopo(simdir)
+topo = loadtopo(simdir)
 
 # makecpt
 cpt = GMT.makecpt(C=:polar, T="-1.0/1.0", D=true, V=true)
 
 # load water surface
-amrall = VisClaw.loadsurface(simdir)
+amrall = loadsurface(simdir)
 
 # projection and region GMT
-region = VisClaw.getR(amrall.amr[1])
-proj = VisClaw.getJ("X10d", VisClaw.axesratio(amrall.amr[1]))
+region = getR(amrall.amr[1])
+proj = getJ("X10d", axesratio(amrall.amr[1]))
 
 # masking
-landmask_txt = VisClaw.landmask_asc(topo)
-Gland = VisClaw.landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d")
+landmask_txt = landmask_asc(topo)
+Gland = landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d")
 
 
 for i = 1:amrall.nstep
@@ -32,7 +32,7 @@ for i = 1:amrall.nstep
     outpdf = output_prefix*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
-    G = VisClaw.tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
+    G = tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
 
     # plot
     GMT.basemap(J=proj, R=region, B=time_str)
@@ -43,9 +43,4 @@ for i = 1:amrall.nstep
 end
 
 rm(landmask_txt, force=true)
-
-# gif
-
-
-#VisClaw.GMTps2gif(output_prefix, amrall.nstep)
 # -----------------------------

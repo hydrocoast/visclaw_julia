@@ -10,10 +10,9 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
-dtopo = VisClaw.loaddeform(simdir)
+dtopo = loaddtopo(simdir)
 
 # plot
-plt = VisClaw.plotstopo(dtopo; linetype=:contourf,
-                     color=:coolwarm, clims=(-3.0,3.0))
-Plots.savefig(plt, "chile_dtopo.svg")
+plt = plotstopo(dtopo; linetype=:contourf, color=:coolwarm, clims=(-3.0,3.0))
+savefig(plt, "chile_dtopo.svg")
 # -----------------------------

@@ -9,16 +9,16 @@ using GMT: GMT
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-dtopo = VisClaw.loaddeform(simdir)
+dtopo = loaddtopo(simdir)
 
 # makegrd
-G = VisClaw.geogrd(dtopo; V=true)
+G = geogrd(dtopo; V=true)
 # makecpt
 cpt = GMT.makecpt(; C=:polar, T="-3.0/3.0", D=true)
 
 # plot
-region = VisClaw.getR(dtopo)
-proj = VisClaw.getJ("X10d", VisClaw.axesratio(dtopo))
+region = getR(dtopo)
+proj = getJ("X10d", axesratio(dtopo))
 
 GMT.grdimage(G, C=cpt, J=proj, R=region, B="a5f5 neSW", Q=true, V=true)
 GMT.colorbar!(J=proj, R=region, B="xa1.0f1.0 y+l\"(m)\"", D="jBR+w10.0/0.3+o-1.5/0.0", V=true)

@@ -13,26 +13,26 @@ simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
 output_prefix = "chile2010_eta"
 
 # load water surface
-amrall = VisClaw.loadsurface(simdir)
+amrall = loadsurface(simdir)
 
 # plot
-plts = VisClaw.plotsamr(amrall; c=:coolwarm, clims=(-0.5,0.5),
-                        xguide="Longitude", yguide="Latitude",
-                        guidefont=Plots.font("sans-serif",12),
-                        tickfont=Plots.font("sans-serif",10),
-                            )
+plts = plotsamr(amrall; c=:coolwarm, clims=(-0.5,0.5),
+                xguide="Longitude", yguide="Latitude",
+                guidefont=Plots.font("sans-serif",12),
+                tickfont=Plots.font("sans-serif",10),
+                )
 
 # time in string
 time_str = map(x->@sprintf("%03d", x/60.0)*" min", amrall.timelap)
-plts = [plot!(plts[i], title=time_str[i]) for i = 1:amrall.nstep]
+plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
 # gauge locations (from gauges.data)
-gauges = VisClaw.gaugedata(simdir)
+gauges = gaugedata(simdir)
 # gauge location
-plts = map(p -> VisClaw.plotsgaugelocation!(p, gauges; ms=4, color=:black), plts)
+plts = map(p -> plotsgaugelocation!(p, gauges; ms=4, color=:black), plts)
 
 # save
-VisClaw.plotssavefig(plts, output_prefix*".svg")
+plotssavefig(plts, output_prefix*".svg")
 # gif
-VisClaw.plotsgif(plts, output_prefix*".gif", fps=4)
+plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

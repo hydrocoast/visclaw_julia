@@ -16,25 +16,33 @@ using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load
-amrall = VisClaw.loadstorm(simdir)
+amrall = loadstorm(simdir)
+topo = loadtopo(simdir)
 
-# plot
-plts = VisClaw.plotsamr(amrall; c=:rainbow, clims=(0.0, 40.0),
-                            xguide="Longitude", yguide="Latitude",
-                            xlims=(-99.0,-80.0), ylims=(16.0,32.0),
-                            guidefont=Plots.font("sans-serif",12),
-                            tickfont=Plots.font("sans-serif",10),
-                            colorbar_title="m/s",
-                            wind=true,
-                            )
+# plot amrgrid
+plts = plotsamr(amrall;
+                c=:rainbow, clims=(0.0, 40.0),
+                xguide="Longitude", yguide="Latitude",
+                xlims=(-99.0,-80.0), ylims=(16.0,32.0),
+                guidefont=Plots.font("sans-serif",12),
+                tickfont=Plots.font("sans-serif",10),
+                colorbar_title="m/s",
+                wind=true,
+                )
+# coastlines
+plts = map(p->plotscoastline!(p, topo; lc=:black), plts)
 
 # time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
-plts = [plot!(plts[i], title=time_str[i]) for i = 1:amrall.nstep]
+plts = map((p,s)->plot!(p, title=s), plts, time_str)
+
+# tiles
+plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :white, :center))
+plts = tilebound!.(plts, amrall.amr)
 
 # save
-VisClaw.plotssavefig(plts, output_prefix*".svg")
+plotssavefig(plts, output_prefix*".svg")
 # gif
-VisClaw.plotsgif(plts, output_prefix*".gif", fps=4)
+plotsgif(plts, output_prefix*".gif", fps=4)
 # -----------------------------

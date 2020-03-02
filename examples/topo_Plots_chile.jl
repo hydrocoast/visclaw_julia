@@ -10,12 +10,12 @@ gr()
 # -----------------------------
 # load
 simdir = joinpath(CLAW,"geoclaw/examples/tsunami/chile2010/_output")
-topo = VisClaw.loadtopo(simdir)
+topo = loadtopo(simdir)
 
 # plot
-plt = VisClaw.plotstopo(topo; linetype=:heatmap, color=:delta, clims=(-5000,5000))
-plt = VisClaw.plotstopo!(plt, topo; linetype=:contour, fill=false, lc=:black, levels=[0])
+plt = plotstopo(topo; linetype=:heatmap, color=:delta, clims=(-5000,5000))
+plt = plotscoastline!(plt, topo; lc=:black)
 
 # save
-Plots.savefig(plt, "chile2010_topo.svg")
+savefig(plt, "chile2010_topo.svg")
 # -----------------------------

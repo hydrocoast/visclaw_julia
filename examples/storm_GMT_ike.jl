@@ -7,7 +7,7 @@ using GMT: GMT
 arrow = "0.01/0.15/0.05" # -A LineWidth/HeadLength/HeadSize
 vscale = "e0.03/0.0/12"  # -Se <velscale> / <confidence> / <fontsize>
 arrow_color = "black" # -G
-scalefile = VisClaw.txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
+scalefile = txtwind_scale(-92.5, 30.0, 30.0, 0.0) # for legend
 
 # -----------------------------
 # ike
@@ -22,12 +22,12 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 cpt = GMT.makecpt(C=:wysiwyg, T="950/1020", D=true, I=true)
 
 # load
-amrall = VisClaw.loadstorm(simdir)
-VisClaw.rmcoarse!.(amrall.amr) # to avoid overlapped arrows are plotted
+amrall = loadstorm(simdir)
+rmcoarse!.(amrall.amr) # to avoid overlapped arrows are plotted
 
 # projection and region GMT
-region = VisClaw.getR(amrall.amr[1])
-proj = VisClaw.getJ("X10d", VisClaw.axesratio(amrall.amr[1]))
+region = getR(amrall.amr[1])
+proj = getJ("X10d", axesratio(amrall.amr[1]))
 
 # time in string
 time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
@@ -38,7 +38,7 @@ for i = 1:amrall.nstep
     outpng = output_prefix*@sprintf("%03d", i)*".png"
 
     # surface grids
-    G = VisClaw.tilegrd.(amrall.amr[i]; spacing_unit="d")
+    G = tilegrd.(amrall.amr[i]; spacing_unit="d")
 
     # plot pressure field
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
@@ -48,7 +48,7 @@ for i = 1:amrall.nstep
 
     # plot wind field
     psfile = GMT.fname_out(Dict())[1]
-    velofile = VisClaw.txtwind(amrall.amr[i], skip=3)
+    velofile = txtwind(amrall.amr[i], skip=3)
     GMT.gmt("psvelo $velofile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -P -K -O >> $psfile ")
     rm(velofile, force=true)
     GMT.gmt("psvelo $scalefile -J$proj -R$region -G$arrow_color -A$arrow -S$vscale -Y1.2d -P -O >> $psfile ")

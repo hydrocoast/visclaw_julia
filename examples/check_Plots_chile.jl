@@ -12,8 +12,8 @@ gr()
 simdir = joinpath(VisClaw.CLAW, "geoclaw/examples/tsunami/chile2010/_output")
 
 # sea surface height
-plt = VisClaw.plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
+plt = plotscheck(simdir; color=:balance, clims=(-0.5,0.5))
 
 # velocity
-#plt = VisClaw.plotscheck(simdir; vartype="current", color=:isolum, clims=(0.0,0.1))
+#plt = plotscheck(simdir; vartype=:current, color=:isolum, clims=(0.0,0.1))
 # -----------------------------

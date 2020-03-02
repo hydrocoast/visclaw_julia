@@ -12,20 +12,20 @@ using Dates: Dates
 timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load topo
-topo = VisClaw.loadtopo(simdir)
+topo = loadtopo(simdir)
 
 # makecpt
 cpt = GMT.makecpt(C=:jet, T="0.0/2.0", D=true, V=true)
 
 # load water surface
-amrall = VisClaw.loadsurface(simdir)
+amrall = loadsurface(simdir)
 
 # projection and region GMT
-region = VisClaw.getR(amrall.amr[1])
-proj = VisClaw.getJ("X10d", VisClaw.axesratio(amrall.amr[1]))
+region = getR(amrall.amr[1])
+proj = getJ("X10d", axesratio(amrall.amr[1]))
 
 # masking
-landmask_txt = VisClaw.landmask_asc(topo)
+landmask_txt = landmask_asc(topo)
 #Gland = VisClaw.landmask_grd(landmask_txt, R=region, I=topo.dx, S="$(sqrt(2.0)topo.dx)d")
 
 # time in string
@@ -36,7 +36,7 @@ for i = 1:amrall.nstep
     outpdf = output_prefix*@sprintf("%03d", i)*".pdf"
 
     # land-masked surface grids
-    G = VisClaw.tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
+    G = tilegrd_mask.(amrall.amr[i], landmask_txt; spacing_unit="d")
 
     # plot
     GMT.basemap(J=proj, R=region, B="+t"*time_str[i])
