@@ -16,6 +16,7 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load water surface
 amrall = loadsurface(simdir)
+rmcoarse!.(amrall.amr)
 
 # plot
 plts = plotsamr(amrall; c=:darkrainbow, clims=(-0.5,2.0),

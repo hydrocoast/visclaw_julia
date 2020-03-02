@@ -12,6 +12,7 @@ output_prefix = "chile2010_velo"
 
 # load water current
 amrall = loadcurrent(simdir)
+rmcoarse!.(amrall.amr)
 
 # plot
 plts = plotsamr(amrall; c=:isolum, clims=(0.0,0.1),
@@ -24,6 +25,9 @@ plts = plotsamr(amrall; c=:isolum, clims=(0.0,0.1),
 # time in string
 time_str = map(x->@sprintf("%03d", x/60.0)*" min", amrall.timelap)
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
+
+# tiles
+plts = tilebound!.(plts, amrall.amr; lc=:gray)
 
 # save
 plotssavefig(plts, output_prefix*".svg")

@@ -16,6 +16,8 @@ timeorigin = Dates.DateTime(2008, 9, 13, 7)
 
 # load
 amrall = loadstorm(simdir)
+rmcoarse!.(amrall.amr)
+
 topo = loadtopo(simdir)
 
 # plot
@@ -34,7 +36,7 @@ time_dates = timeorigin .+ Dates.Second.(amrall.timelap)
 time_str = Dates.format.(time_dates,"yyyy/mm/dd HH:MM")
 plts = map((p,s)->plot!(p, title=s), plts, time_str)
 
-plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :white, :center))
+plts = gridnumber!.(plts, amrall.amr; font=Plots.font(12, :black, :center))
 plts = tilebound!.(plts, amrall.amr)
 
 # save

@@ -14,6 +14,7 @@ output_prefix = "chile2010_eta"
 
 # load water surface
 amrall = loadsurface(simdir)
+rmcoarse!.(amrall.amr)
 
 # plot
 plts = plotsamr(amrall; c=:coolwarm, clims=(-0.5,0.5),

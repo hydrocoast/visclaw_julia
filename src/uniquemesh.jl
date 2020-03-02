@@ -23,7 +23,7 @@ end
 
 ############################################################
 """
-get points which are not overlapped by any of other tiles
+get points that never overlap finer grids
 """
 function uniquemeshvector(tiles::Vector{VisClaw.AMRGrid})
     # number of the tiles
@@ -107,7 +107,7 @@ function rmcoarse!(tiles::Vector{VisClaw.AMRGrid})
 
     ## deepest level
     levels = getfield.(tiles,:AMRlevel);
-    maxlevel=findmax(levels)[1]
+    maxlevel = findmax(levels)[1]
 
     ## search points which are overlapped by the finer grids
     #i = 1
@@ -130,8 +130,19 @@ function rmcoarse!(tiles::Vector{VisClaw.AMRGrid})
                 for y = 1:tiles[i].my
                     inside = GeometricalPredicates.inpolygon(rect, allp[y,x])
                     if inside
-                        tiles[i].u[y,x] = NaN
-                        tiles[i].v[y,x] = NaN
+                        #tiles[i].u[y,x] = NaN
+                        #tiles[i].v[y,x] = NaN
+                        if isa(tiles[i], VisClaw.Velocity)
+                            tiles[i].u[y,x] = NaN
+                            tiles[i].v[y,x] = NaN
+                            tiles[i].vel[y,x] = NaN
+                        elseif isa(tiles[i], VisClaw.Storm)
+                            tiles[i].u[y,x] = NaN
+                            tiles[i].v[y,x] = NaN
+                            tiles[i].slp[y,x] = NaN
+                        elseif isa(tiles[i], VisClaw.SurfaceHeight)
+                            tiles[i].eta[y,x] = NaN
+                        end
                         ## debugging
                         # print("(i,j,y,x) = ($i,$j,$y,$x)\n")
                     end

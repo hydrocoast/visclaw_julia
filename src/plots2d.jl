@@ -158,6 +158,16 @@ function gridnumber!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI,
         AMRlevel = 1:3
     end
 
+    # get current lims
+    if plt.n != 0
+        if isempty(xlims)
+            xlims = Plots.xlims(plt)
+        end
+        if isempty(ylims)
+            ylims = Plots.ylims(plt)
+        end
+    end
+
     ## the number of tiles
     ntile = length(tiles)
     for i = 1:ntile
@@ -208,12 +218,22 @@ function tilebound!(plt, tiles; AMRlevel::AbstractVector{Int64}=empI, kwargs...)
     # xlims, ylims
     xlims, kwdict = VisClaw.parse_xlims(kwdict)
     ylims, kwdict = VisClaw.parse_ylims(kwdict)
+    # get current lims
+    if plt.n != 0
+        if xlims == nothing
+            xlims = Plots.xlims(plt)
+        end
+        if ylims == nothing
+            ylims = Plots.ylims(plt)
+        end
+    end
     # -----------------------------
 
     # Too fine grids are not plotted
     if isempty(AMRlevel) && xlims==nothing && ylims==nothing
         AMRlevel = 1:3
     end
+
 
     ## the number of tiles
     ntile = length(tiles)

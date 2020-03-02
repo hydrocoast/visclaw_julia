@@ -7,7 +7,7 @@ abstract type AMRGrid <: VisClaw.AbstractAMR end
 Struct:
  storm data
 """
-struct Storm <: VisClaw.AMRGrid
+mutable struct Storm <: VisClaw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -29,7 +29,7 @@ end
 """
 Struct: Water veloccity
 """
-struct Velocity <: VisClaw.AMRGrid
+mutable struct Velocity <: VisClaw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -51,7 +51,7 @@ end
 """
 Struct: Sea Surface Height
 """
-struct SurfaceHeight <: VisClaw.AMRGrid
+mutable struct SurfaceHeight <: VisClaw.AMRGrid
     gridnumber::Int64
     AMRlevel::Int64
     mx::Int64
@@ -72,7 +72,7 @@ end
 Struct:
  time-seies of AMR data
 """
-struct AMR <: VisClaw.AbstractAMR
+mutable struct AMR <: VisClaw.AbstractAMR
     nstep::Int64
     timelap::AbstractVector{Float64}
     amr :: AbstractVector{Vector{VisClaw.AMRGrid}}
